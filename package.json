@@ -16,8 +16,6 @@
     "bpmn-js": "^0.20.6",
     "bpmn-js-properties-panel": "^0.14.0",
     "camunda-bpmn-moddle": "^0.11.0",
-    "diagram-js": "^0.19.6",
-    "jquery": "^2.1.1",
     "matches-selector": "^1.0.0"
   }
 }
