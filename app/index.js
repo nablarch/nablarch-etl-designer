@@ -7,9 +7,9 @@ var propertiesProviderModule = require('bpmn-js-properties-panel/lib/provider/ca
 var camundaModdleDescriptor = require('camunda-bpmn-moddle/resources/camunda');
 
 var bpmnModeler = new BpmnModeler({
-  container: '#js-canvas',
+  container: '#canvas',
   propertiesPanel: {
-    parent: '#js-properties-panel'
+    parent: '#properties-panel'
   },
   additionalModules: [
     propertiesPanelModule,
