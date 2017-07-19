@@ -1,0 +1,10 @@
+.DS_Store
+node_modules
+jsr352-js-old
+dist
+.idea
+
+bpmnファイル
+job.xmlテンプレート
+jsonファイルテンプレート
+propertyConfig.json

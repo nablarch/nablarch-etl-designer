@@ -1,0 +1,37 @@
+<html>
+ <head>
+   <meta charset="UTF-8">
+   <title>Setting</title>
+   <style type="text/css">
+   .float{
+       float:right;
+   }
+   </style>
+   <link rel="stylesheet" href="css/photon.min.css">
+ </head>
+ <body>
+    <form id="setting-form">
+       <div class="tab-group">
+           <div id="bean-tab" class="tab-item active">
+               <span class="icon"></span>
+                 Bean
+           </div>
+           <div id="entity-tab" class="tab-item">
+               <span class="icon"></span>
+                 Entity
+           </div>
+           <div id="error-entity-tab" class="tab-item">
+               <span class="icon"></span>
+                 ErrorEntity
+           </div>
+       </div>
+       <textarea id="textarea" class="form-control" rows="20">
+       </textarea>
+       <div class="float">
+         <button type="submit" id="ok" value="ok" class="btn btn-positive">OK</button>
+         <button id="cancel" class="btn btn-negative">Cancel</button>
+       </div>
+     </form>
+    <script type="text/javascript" src="./etl-designer-setting-dialog.js"></script>
+ </body>
+</html>
