@@ -14,7 +14,7 @@ module.exports = function(group, element) {
       label : 'commit interval',
       modelProperty : 'updateSizeSize'
     }));
-    group.entries.push(customEntryFactory.dataListTextBox({
+    group.entries.push(customEntryFactory.comboBox({
       id : 'updateSizeBean',
       label : 'extract bean',
       modelProperty : 'updateSizeBean',

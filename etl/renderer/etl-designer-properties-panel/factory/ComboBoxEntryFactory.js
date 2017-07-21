@@ -35,7 +35,7 @@ var createOption = function(option) {
  *
  * @return {Object}
  */
-var datalistTextbox = function(options, defaultParameters) {
+var comboBox = function(options, defaultParameters) {
 
   var defaultSelectAction = function (element, inputNode) {
     var textBox = domQuery('input[name="' + options.modelProperty + '"]', inputNode);
@@ -97,4 +97,4 @@ var datalistTextbox = function(options, defaultParameters) {
   return resource;
 };
 
-module.exports = datalistTextbox;
+module.exports = comboBox;

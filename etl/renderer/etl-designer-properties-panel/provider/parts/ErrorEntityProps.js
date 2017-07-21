@@ -7,7 +7,7 @@ var selectOptionUtil = require('../../../../../jsr352-js/app/util/SelectOptionUt
 
 module.exports = function(group, element) {
   if (is(element, 'jsr352:Step')) {
-    group.entries.push(customEntryFactory.dataListTextBox({
+    group.entries.push(customEntryFactory.comboBox({
       id : 'errorEntity',
       label : 'errorEntity',
       modelProperty : 'errorEntity',

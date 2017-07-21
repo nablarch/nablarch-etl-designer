@@ -3,7 +3,7 @@
 var getBusinessObject = require('bpmn-js/lib/util/ModelUtil').getBusinessObject;
 
 // input entities
-var dataListTextBox = require('./DataListTextEntryFactory');
+var comboBox = require('./ComboBoxEntryFactory');
 var multiSelect = require('./MultiSelectEntryFactory');
 
 var cmdHelper = require('bpmn-js-properties-panel/lib/helper/CmdHelper');
@@ -69,8 +69,8 @@ function CustomEntryFactory() {
 
 }
 
-CustomEntryFactory.dataListTextBox = function(options) {
-  return dataListTextBox(options, setDefaultParameters(options));
+CustomEntryFactory.comboBox = function(options) {
+  return comboBox(options, setDefaultParameters(options));
 };
 
 CustomEntryFactory.multiSelectBox = function(options) {
