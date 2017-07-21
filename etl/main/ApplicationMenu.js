@@ -4,10 +4,7 @@ var BrowserWindow = electron.BrowserWindow;
 var url = require('url');
 var path = require('path');
 
-var PropertySettingDialog = require('./propertySettingDialog');
-
 var ApplicationMenu = function (window) {
-  var propertySettingDialog = new PropertySettingDialog(window);
 
   this.template = [
     {
@@ -19,7 +16,6 @@ var ApplicationMenu = function (window) {
           click: function (item, focusedWindow) {
             var focusedWindow = BrowserWindow.getFocusedWindow();
             var options = {
-              defaultPath: path.join(__dirname, 'bpmnファイル/save'),
               filters: [{
                 name: 'bpmnファイル',
                 extensions: ['bpmn']

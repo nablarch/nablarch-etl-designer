@@ -1,11 +1,9 @@
 'use strict';
 
 var entryFactory = require('bpmn-js-properties-panel/lib/factory/EntryFactory'),
-    cmdHelper = require('bpmn-js-properties-panel/lib/helper/CmdHelper'),
-    multiSelectBox = require('../../../../../jsr352-js/app/jsr352-properties-panel/factory/MultiSelectEntryFactory');
+    cmdHelper = require('bpmn-js-properties-panel/lib/helper/CmdHelper');
 
 var is = require('bpmn-js/lib/util/ModelUtil').is,
-    isAny = require('bpmn-js/lib/features/modeling/util/ModelingUtil').isAny,
     getBusinessObject = require('bpmn-js/lib/util/ModelUtil').getBusinessObject;
 
 var componentProvider = require('../../../util/EtlDesignerComponentProvider');

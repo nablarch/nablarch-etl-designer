@@ -29,25 +29,22 @@ var createOption = function(option) {
  * @param  {boolean} options.emptyParameter
  * @param  {function} options.disabled
  * @param  {Object} defaultParameters
+ * @param  {string} options.dataValueLabel
+ * @param  {Object} options.textAction
+ * @param  {Object} options.selectAction
  *
  * @return {Object}
  */
 var datalistTextbox = function(options, defaultParameters) {
 
-  var defaultButtonAction = function(element, inputNode) {
-    var input = domQuery('input[name="' + options.modelProperty + '"]', inputNode);
-    // input.value = 'aaa';
-    console.log(input);
-    console.log(input.value);
-
+  var defaultSelectAction = function (element, inputNode) {
+    var textBox = domQuery('input[name="' + options.modelProperty + '"]', inputNode);
+    var selectBox = domQuery('select[id="camunda-' + options.modelProperty + '-select"]', inputNode);
+    if (selectBox.value !== '') {
+      textBox.value = selectBox.value;
+      selectBox.value = '';
+    }
     return true;
-  };
-
-  // default method to determine if the button should be visible
-  var defaultButtonShow = function(element, inputNode) {
-    var input = domQuery('input[name="' + options.modelProperty + '"]', inputNode);
-
-    return input.value !== '';
   };
 
   var resource = defaultParameters,
@@ -56,46 +53,38 @@ var datalistTextbox = function(options, defaultParameters) {
       modelProperty = options.modelProperty,
       emptyParameter = options.emptyParameter,
       canBeDisabled = !!options.disabled && typeof options.disabled === 'function',
-      actionName     = ( typeof options.buttonAction != 'undefined' ) ? options.buttonAction.name : 'clear',
-      actionMethod   = ( typeof options.buttonAction != 'undefined' ) ? options.buttonAction.method : defaultButtonAction,
-      showName       = ( typeof options.buttonShow != 'undefined' ) ? options.buttonShow.name : 'canClear',
-      showMethod     = ( typeof options.buttonShow != 'undefined' ) ? options.buttonShow.method : defaultButtonShow,
-      description    = options.description;
-
+      description = options.description,
+      selectActionName     = ( typeof options.selectAction !== 'undefined' ) ? options.selectAction.name : 'select',
+      selectActionMethod   = ( typeof options.selectAction !== 'undefined' ) ? options.selectAction.method : defaultSelectAction;
 
   if (emptyParameter) {
     selectOptions = addEmptyParameter(selectOptions);
   }
 
+  var inputHtml =
+      '<input type="text" id="camunda-' + resource.id + '" name="' + modelProperty + '" class="combo_text"' +
+      (canBeDisabled ? 'data-show="isDisabled" ' : '') +' />';
+
   resource.html =
       '<label for="camunda-' + resource.id + '"' +
-      (canBeDisabled ? 'data-show="isDisabled" ' : '') + '>' + label + '</label>' +
-      '<form class="bpp-field-wrapper">' +
-      '<input type="text" id="camunda-' + resource.id + '" name="' + modelProperty + '"' +
-      (canBeDisabled ? 'data-show="isDisabled" ' : '') + '  list="combolist" ' +
-      'onblur="' + actionName + '">' +
-      // '<button class="' + actionName + '" data-action="' + actionName + '" data-show="' + showName + '" ' +
-      // (canBeDisabled ? 'data-disabled="isDisabled"' : '') + '>' +
-      // '<span>' + buttonLabel + '</span>' +
-      // '</button>' +
-      '</form>';
+      (canBeDisabled ? 'data-show="isDisabled" ' : '') + '>' + label + '</label>';
+
+  resource.html +='<select id="camunda-' + modelProperty + '-select" data-action="' + selectActionName +
+      (canBeDisabled ? 'data-show="isDisabled" ' : '') + '" class="combo_select" name="' + modelProperty + '-select">';
 
   if (isList(selectOptions)) {
-    resource.html += '<datalist id="combolist">';
     forEach(selectOptions, function(option) {
       resource.html += '<option value="' + option.value + '">' + (option.name || '') + '</option>';
     });
-    resource.html += '</datalist>';
   }
-
-  resource[actionName] = actionMethod;
-  resource[showName] = showMethod;
-
+  resource.html += '</select>' + inputHtml;
 
   // add description below select box entry field
   if (description && !typeof options.showCustomInput === 'function') {
     resource.html += entryFieldDescription(description);
   }
+
+  resource[selectActionName] = selectActionMethod;
 
   if (canBeDisabled) {
     resource.isDisabled = function() {

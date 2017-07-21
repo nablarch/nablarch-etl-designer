@@ -111,6 +111,12 @@ EtlDesignerPaletteProvider.prototype.getPaletteEntries = function(element) {
     ),
     'create.end-event': createAction(
       'jsr352:End', 'event', 'bpmn-icon-end-event-terminate'
+    ),
+    'create.fail-event': createAction(
+        'jsr352:Fail', 'event', 'bpmn-icon-end-event-error'
+    ),
+    'create.stop-event': createAction(
+        'jsr352:Stop', 'event', 'bpmn-icon-intermediate-event-none'
     )
   });
 

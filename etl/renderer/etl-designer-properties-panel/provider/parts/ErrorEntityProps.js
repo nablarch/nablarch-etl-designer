@@ -1,4 +1,4 @@
-var entryFactory = require('bpmn-js-properties-panel/lib/factory/EntryFactory');
+var customEntryFactory = require('../../factory/CustomEntryFactory');
 
 var is = require('bpmn-js/lib/util/ModelUtil').is;
 
@@ -7,12 +7,11 @@ var selectOptionUtil = require('../../../../../jsr352-js/app/util/SelectOptionUt
 
 module.exports = function(group, element) {
   if (is(element, 'jsr352:Step')) {
-    var options = {
+    group.entries.push(customEntryFactory.dataListTextBox({
       id : 'errorEntity',
       label : 'errorEntity',
-      selectOptions : selectOptionUtil.toSelectOption(componentProvider.getErrorEntities()),
-      modelProperty : 'errorEntity'
-    };
-    group.entries.push(entryFactory.selectBox(options));
+      modelProperty : 'errorEntity',
+      selectOptions : selectOptionUtil.toSelectOption(componentProvider.getErrorEntities())
+    }));
   }
 };

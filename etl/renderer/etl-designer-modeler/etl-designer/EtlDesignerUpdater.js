@@ -30,7 +30,6 @@ function EtlDesignerUpdater(eventBus, bpmnjs, elementFactory, bpmnFactory) {
           y: parent.y + offset.y,
           parent: parent
         });
-
     bpmnjs.get('canvas').addShape(shape, parent);
 
     if (!parent.businessObject.flowElements) {
@@ -48,7 +47,6 @@ function EtlDesignerUpdater(eventBus, bpmnjs, elementFactory, bpmnFactory) {
   CommandInterceptor.call(this, eventBus);
 
   function updateCustomElement(e) {
-
     var context = e.context,
         shape = context.shape,
         businessObject = shape.businessObject;
@@ -119,15 +117,13 @@ function EtlDesignerUpdater(eventBus, bpmnjs, elementFactory, bpmnFactory) {
   this.executed([
     'shape.create',
     'shape.move',
-    'shape.delete',
-    'element.paste'
+    'shape.delete'
   ], ifCustomElement(updateCustomElement));
 
   this.reverted([
     'shape.create',
     'shape.move',
-    'shape.delete',
-    'element.paste'
+    'shape.delete'
   ], ifCustomElement(updateCustomElement));
 
   this.executed([
@@ -149,24 +145,6 @@ function EtlDesignerUpdater(eventBus, bpmnjs, elementFactory, bpmnFactory) {
     'connection.layout',
     'connection.move'
   ], ifCustomElement(updateCustomConnection));
-
-  this.executed([
-    'elements.paste'
-  ], ifCustomElement(pasteCustomElement));
-
-  this.reverted([
-    'elements.paste'
-  ], ifCustomElement(pasteCustomElement));
-
-  function pasteCustomElement(e) {
-    var context = e.context;
-    var source = context.source;
-    var target = context.target;
-
-    if (!isCustom(source)) {
-      return;
-    }
-  }
 
 }
 
