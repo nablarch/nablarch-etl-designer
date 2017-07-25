@@ -3,7 +3,8 @@
 var inherits = require('inherits');
 var is = require('bpmn-js/lib/util/ModelUtil').is;
 var isAny = require('bpmn-js/lib/features/modeling/util/ModelingUtil').isAny;
-var fs = require('fs');
+
+var configFileUtil = require('../../util/ConfigFileUtil');
 
 var PropertiesActivator = require('bpmn-js-properties-panel/lib/PropertiesActivator');
 
@@ -25,7 +26,7 @@ var modeProps = require('./parts/ModeProps');
 var updateSizeProps = require('./parts/UpdateSizeProps');
 var fontSizeProps = require('./parts/FontSizeProps');
 
-var stepTypeList = {};
+var stepTypeList = JSON.parse(configFileUtil.loadConfigFile()).properties.stepType || {};
 
 function createEtlPropertiesByStepTypeTabGroup(element, bpmnFactory, elementRegistry) {
 
@@ -161,7 +162,6 @@ function createTextTabGroups(element, bpmnFactory, elementRegistry) {
 function ETLPropertiesProvider(eventBus, bpmnFactory, elementRegistry) {
 
   PropertiesActivator.call(this, eventBus);
-  stepTypeList = JSON.parse(fs.readFileSync('./propertyConfig.json', 'utf8')).properties.stepType || {};
 
   this.getTabs = function (element) {
 

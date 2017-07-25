@@ -1,12 +1,8 @@
 {
-  "name": "custom-elements-example",
+  "name": "etl-designer",
   "version": "0.0.0",
-  "description": "An example on how to create a custom elements with bpmn-js",
+  "description": "etl-designer",
   "main": "etl/main/main.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/bpmn-io/bpmn-js-examples"
-  },
   "scripts": {
     "test": "grunt test",
     "dev": "grunt auto-build",
@@ -15,26 +11,13 @@
   "keywords": [
     "bpmnjs-example"
   ],
-  "author": {
-    "name": "Ricardo Matias",
-    "url": "https://github.com/ricardomatias"
-  },
-  "contributors": [
-    {
-      "name": "bpmn.io contributors",
-      "url": "https://github.com/bpmn-io"
-    },
-    {
-      "name": "Philipp Fromme",
-      "url": "https://github.com/philippfromme"
-    }
-  ],
   "license": "MIT",
   "devDependencies": {
     "brfs": "^1.2.0",
     "browserify": "^13.0.0",
     "chai": "^3.2.0",
     "electron-connect": "^0.6.1",
+    "electron-packager": "^8.7.2",
     "grunt": "~0.4.4",
     "grunt-browserify": "^5.0.0",
     "grunt-cli": "^1.2.0",
@@ -72,7 +55,7 @@
     "camunda-bpmn-moddle": "^0.9.1",
     "diagram-js": "^0.18.0",
     "edn": "https://github.com/josh/js-edn.git",
-    "electron": "^1.7.3",
+    "electron": "^1.6.8",
     "inherits": "^2.0.1",
     "lodash": "^3.10.1",
     "tiny-svg": "^0.1.0"

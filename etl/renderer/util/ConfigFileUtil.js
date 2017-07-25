@@ -2,21 +2,24 @@ var url = require('url');
 var path = require('path');
 var fs = require('fs');
 
-var fsModules = {};
+// var electron =require('electron');
+// var app = electron.app;
 
-function saveFileSync(fileName, filePath){
-
-  fs.writeFileSync()
-
+function ConfigFileUtil(){
 }
 
-fsModules.loadFileSync = function(filePath, fileName){
-  return fs.readFileSync(path.join(__dirname, filePath + '/' + fileName), 'utf8');
+var filePathOnBuild = './propertyConfig.json';
+var filePathOnPackage = path.join(__dirname + '/propertyConfig.json');
+
+// var configFilePath = path.join(app.getPath('userData'));
+
+ConfigFileUtil.saveConfigFile = function(config){
+  fs.writeFileSync(filePathOnBuild, JSON.stringify(config, null, '    '), 'utf8');
 };
 
-fsModules.loadConfigFile = function(){
-  this.loadConfigFile('../../../../', 'propertyConfig');
+ConfigFileUtil.loadConfigFile = function(){
+  return fs.readFileSync(filePathOnBuild, 'utf8');
 };
 
 
-module.exports = fsModules;
+module.exports = ConfigFileUtil;

@@ -8,14 +8,18 @@ var selectOptionUtil = require('../../../../../jsr352-js/app/util/SelectOptionUt
 
 module.exports = function(group, element, bpmnFactory) {
   if (is(element, 'jsr352:Step')) {
+
+    //:TODO arrayとstringの復号をgetとsetでするように変更
+    if(typeof element.businessObject.entities === 'string') {
+      element.businessObject.entities = element.businessObject.entities.split(',');
+    }
+
     var options = {
       id: 'entities',
       label: 'truncate entity',
       modelProperty: 'entities',
       selectOptions : selectOptionUtil.toSelectOption(componentProvider.getEntities())
     };
-    // group.entries.push(entryFactory.selectBox(options));
     group.entries.push(customEntryFactory.multiSelectBox(options));
-
   }
 };

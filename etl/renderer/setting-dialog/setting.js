@@ -6,6 +6,7 @@ okButton.addEventListener('click', onOkClick);
 cancelButton.addEventListener('click', onCancelClick);
 
 var config = {};
+var configFileUtil = require('../util/ConfigFileUtil');
 
 var tabItems = document.querySelectorAll('.tab-item');
 
@@ -17,7 +18,7 @@ function onOkClick() {
   var activeTab =document.querySelector('.active');
   saveActiveTabToConfig(activeTab);
 
-  fs.writeFileSync('./propertyConfig.json', JSON.stringify(config, null, '    '), 'utf8');
+  configFileUtil.saveConfigFile(config);
   window.close()
 }
 function onCancelClick() {
@@ -74,7 +75,7 @@ function loadActiveTabFromConfig(activeTab){
 }
 
 window.onload = function(){
-  config = JSON.parse(fs.readFileSync('./propertyConfig.json', 'utf8'));
+  config = JSON.parse(configFileUtil.loadConfigFile());
   document.getElementById('textarea').value = config.properties.bean.join('\n');
 
 };
