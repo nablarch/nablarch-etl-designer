@@ -9,8 +9,10 @@ var is = require('bpmn-js/lib/util/ModelUtil').is,
 var componentProvider = require('../../../util/EtlDesignerComponentProvider');
 var selectOptionUtil = require('../../../../../jsr352-js/app/util/SelectOptionUtil');
 
+var customEntryFactory = require('../../factory/CustomEntryFactory');
+
 function chunkChildEntry(element, bpmnFactory, id) {
-  var typeName = id.replace(/\b\w/g, function(l){ return l.toUpperCase() })
+  var typeName = id.replace(/\b\w/g, function(l){ return l.toUpperCase() });
   var entry = entryFactory.textBox({
     id : id,
     description : 'Specifies the name of a ' + id + ' artifact.',
@@ -71,7 +73,7 @@ module.exports = function(group, element, bpmnFactory) {
   }
 
   if (is(element, 'jsr352:Batchlet')) {
-    group.entries.push(entryFactory.selectBox({
+    group.entries.push(customEntryFactory.comboBox({
       id : 'ref',
       description : 'Specifies the name of a batch artifact.',
       label : 'Ref',
@@ -81,7 +83,7 @@ module.exports = function(group, element, bpmnFactory) {
   }
 
   if (is(element, 'jsr352:Reader')) {
-    group.entries.push(entryFactory.selectBox({
+    group.entries.push(customEntryFactory.comboBox({
       id : 'ref',
       description : 'Specifies the name of a batch artifact.',
       label : 'Ref',
@@ -91,7 +93,7 @@ module.exports = function(group, element, bpmnFactory) {
   }
 
   if (is(element, 'jsr352:Writer')) {
-    group.entries.push(entryFactory.selectBox({
+    group.entries.push(customEntryFactory.comboBox({
       id : 'ref',
       description : 'Specifies the name of a batch artifact.',
       label : 'Ref',
@@ -101,7 +103,7 @@ module.exports = function(group, element, bpmnFactory) {
   }
 
   if (is(element, 'jsr352:Processor')) {
-    group.entries.push(entryFactory.selectBox({
+    group.entries.push(customEntryFactory.comboBox({
       id : 'ref',
       description : 'Specifies the name of a batch artifact.',
       label : 'Ref',
