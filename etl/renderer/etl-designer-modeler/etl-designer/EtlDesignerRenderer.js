@@ -77,6 +77,80 @@ var textUtil = new TextUtil({
   return rect;
 }
 
+function drawCylinder(parentGfx, width, height, ry, x, y, attrs) {
+
+  attrs = {
+    stroke: 'green',
+    strokeWidth: 2,
+    fill: 'white'
+  };
+
+  var pathStr = "";
+
+
+  // pathStr += "M 0, " + ry + " A " + width / 2 + " " + ry + " 0 0 0 " + width + " ," + ry;
+  // pathStr += " M 0, " + ry + " A " + width / 2 + " " + ry + " 0 0 1 " + width + " ," + ry;
+  // pathStr += " M 0, " + ry + " V " + (height - ry * 2);
+  // pathStr += " M" + width + ", " + ry + " V " + (height - ry * 2);
+  // pathStr += " M 0, " + (height - ry * 2) + " A " + width / 2 + " " + ry + " 0 0 0 " + width + " ," + (height - ry * 2);
+
+  pathStr += "M " + x + ", " + (y + ry) + " A " + width / 2 + " " + ry + " 0 0 0 " + (x + width) + " ," + (y + ry);
+  pathStr += "M " + x + ", " + (y + ry) + " A " + width / 2 + " " + ry + " 0 0 1 " + (x + width) + " ," + (y + ry);
+  pathStr += "M " + x + ", " + (y + ry) + " V " + (y + height - ry * 2);
+  pathStr += "M " + (x + width) + ", " + (y + ry) + " V " + (y + height - ry * 2);
+  pathStr += "M " + x + ", " + (y + height - ry * 2) + " A " + width / 2 + " " + ry + " 0 0 0 " + (x + width) + " ," + (y + height - ry * 2);
+
+  var path = svgCreate('path');
+  svgAttr(path, {
+    d:pathStr
+  });
+  svgAttr(path, attrs);
+
+  svgAppend(parentGfx, path);
+
+  return path;
+}
+
+function drawTextRect (parentGfx, width, height, r, x, y, attrs) {
+
+  attrs = {
+    stroke: 'green',
+    strokeWidth: 2,
+    fill: 'none'
+  };
+
+  var rect = svgCreate('rect');
+  svgAttr(rect, {
+    x: x,
+    y: y,
+    width: width,
+    height: height,
+    rx: r,
+    ry: r
+  });
+  svgAttr(rect, attrs);
+
+  svgAppend(parentGfx, rect);
+
+  var pathStr = '';
+
+  pathStr += "M " + (x + width * 0.7) + ', ' + (y + height) + 'L ' + (x + width) + ', ' + (y + height * 0.7);
+
+  var path = svgCreate('path');
+  svgAttr(path, {
+    d:pathStr
+  });
+  svgAttr(path, {
+    stroke: 'green',
+    strokeWidth: 2,
+    fill: 'white'
+  });
+
+  svgAppend(parentGfx, path);
+
+  return rect;
+}
+
 var EtlDesignerRenderer = require('../../../../jsr352-js/app/jsr352-modeler/jsr352/JSR352Renderer');
 
 module.exports = EtlDesignerRenderer;
@@ -101,22 +175,28 @@ EtlDesignerRenderer.prototype.drawShape = function(p, element){
     this.renderLabel(p, element.businessObject.name, { box: element, align: 'center-top', padding: 1});
     // var inputLabel = this.drawRect(p, element.width/2, 20, 0, {x:0, y: element.height-20});
     // var outputLabel = this.drawRect(p, element.width/2, 20, 0, {x:element.width/2, y: element.height-20});
+    var beanClassName = element.businessObject.bean && extractClassName(element.businessObject.bean)
     if(element.businessObject.stepType === 'validation') {
-      textUtil.createText(p, splitStr(element.businessObject.bean) || '',
+      textUtil.createText(p, splitStr(beanClassName) || '',
           {
             box: element,
             align: 'left-bottom',
             padding: 1
           });
+      drawCylinder(p, element.width/12, element.height/4, element.height/36, 4, element.height/2,{});
     }else if(element.businessObject.stepType === 'file2db'){
       textUtil.createText(p, splitStr(element.businessObject.fileName) || '', {box: element, align: 'left-bottom', padding: 1});
-      textUtil.createText(p, splitStr(element.businessObject.bean) || '', {box: element, align: 'right-bottom', padding: 1});
+      textUtil.createText(p, splitStr(beanClassName) || '', {box: element, align: 'right-bottom', padding: 1});
+      drawCylinder(p, element.width/12, element.height/4, element.height/36, element.width - element.width/12 - 4, element.height/2,{});
+      drawTextRect(p, element.width/18, element.height/5, 0, 4, element.height/2, {});
 
     }else if(element.businessObject.stepType === 'db2db'){
-      textUtil.createText(p, splitStr(element.businessObject.bean) || '', {box: element, align: 'right-bottom', padding: 1});
+      textUtil.createText(p, splitStr(beanClassName) || '', {box: element, align: 'right-bottom', padding: 1});
+      drawCylinder(p, element.width/12, element.height/4, element.height/36, 4, element.height/2,{});
+      drawCylinder(p, element.width/12, element.height/4, element.height/36, element.width - element.width/12 - 4, element.height/2,{});
 
     }else if(element.businessObject.stepType === 'db2file'){
-      textUtil.createText(p, splitStr(element.businessObject.bean) || '',
+      textUtil.createText(p, splitStr(beanClassName) || '',
           {
             box: element,
             align: 'left-bottom',
@@ -128,6 +208,8 @@ EtlDesignerRenderer.prototype.drawShape = function(p, element){
             align: 'right-bottom',
             padding: 1
           });
+      drawCylinder(p, element.width/12, element.height/4, element.height/36, 4, element.height/2,{});
+      drawTextRect(p, element.width/18, element.height/5, 0, element.width - element.width/12 - 4, element.height/2, {});
     }
     return step;
   }
