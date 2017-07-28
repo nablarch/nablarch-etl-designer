@@ -69,5 +69,6 @@
             "ABORT",
             "CONTINUE"
         ]
-    }
+    },
+    "isDevelop": false
 }

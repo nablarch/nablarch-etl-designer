@@ -3,6 +3,9 @@ var dialog = electron.dialog;
 var BrowserWindow = electron.BrowserWindow;
 var url = require('url');
 var path = require('path');
+var fs = require('fs');
+
+var ConfigFileUtil = require('../renderer/util/ConfigFileUtil');
 
 var ApplicationMenu = function (window) {
 
@@ -11,30 +14,79 @@ var ApplicationMenu = function (window) {
       label: 'ファイル',
       submenu: [
         {
-          label: '保存',
-          accelerator: 'Ctrl+S',
+          label: '新規作成',
+          accelerator: 'Ctrl+N',
+          click: function (item, focufocusedWindow) {
+            if (!handleDirty()) {
+              return;
+            }
+            global.appInfo.openFilePath = '';
+            global.appInfo.isNewFile = true;
+            window.webContents.send('main-process-new-file');
+          }
+        },
+        {
+          label: '名前を付けて保存',
           click: function (item, focusedWindow) {
             var focusedWindow = BrowserWindow.getFocusedWindow();
             var options = {
+              title: '名前を付けて保存',
+              defaultPath: getDefaultPath(),
               filters: [{
                 name: 'bpmnファイル',
                 extensions: ['bpmn']
               }]
             };
 
-            dialog.showSaveDialog(focusedWindow, options, function (filename) {
-              if (filename) {
+            dialog.showSaveDialog(focusedWindow, options, function (fileName) {
+              if (fileName) {
+                global.appInfo.openFilePath = fileName;
+                global.appInfo.isNewFile = false;
                 window.webContents.send('main-process-save-file', {
-                  filename: filename
+                  fileName: fileName
                 });
               }
             });
           }
         },
         {
-          label: '読み込み',
+          label: '上書き保存',
+          accelerator: 'Ctrl+S',
+          click: function (item, focusedWindow) {
+            if (!global.appInfo.isNewFile) {
+              window.webContents.send('main-process-save-file', {
+                fileName: global.appInfo.openFilePath
+              });
+            } else {
+              var focusedWindow = BrowserWindow.getFocusedWindow();
+              var options = {
+                title: '名前を付けて保存',
+                defaultPath: getDefaultPath(),
+                filters: [{
+                  name: 'bpmnファイル',
+                  extensions: ['bpmn']
+                }]
+              };
+
+              dialog.showSaveDialog(focusedWindow, options, function (fileName) {
+                if (fileName) {
+                  global.appInfo.openFilePath = fileName;
+                  global.appInfo.isNewFile = false;
+                  window.webContents.send('main-process-save-file', {
+                    fileName: fileName
+                  });
+                }
+              });
+            }
+          }
+        },
+        {
+          label: '開く',
           accelerator: 'Ctrl+O',
           click: function (item, focusedWindow) {
+            if (!handleDirty()) {
+              return;
+            }
             var focusedWindow = BrowserWindow.getFocusedWindow();
             var options = {
               properties: ['openFile'],
@@ -45,6 +97,8 @@ var ApplicationMenu = function (window) {
             };
             dialog.showOpenDialog(focusedWindow, options, function (file) {
               if (file) {
+                global.appInfo.openFilePath = file[0];
+                global.appInfo.isNewFile = false;
                 window.webContents.send('main-process-load-file', {
                   file: file[0]
                 });
@@ -126,28 +180,100 @@ var ApplicationMenu = function (window) {
           label: 'バージョン確認'
         }
       ]
-    },
-    {
-      label: 'develop',
-      submenu: [
+    }];
+
+  if (ConfigFileUtil.isDevelop()) {
+    this.template.push(
         {
-          label: '&Reload',
-          accelerator: 'Ctrl+R',
-          role: 'reload'
-        },
-        {
-          label: 'Toggle &Full Screen',
-          accelerator: 'F11',
-          role: 'togglefullscreen'
-        },
-        {
-          label: 'Toggle &Developer Tools',
-          accelerator: 'Shift+Ctrl+I',
-          role: 'toggledevtools'
-        }
-      ]
-    }
-  ];
+          label: 'develop',
+          submenu: [
+            {
+              label: '&Reload',
+              accelerator: 'Ctrl+R',
+              role: 'reload'
+            },
+            {
+              label: 'Toggle &Full Screen',
+              accelerator: 'F11',
+              role: 'togglefullscreen'
+            },
+            {
+              label: 'Toggle &Developer Tools',
+              accelerator: 'Shift+Ctrl+I',
+              role: 'toggledevtools'
+            }
+          ]
+        });
+  }
 };
+
+function getDefaultPath() {
+  var defaultPath = global.appInfo.openFilePath || '';
+  if (global.appInfo.isNewFile) {
+    defaultPath = '';
+  }
+  return defaultPath;
+}
+
+function isDirty() {
+  var openData = '';
+  var tempData = '';
+  if (appInfo.openFilePath !== '' && fs.existsSync(appInfo.openFilePath)) {
+    openData = fs.readFileSync(appInfo.openFilePath, 'utf8');
+  }
+  if (appInfo.tempFilePath !== '' && fs.existsSync(appInfo.tempFilePath)) {
+    tempData = fs.readFileSync(appInfo.tempFilePath, 'utf8');
+  }
+  return (openData !== tempData);
+}
+
+function handleDirty() {
+  if (isDirty()) {
+    var options = {
+      buttons: ['はい', 'いいえ', 'キャンセル'],
+      message: '編集されています。保存しますか？'
+    };
+    var result = dialog.showMessageBox(options);
+    switch (result) {
+      case 0:
+        // save
+        if (!global.appInfo.isNewFile) {
+          window.webContents.send('main-process-dirty-save', {
+            fileName: global.appInfo.openFilePath,
+            isClose: false
+          });
+        } else {
+          var focusedWindow = BrowserWindow.getFocusedWindow();
+          var options = {
+            title: '名前を付けて保存',
+            defaultPath: '',
+            filters: [{
+              name: 'bpmnファイル',
+              extensions: ['bpmn']
+            }]
+          };
+
+          dialog.showSaveDialog(focusedWindow, options, function (fileName) {
+            if (fileName) {
+              global.appInfo.openFilePath = fileName;
+              global.appInfo.isNewFile = false;
+              window.webContents.send('main-process-dirty-save', {
+                fileName: fileName,
+                isClose: false
+              });
+            }
+          });
+        }
+        return true;
+      case 1:
+        // nop
+        return true;
+      case 2:
+        return false;
+    }
+  }
+
+  return true;
+}
 
 module.exports = ApplicationMenu;

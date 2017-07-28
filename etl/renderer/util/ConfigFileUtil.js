@@ -21,5 +21,9 @@ ConfigFileUtil.loadConfigFile = function(){
   return fs.readFileSync(filePathOnBuild, 'utf8');
 };
 
+ConfigFileUtil.isDevelop = function() {
+  return JSON.parse(this.loadConfigFile()).isDevelop;
+};
+
 
 module.exports = ConfigFileUtil;
