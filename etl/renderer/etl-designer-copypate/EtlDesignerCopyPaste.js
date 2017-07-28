@@ -15,7 +15,8 @@ var copiedProperties = [
   'isForCompensation',
   'associationDirection',
   'triggeredByEvent',
-  'cancelActivity'
+  'cancelActivity',
+  'fontSize'
 ];
 
 var pastedProperties = [
@@ -25,7 +26,8 @@ var pastedProperties = [
   'isExpanded',
   'isInterrupting',
   'cancelActivity',
-  'triggeredByEvent'
+  'triggeredByEvent',
+  'fontSize'
 ];
 
 var removedProperties = [
@@ -37,7 +39,8 @@ var removedProperties = [
   'loopCharacteristics',
   'isInterrupting',
   'cancelActivity',
-  'triggeredByEvent'
+  'triggeredByEvent',
+  'fontSize'
 ];
 
 var ETLProperties = [
@@ -48,8 +51,8 @@ var ETLProperties = [
   'sqlId',
   'errorEntity',
   'mode',
-  'updateSize.size',
-  'updateSize.bean'
+  'updateSizeSize',
+  'updateSizeBean'
 ];
 
 
