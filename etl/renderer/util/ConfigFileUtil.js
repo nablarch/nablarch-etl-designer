@@ -2,23 +2,62 @@ var url = require('url');
 var path = require('path');
 var fs = require('fs');
 
-// var electron =require('electron');
-// var app = electron.app;
-
 function ConfigFileUtil(){
 }
 
-var filePathOnBuild = './propertyConfig.json';
-var filePathOnPackage = path.join(__dirname + '/propertyConfig.json');
-
-// var configFilePath = path.join(app.getPath('userData'));
+var configFilePath = './propertyConfig.json';
+var initConfig = {
+  properties: {
+    batchlet: [],
+    itemReader: [],
+    itemWriter: [],
+    itemProcessor: [],
+    listener: [],
+    stepType:{
+      truncate: [
+        "entities"
+      ],
+      validation: [
+        "bean",
+        "errorEntity",
+        "mode",
+        "errorLimit"
+      ],
+      file2db: [
+        "fileName",
+        "bean"
+      ],
+      db2db: [
+        "bean",
+        "sqlId",
+        "updateSize"
+      ],
+      db2file: [
+        "bean",
+        "fileName",
+        "sqlId"
+      ]
+    },
+    entities:[],
+    bean:[],
+    errorEntity:[],
+    mode: [
+      "ABORT",
+      "CONTINUE"
+    ]
+  },
+  isDevelop: false
+};
 
 ConfigFileUtil.saveConfigFile = function(config){
-  fs.writeFileSync(filePathOnBuild, JSON.stringify(config, null, '    '), 'utf8');
+  fs.writeFileSync(configFilePath, JSON.stringify(config, null, '    '), 'utf8');
 };
 
 ConfigFileUtil.loadConfigFile = function(){
-  return fs.readFileSync(filePathOnBuild, 'utf8');
+  if(!fs.existsSync(configFilePath)){
+    fs.writeFileSync(configFilePath, JSON.stringify(initConfig, null, '    '), 'utf8');
+  }
+  return fs.readFileSync(configFilePath, 'utf8');
 };
 
 ConfigFileUtil.isDevelop = function() {
