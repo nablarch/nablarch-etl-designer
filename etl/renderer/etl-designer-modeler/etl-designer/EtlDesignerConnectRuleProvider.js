@@ -95,7 +95,7 @@ function canReconnectStart(source, target, connection) {
 
   if (is(connection, 'jsr352:Transition')) {
 
-    if(getBusinessObject(connection).sourceRef.id === source.id){
+    if(source && source.id === getBusinessObject(connection).sourceRef.id){
       return {type: 'jsr352:Transition'};
     }
 
@@ -143,7 +143,7 @@ function canReconnectEnd(source, target, connection) {
 
   if (is(connection, 'jsr352:Transition')) {
 
-    if(getBusinessObject(connection).targetRef.id === target.id){
+    if(target && target.id === getBusinessObject(connection).targetRef.id){
       return {type: 'jsr352:Transition'};
     }
 
