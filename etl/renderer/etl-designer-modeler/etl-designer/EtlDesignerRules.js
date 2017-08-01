@@ -218,7 +218,8 @@ EtlDesignerRules.prototype.init = function() {
   this.addRule('shape.resize', HIGH_PRIORITY, function(context) {
     var shape = context.shape;
 
-    if (isJSR352(shape) && !isAny(shape, ['jsr352:Flow', 'jsr352:Split', 'jsr352:Step', 'jsr352:File', 'jsr352:TextBox', 'jsr352:Database', 'jsr352:Listener'])) {
+    if (isJSR352(shape) && !isAny(shape, ['jsr352:Flow', 'jsr352:Split', 'jsr352:Step', 'jsr352:TextBox', 'jsr352:Listener',
+          'jsr352:Reader', 'jsr352:Writer', 'jsr352:Processor', 'jsr352:Chunk', 'jsr352:Batchlet'])) {
       // cannot resize custom elements
       return false;
     }
