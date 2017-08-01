@@ -100,12 +100,21 @@ ipc.on('main-process-load-file', function(event, args) {
   }
 });
 
-ipc.on('main-process-window-close', function(event, args){
+ipc.on('main-process-window-leave', function(event, args){
   saveDiagram(function(err, xml){
     createTempFile(xml);
   });
-  ipc.send('renderer-process-post-close');
-
+  switch(args.action){
+    case 'close':
+      ipc.send('renderer-process-post-close');
+      break;
+    case 'newFile':
+      ipc.send('renderer-process-post-new-file');
+      break;
+    case 'openFile':
+      ipc.send('renderer-process-post-open-file');
+      break;
+  }
 });
 
 ipc.on('main-process-dirty-save', function(event, args){

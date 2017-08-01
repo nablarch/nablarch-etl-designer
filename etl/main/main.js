@@ -39,7 +39,9 @@ function createWindow() {
   }));
 
   win.on('close', function (event) {
-    win.webContents.send('main-process-window-close');
+    win.webContents.send('main-process-window-leave', {
+      action: 'close'
+    });
     event.preventDefault();
   });
 
