@@ -8,11 +8,26 @@ function ConfigFileUtil(){
 var configFilePath = './propertyConfig.json';
 var initConfig = {
   properties: {
-    batchlet: [],
-    itemReader: [],
-    itemWriter: [],
+    batchlet: [
+      "tableCleaningBatchlet",
+      "sqlLoaderBatchlet",
+      "validationBatchlet"
+    ],
+    itemReader: [
+      "databaseItemReader",
+      "fileItemReader"
+    ],
+    itemWriter: [
+      "databaseItemWriter",
+      "fileItemWriter"
+    ],
     itemProcessor: [],
-    listener: [],
+    listener: [
+      "nablarchJobListenerExecutor",
+      "nablarchStepListenerExecutor",
+      "nablarchItemWriteListenerExecutor",
+      "progressLogListener"
+    ],
     stepType:{
       truncate: [
         "entities"
