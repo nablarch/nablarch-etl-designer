@@ -134,8 +134,16 @@ var multiSelect = function (options, defaultParameters) {
   resource.createElement = function(element, node){
     var textBox = domQuery('input[name="' + options.modelProperty + '-text"]');
 
-    if( textBox.value === '') {
+    if( textBox.value === '' || textBox.value.trim() === '') {
       return;
+    }
+
+    if(element.businessObject[options.modelProperty]){
+      for(var i = 0; i < element.businessObject[options.modelProperty].length; i++){
+        if(textBox.value === element.businessObject[options.modelProperty][i]){
+          return;
+        }
+      }
     }
 
     var res = {};
