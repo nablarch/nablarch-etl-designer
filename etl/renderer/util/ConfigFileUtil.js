@@ -28,6 +28,7 @@ var initConfig = {
         "bean"
       ],
       db2db: [
+        "extractBean",
         "bean",
         "sqlId",
         "updateSize"

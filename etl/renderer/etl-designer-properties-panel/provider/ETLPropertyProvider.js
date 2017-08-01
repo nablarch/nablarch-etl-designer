@@ -23,6 +23,7 @@ var fileNameProps = require('./parts/FileNameProps');
 var sqlIdProps = require('./parts/sqlIdProps');
 var errorEntityProps = require('./parts/ErrorEntityProps');
 var modeProps = require('./parts/ModeProps');
+var extractBeanProps = require('./parts/ExtractBeanProps');
 var updateSizeProps = require('./parts/UpdateSizeProps');
 var fontSizeProps = require('./parts/FontSizeProps');
 
@@ -83,6 +84,9 @@ function createInputGroups(stepTypeList, element, bpmnFactory) {
           break;
         case 'sqlId':
           sqlIdProps(group, element);
+          break;
+        case 'extractBean':
+          extractBeanProps(group, element);
           break;
         case 'updateSize':
           updateSizeProps(group, element);
@@ -181,7 +185,7 @@ function ETLPropertiesProvider(eventBus, bpmnFactory, elementRegistry) {
 
     var etlPropertyTab = {
       id: 'etlproperties',
-      label: 'ETL Property',
+      label: 'ETL Properties',
       groups: createEtlPropertiesByStepTypeTabGroup(element, bpmnFactory, elementRegistry)
     };
 

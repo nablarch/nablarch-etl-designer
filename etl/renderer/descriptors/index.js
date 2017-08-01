@@ -57,12 +57,12 @@ var etlProps = [
     "type": "String"
   },
   {
-    "name": "updateSizeSize",
+    "name": "updateSize",
     "isAttr": true,
     "type": "String"
   },
   {
-    "name": "updateSizeBean",
+    "name": "extractBean",
     "isAttr": true,
     "type": "String"
   }

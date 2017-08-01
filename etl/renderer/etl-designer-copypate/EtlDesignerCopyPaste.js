@@ -51,8 +51,8 @@ var ETLProperties = [
   'sqlId',
   'errorEntity',
   'mode',
-  'updateSizeSize',
-  'updateSizeBean'
+  'updateSize',
+  'extractBean'
 ];
 
 

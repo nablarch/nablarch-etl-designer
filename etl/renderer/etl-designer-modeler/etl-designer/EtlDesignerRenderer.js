@@ -189,7 +189,7 @@ EtlDesignerRenderer.prototype.drawShape = function(p, element){
       drawTextRect(p, element.width/18, element.height/5, 0, 4, element.height/2, {});
 
     }else if(element.businessObject.stepType === 'db2db'){
-      var extractBeanClassName = element.businessObject.updateSizeBean && extractClassName(element.businessObject.updateSizeBean);
+      var extractBeanClassName = element.businessObject.extractBean && extractClassName(element.businessObject.extractBean);
       if(extractBeanClassName){
         textUtil.createText(p, splitStr(extractBeanClassName) || '', {box: element, align: 'left-bottom', padding: 1});
         drawCylinder(p, element.width/12, element.height/4, element.height/36, 4, element.height/2,{});
