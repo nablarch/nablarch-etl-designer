@@ -173,9 +173,7 @@ EtlDesignerRenderer.prototype.drawShape = function(p, element){
           padding: 1,
           style: {fill: '#000000'}});
     this.renderLabel(p, element.businessObject.name, { box: element, align: 'center-top', padding: 1});
-    // var inputLabel = this.drawRect(p, element.width/2, 20, 0, {x:0, y: element.height-20});
-    // var outputLabel = this.drawRect(p, element.width/2, 20, 0, {x:element.width/2, y: element.height-20});
-    var beanClassName = element.businessObject.bean && extractClassName(element.businessObject.bean)
+    var beanClassName = element.businessObject.bean && extractClassName(element.businessObject.bean);
     if(element.businessObject.stepType === 'validation') {
       textUtil.createText(p, splitStr(beanClassName) || '',
           {
@@ -191,8 +189,12 @@ EtlDesignerRenderer.prototype.drawShape = function(p, element){
       drawTextRect(p, element.width/18, element.height/5, 0, 4, element.height/2, {});
 
     }else if(element.businessObject.stepType === 'db2db'){
+      var extractBeanClassName = element.businessObject.updateSizeBean && extractClassName(element.businessObject.updateSizeBean);
+      if(extractBeanClassName){
+        textUtil.createText(p, splitStr(extractBeanClassName) || '', {box: element, align: 'left-bottom', padding: 1});
+        drawCylinder(p, element.width/12, element.height/4, element.height/36, 4, element.height/2,{});
+      }
       textUtil.createText(p, splitStr(beanClassName) || '', {box: element, align: 'right-bottom', padding: 1});
-      drawCylinder(p, element.width/12, element.height/4, element.height/36, 4, element.height/2,{});
       drawCylinder(p, element.width/12, element.height/4, element.height/36, element.width - element.width/12 - 4, element.height/2,{});
 
     }else if(element.businessObject.stepType === 'db2file'){
