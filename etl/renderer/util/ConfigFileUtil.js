@@ -46,6 +46,7 @@ var initConfig = {
         "extractBean",
         "bean",
         "sqlId",
+        "mergeOnColumns",
         "updateSize"
       ],
       db2file: [
@@ -60,7 +61,8 @@ var initConfig = {
     mode: [
       "ABORT",
       "CONTINUE"
-    ]
+    ],
+    columns: []
   },
   isDevelop: false
 };
@@ -71,13 +73,13 @@ ConfigFileUtil.saveConfigFile = function(config){
 
 ConfigFileUtil.loadConfigFile = function(){
   if(!fs.existsSync(configFilePath)){
-    fs.writeFileSync(configFilePath, JSON.stringify(initConfig, null, '    '), 'utf8');
+    this.saveConfigFile(initConfig);
   }
-  return fs.readFileSync(configFilePath, 'utf8');
+  return JSON.parse(fs.readFileSync(configFilePath, 'utf8'));
 };
 
 ConfigFileUtil.isDevelop = function() {
-  return JSON.parse(this.loadConfigFile()).isDevelop;
+  return this.loadConfigFile().isDevelop;
 };
 
 

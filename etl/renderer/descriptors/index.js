@@ -65,6 +65,16 @@ var etlProps = [
     "name": "extractBean",
     "isAttr": true,
     "type": "String"
+  },
+  {
+    "name": "errorLimit",
+    "isAttr": true,
+    "type": "Integer"
+  },
+  {
+    "name": "mergeOnColumns",
+    "isAttr": true,
+    "type": "String"
   }
 ];
 

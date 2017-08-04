@@ -26,8 +26,10 @@ var modeProps = require('./parts/ModeProps');
 var extractBeanProps = require('./parts/ExtractBeanProps');
 var updateSizeProps = require('./parts/UpdateSizeProps');
 var fontSizeProps = require('./parts/FontSizeProps');
+var errorLimitProps = require('./parts/ErrorLimitProprs');
+var mergeOnColumnsProps = require('./parts/MergeOnColumnsProps');
 
-var stepTypeList = JSON.parse(configFileUtil.loadConfigFile()).properties.stepType || {};
+var stepTypeList = configFileUtil.loadConfigFile().properties.stepType || {};
 
 function createEtlPropertiesByStepTypeTabGroup(element, bpmnFactory, elementRegistry) {
 
@@ -90,6 +92,12 @@ function createInputGroups(stepTypeList, element, bpmnFactory) {
           break;
         case 'updateSize':
           updateSizeProps(group, element);
+          break;
+        case 'errorLimit':
+          errorLimitProps(group, element);
+          break;
+        case 'mergeOnColumns':
+          mergeOnColumnsProps(group, element);
           break;
         default:
           break;

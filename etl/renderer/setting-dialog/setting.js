@@ -75,7 +75,7 @@ function loadActiveTabFromConfig(activeTab){
 }
 
 window.onload = function(){
-  config = JSON.parse(configFileUtil.loadConfigFile());
+  config = configFileUtil.loadConfigFile();
   document.getElementById('textarea').value = config.properties.bean.join('\n');
 
 };

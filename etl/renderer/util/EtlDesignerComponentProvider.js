@@ -7,7 +7,7 @@ function ComponentProvider () {
 }
 
 ComponentProvider.readConfigFile = function () {
-  config = JSON.parse(configFileUtil.loadConfigFile());
+  config = configFileUtil.loadConfigFile();
 };
 
 ComponentProvider.getBatchlets = function () {
@@ -52,6 +52,11 @@ ComponentProvider.getMode = function () {
 ComponentProvider.getBean = function() {
   this.readConfigFile();
   return config.properties.bean;
+};
+
+ComponentProvider.getColumns = function() {
+  this.readConfigFile();
+  return config.properties.columns;
 };
 
 ComponentProvider.readConfigFile();
