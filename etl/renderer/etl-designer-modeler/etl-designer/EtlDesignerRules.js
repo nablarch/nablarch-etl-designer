@@ -13,12 +13,6 @@ var BpmnRules = require('bpmn-js/lib/features/rules/BpmnRules');
 
 var HIGH_PRIORITY = 1500;
 
-var hasTransitionOutgoing = require('./EtlDesignerConnectRuleProvider').hasTransitionOutgoing;
-var canConnectFromBatchComponent = require('./EtlDesignerConnectRuleProvider').canConnectFromBatchComponent;
-var canConnectFromDataComponent = require('./EtlDesignerConnectRuleProvider').canConnectFromDataComponent;
-var canConnectFromStart = require('./EtlDesignerConnectRuleProvider').canConnectFromStart;
-var canReconnectStart = require('./EtlDesignerConnectRuleProvider').canReconnectStart;
-var canReconnectEnd = require('./EtlDesignerConnectRuleProvider').canReconnectEnd;
 
 function isJSR352(element) {
   return element && new RegExp('^jsr352:').test(element.type);
@@ -47,26 +41,20 @@ function canConnect(source, target) {
     return {};
   }
 
-  if(source == target){
-    return false;
-  }
-
   // allow connection between custom shape and task
   if (isJSR352(source)) {
-    if(is(source, 'jsr352:BatchComponent')){
-      return canConnectFromBatchComponent(source, target);
-    }else if(is(source, 'jsr352:DataComponent')){
-      return canConnectFromDataComponent(source, target);
-    }else if(is(source, 'jsr352:Start')){
-      return canConnectFromStart(source, target);
-    }else{
+    if (isAny(target, ['jsr352:BatchComponent', 'jsr352:End', 'jsr352:Fail', 'jsr352:Stop'])) {
+      return {type: 'jsr352:Transition'};
+    } else {
+      return false;
+    }
+  } else if (isJSR352(target)) {
+    if (isAny(source, ['jsr352:BatchComponent', 'jsr352:Start'])) {
+      return {type: 'jsr352:Transition'};
+    } else {
       return false;
     }
   }
-}
-
-function canReconnect(source, target, connection){
-
 }
 
 function hasNoChildren(element, self) {
@@ -91,11 +79,13 @@ EtlDesignerRules.prototype.init = function() {
     } else if (is(shape, 'jsr352:Listener')) {
       return isAny(target, ['jsr352:Step', 'jsr352:Job']);
     } else if (is(shape, 'jsr352:Flow')) {
-      return isAny(target, ['jsr352:Split', 'jsr352:Job']);
+      return isAny(target, ['jsr352:Split', 'jsr352:Job', 'jsr352:Flow']);
     } else if (isAny(shape, ['jsr352:Batchlet', 'jsr352:Chunk'])) {
       return isAny(target, ['jsr352:Step']) && hasNoChildren(target, shape);
     } else if (isAny(shape, ['jsr352:Reader', 'jsr352:Processor', 'jsr352:Writer'])) {
       return isAny(target, ['jsr352:Chunk']);
+    } else if (isAny(shape, ['jsr352:Split'])) {
+      return isAny(target, ['jsr352:Flow', 'jsr352:Job']);
     } else {
       return isAny(target, ['jsr352:Job']);
     }
@@ -203,18 +193,6 @@ EtlDesignerRules.prototype.init = function() {
     return canCreate(shape, target);
   });
 
-  this.addRule('shape.append', HIGH_PRIORITY, function(context) {
-
-    var target = context.target,
-        shape = context.shape;
-
-    if(isAny(shape, ['jsr352:BatchComponent', 'jsr352:End', 'jsr352:Fail', 'jsr352:Stop']) && hasTransitionOutgoing(context.source)){
-      return false;
-    }
-
-    return canAttach(shape, target);
-  });
-
   this.addRule('shape.resize', HIGH_PRIORITY, function(context) {
     var shape = context.shape;
 
@@ -237,7 +215,7 @@ EtlDesignerRules.prototype.init = function() {
         source = context.hover || context.source,
         target = connection.target;
 
-    return canReconnectStart(source, target, connection);
+    return canConnect(source, target, connection);
   });
 
   this.addRule('connection.reconnectEnd', HIGH_PRIORITY, function(context) {
@@ -245,7 +223,7 @@ EtlDesignerRules.prototype.init = function() {
         source = connection.source,
         target = context.hover || context.target;
 
-    return canReconnectEnd(source, target, connection);
+    return canConnect(source, target, connection);
   });
 
   this.addRule('element.copy', HIGH_PRIORITY, function(context) {

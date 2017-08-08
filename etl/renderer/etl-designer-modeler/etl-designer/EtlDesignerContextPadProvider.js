@@ -55,8 +55,9 @@ function ETLDesignerContextPadProvider(eventBus, contextPad, modeling, elementFa
         'append.step': appendAction('jsr352:Step', 'icon-jsr352-step', 'Append step'),
         'append.flow': appendAction('jsr352:Flow', 'icon-jsr352-flow', 'Append flow'),
         'append.split': appendAction('jsr352:Split', 'icon-jsr352-split', 'Append split'),
-        'append.textBox': appendAction('jsr352:TextBox', 'icon-jsr352-textBox', 'Append textBox'),
         'append.end-event': appendAction('jsr352:End', 'bpmn-icon-end-event-terminate'),
+        'append.fail-event': appendAction('jsr352:Fail', 'bpmn-icon-end-event-error'),
+        'append.stop-event': appendAction('jsr352:Stop', 'bpmn-icon-intermediate-event-none'),
         'connect': {
           group: 'connect',
           className: 'bpmn-icon-connection-multi',
