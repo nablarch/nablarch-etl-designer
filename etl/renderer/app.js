@@ -56,8 +56,8 @@ function openDiagram(xml) {
     if(err){
       console.log('import error');
     }
+    createTempFile(xml);
   });
-  createTempFile(initialDiagram);
 }
 
 function saveSVG(done) {
@@ -67,9 +67,7 @@ function saveSVG(done) {
 function saveDiagram(done) {
   modeler.saveXML({ format: true }, function(err, xml) {
     done(err, xml);
-
   });
-
 }
 
 var electron = window.require('electron');
@@ -79,7 +77,6 @@ var fs = require('fs');
 var path = require('path');
 
 var tempDir = 'bpmn-temp';
-var tempName = "no-title.bpmn";
 
 var appInfo = remote.getGlobal('appInfo');
 
@@ -100,21 +97,25 @@ ipc.on('main-process-load-file', function(event, args) {
   }
 });
 
-ipc.on('main-process-window-leave', function(event, args){
+ipc.on('main-process-save-temp-file', function(event, args){
   saveDiagram(function(err, xml){
     createTempFile(xml);
+    var nextAction = args.action || '';
+    switch(nextAction){
+      case 'close':
+        ipc.send('renderer-process-post-close');
+        break;
+      case 'newFile':
+        ipc.send('renderer-process-post-new-file');
+        break;
+      case 'openFile':
+        ipc.send('renderer-process-post-open-file');
+        break;
+      case 'exportFile':
+        ipc.send('renderer-process-post-export-file');
+        break;
+    }
   });
-  switch(args.action){
-    case 'close':
-      ipc.send('renderer-process-post-close');
-      break;
-    case 'newFile':
-      ipc.send('renderer-process-post-new-file');
-      break;
-    case 'openFile':
-      ipc.send('renderer-process-post-open-file');
-      break;
-  }
 });
 
 ipc.on('main-process-dirty-save', function(event, args){
@@ -139,7 +140,6 @@ function readFile(path) {
     if (err) {
       throw err;
     }
-
     openDiagram(data);
   });
 }
@@ -159,6 +159,16 @@ function createTempFile(data) {
     appInfo.openFilePath = tempFilePath;
   }
 }
+
+var exportEtlJson = require('./util/ExportEtlJson');
+var exportJobXml = require('./util/ExportJobXml');
+// var shell = window.require('electron').shell;
+ipc.on('main-process-export', function() {
+  // shell.openItem('C:/work/ADC/SSD/job-streamer/job-streamer-docs-master/job-streamer.github.io/ja/index.html');
+
+  exportEtlJson.exportJson(appInfo.openFilePath, './test.json');
+  exportJobXml.exportXml(appInfo.openFilePath, './test.xml');
+});
 
 // expose bpmnjs to window for debugging purposes
 window.bpmnjs = modeler;

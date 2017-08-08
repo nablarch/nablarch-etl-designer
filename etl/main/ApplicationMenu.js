@@ -19,7 +19,7 @@ var ApplicationMenu = function (win) {
           label: '新規作成',
           // accelerator: 'Ctrl+N',
           click: function (item, focufocusedWindow) {
-            win.webContents.send('main-process-window-leave', {
+            win.webContents.send('main-process-save-temp-file', {
               action: 'newFile'
             });
           }
@@ -81,7 +81,7 @@ var ApplicationMenu = function (win) {
           label: '開く',
           // accelerator: 'Ctrl+O',
           click: function (item, focusedWindow) {
-            win.webContents.send('main-process-window-leave', {
+            win.webContents.send('main-process-save-temp-file', {
               action: 'openFile'
             });
           }
@@ -89,54 +89,25 @@ var ApplicationMenu = function (win) {
         {
           label: '終了',
           click: function(item, focusedWindow) {
-            win.webContents.send('main-process-window-leave', {
+            win.webContents.send('main-process-save-temp-file', {
               action: 'close'
             });
           }
         }
       ]
     },
-    // {
-    //   label: '編集',
-    //   submenu: [
-    //     {
-    //       label: 'コピー',
-    //       // accelerator: 'Ctrl+C',
-    //       role: 'copy'
-    //     },
-    //     {
-    //       label: '貼り付け',
-    //       // accelerator: 'Ctrl+V',
-    //       role: 'paste'
-    //     },
-    //     {
-    //       label: '削除',
-    //       accelerator: 'Delete'
-    //     },
-    //     {
-    //       type: 'separator'
-    //     },
-    //     {
-    //       label: '元に戻す',
-    //       accelerator: 'Ctrl+Z',
-    //       role: 'undo'
-    //     },
-    //     {
-    //       label: 'やり直し',
-    //       accelerator: 'Ctrl+Y',
-    //       role: 'redo'
-    //     }
-    //   ]
-    // },
     {
       label: 'ツール',
       submenu: [
-        // {
-        //   label: 'チェック'
-        // },
-        // {
-        //   label: '変換'
-        // },
+        {
+          label: '変換',
+          click: function (item, focusedWindow) {
+            // win.webContents.send('main-process-save-temp-file', {
+            //   action: 'exportFile'
+            // });
+            win.webContents.send('main-process-export');
+          }
+        },
         // {
         //   label: 'テスト実行'
         // },
@@ -156,7 +127,7 @@ var ApplicationMenu = function (win) {
               pathname: path.join(__dirname, '../../dist/setting-dialog/setting.html'),
               protocol: 'file:',
               slashes: true
-            }))
+            }));
           }
         }
       ]
@@ -229,6 +200,14 @@ var ApplicationMenu = function (win) {
     }
   });
 
+  ipc.on('renderer-process-post-export-file', function(event, args){
+    if (!handleDirtyExport()) {
+      return;
+    }
+
+    win.webContents.send('main-process-export', {});
+  });
+
   function handleDirty() {
     if (isDirty()) {
       var options = {
@@ -276,6 +255,52 @@ var ApplicationMenu = function (win) {
 
     return true;
   }
+
+  function handleDirtyExport(){
+    if (isDirty()) {
+      var options = {
+        buttons: ['はい', 'キャンセル'],
+        message: '編集されています。保存しますか？'
+      };
+      var result = dialog.showMessageBox(options);
+      switch (result) {
+        case 0:
+          // save
+          if (!global.appInfo.isNewFile) {
+            win.webContents.send('main-process-dirty-save', {
+              fileName: global.appInfo.openFilePath,
+              isClose: false
+            });
+          } else {
+            var focusedWindow = BrowserWindow.getFocusedWindow();
+            var options = {
+              title: '名前を付けて保存',
+              defaultPath: '',
+              filters: [{
+                name: 'bpmnファイル',
+                extensions: ['bpmn']
+              }]
+            };
+
+            var filePath = dialog.showSaveDialog(focusedWindow, options);
+            if (filePath) {
+              global.appInfo.openFilePath = filePath;
+              global.appInfo.isNewFile = false;
+              win.webContents.send('main-process-dirty-save', {
+                fileName: filePath,
+                isClose: false
+              });
+            }
+          }
+          return true;
+        case 1:
+          return false;
+      }
+    }
+
+    return true;
+  }
+
 };
 
 function getDefaultPath() {
@@ -297,7 +322,5 @@ function isDirty() {
   }
   return (openData !== tempData);
 }
-
-
 
 module.exports = ApplicationMenu;

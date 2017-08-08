@@ -39,7 +39,7 @@ function createWindow() {
   }));
 
   win.on('close', function (event) {
-    win.webContents.send('main-process-window-leave', {
+    win.webContents.send('main-process-save-temp-file', {
       action: 'close'
     });
     event.preventDefault();
@@ -99,16 +99,15 @@ ipc.on('renderer-process-post-close', function (event, args) {
             }]
           };
 
-          dialog.showSaveDialog(focusedWindow, options, function (fileName) {
-            if (fileName) {
-              global.appInfo.openFilePath = fileName;
-              global.appInfo.isNewFile = false;
-              win.webContents.send('main-process-dirty-save', {
-                fileName: fileName,
-                isClose: true
-              });
-            }
-          });
+          var fileName = dialog.showSaveDialog(focusedWindow, options);
+          if (fileName) {
+            global.appInfo.openFilePath = fileName;
+            global.appInfo.isNewFile = false;
+            win.webContents.send('main-process-dirty-save', {
+              fileName: fileName,
+              isClose: true
+            });
+          }
         }
         return;
       case 1:

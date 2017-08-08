@@ -64,7 +64,11 @@ var initConfig = {
     ],
     columns: []
   },
-  isDevelop: false
+  isDevelop: false,
+  jobStreamer:{
+    hostName:'localhost',
+    portNumber:45102
+  }
 };
 
 ConfigFileUtil.saveConfigFile = function(config){
@@ -82,5 +86,8 @@ ConfigFileUtil.isDevelop = function() {
   return this.loadConfigFile().isDevelop;
 };
 
+ConfigFileUtil.getJobStreamerInfo = function(){
+  return this.loadConfigFile().jobStreamer;
+};
 
 module.exports = ConfigFileUtil;
