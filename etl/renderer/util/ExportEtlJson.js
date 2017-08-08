@@ -119,9 +119,9 @@ function buildJson(jsonObj, node, element) {
     }
     for (var j = 0; j < childElements.length; j++) {
       var childJsonObj = {};
-      var chlidElement = childElements[j];
-      var name = childNode.fixedName || chlidElement.getAttribute(childNode.nameAttr);
-      buildJson(childJsonObj, childNode, chlidElement);
+      var childElement = childElements[j];
+      var name = childNode.fixedName || childElement.getAttribute(childNode.nameAttr);
+      buildJson(childJsonObj, childNode, childElement);
       if (JSON.stringify(childJsonObj) !== '{}') {
         jsonObj[name] = childJsonObj;
       }
