@@ -2,7 +2,6 @@ var electron = require('electron');
 var app = electron.app;
 var BrowserWindow = electron.BrowserWindow;
 var dialog = electron.dialog;
-var ipc = electron.ipcMain;
 
 var path = require('path');
 var url = require('url');
@@ -10,17 +9,15 @@ var fs = require('fs');
 
 var Menu = electron.Menu;
 
-var ApplicationMenu = require('./ApplicationMenu');
+var MenuActions = require('./MenuActions');
 var ConfigFileUtil = require('../renderer/util/ConfigFileUtil');
 
 var appInfo = {
-  isNewFile: true,
   openFilePath: '',
-  tempFilePath: ''
+  workBpmnString: ''
 };
 
 global.appInfo = appInfo;
-
 
 var win;
 
@@ -30,7 +27,7 @@ function createWindow() {
     win.openDevTools();
   }
 
-  createApplicationMenu(win);
+  createApplicationMenu();
 
   win.loadURL(url.format({
     pathname: path.join(__dirname, '../../dist/index.html'),
@@ -39,10 +36,9 @@ function createWindow() {
   }));
 
   win.on('close', function (event) {
-    win.webContents.send('main-process-save-temp-file', {
-      action: 'close'
-    });
-    event.preventDefault();
+    if(!MenuActions.canCloseWindow(win)){
+      event.preventDefault();
+    }
   });
 
   win.on('closed', function () {
@@ -50,17 +46,9 @@ function createWindow() {
   });
 }
 
-function createApplicationMenu(window) {
-  var template = new ApplicationMenu(window).template;
-
-  var menu = Menu.buildFromTemplate(template);
-  win.setMenu(menu);
-}
-
 app.on('ready', createWindow);
 
 app.on('window-all-closed', function (event) {
-  //tempファイルを削除
   if (process.platform !== 'darwin') {
     app.quit();
   }
@@ -72,94 +60,123 @@ app.on('activate', function () {
   }
 });
 
-ipc.on('renderer-process-post-close', function (event, args) {
-
-  if (isDirty()) {
-    var options = {
-      buttons: ['はい', 'いいえ', 'キャンセル'],
-      message: '編集されています。保存して終了しますか？'
-    };
-    var result = dialog.showMessageBox(options);
-    switch (result) {
-      case 0:
-        // save
-        if (!global.appInfo.isNewFile) {
-          win.webContents.send('main-process-dirty-save', {
-            fileName: global.appInfo.openFilePath,
-            isClose: true
-          });
-        }else{
-          var focusedWindow = BrowserWindow.getFocusedWindow();
-          var options = {
-            title: '名前を付けて保存',
-            defaultPath: '',
-            filters: [{
-              name: 'bpmnファイル',
-              extensions: ['bpmn']
-            }]
-          };
-
-          var fileName = dialog.showSaveDialog(focusedWindow, options);
-          if (fileName) {
-            global.appInfo.openFilePath = fileName;
-            global.appInfo.isNewFile = false;
-            win.webContents.send('main-process-dirty-save', {
-              fileName: fileName,
-              isClose: true
-            });
+function createApplicationMenu() {
+  var menuTemplate = [
+    {
+      label: 'ファイル',
+      submenu: [
+        {
+          label: '新規作成',
+          accelerator: 'Ctrl+N',
+          click: function () {
+            MenuActions.createNewBpmn(win);
+          }
+        },
+        {
+          label: '上書き保存',
+          accelerator: 'Ctrl+S',
+          click: function () {
+            MenuActions.saveBpmn(win);
+          }
+        },
+        {
+          label: '名前を付けて保存',
+          click: function () {
+            MenuActions.saveAsBpmn(win);
+          }
+        },
+        {
+          label: '開く',
+          accelerator: 'Ctrl+O',
+          click: function () {
+            MenuActions.openBpmn(win);
+          }
+        },
+        {
+          label: '終了',
+          click: function(item, focusedWindow) {
+            if(MenuActions.canCloseWindow(win)){
+              win = null;
+              if (process.platform !== 'darwin') {
+                app.quit();
+              }
+            }
           }
         }
-        return;
-      case 1:
-        // nop
-        break;
-      case 2:
-        return;
+      ]
+    },
+    {
+      label: 'ツール',
+      submenu: [
+        {
+          label: '変換',
+          click: function (item, focusedWindow) {
+            win.webContents.send('main-process-export-etl-files');
+          }
+        },
+        {
+          label: 'バリデーション',
+          accelerator: 'Ctrl+T',
+          click: function (item, focusedWindow) {
+            MenuActions.validation(win);
+          }
+        },
+        {
+          label: '設定',
+          accelerator: 'Ctrl+Shift+S',
+          click: function () {
+            var dialogWindow = new BrowserWindow(
+                {
+                  width: 400, height: 500,
+                  parent: win, resizable: false,
+                  modal: true, frame: true
+                });
+            dialogWindow.setMenu(null);
+
+            dialogWindow.loadURL(url.format({
+              pathname: path.join(__dirname, '../../dist/setting-dialog/setting.html'),
+              protocol: 'file:',
+              slashes: true
+            }));
+          }
+        }
+      ]
     }
-  }
-  cleanUpTempDir();
-  win = null;
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
-});
+    // {
+    //   label: 'ヘルプ',
+    //   submenu: [
+    //     {
+    //       label: 'バージョン確認'
+    //     }
+    //   ]
+    // }
+  ];
 
-ipc.on('renderer-process-post-close-save', function (event) {
-  cleanUpTempDir();
-  win = null;
-  if (process.platform !== 'darwin') {
-    app.quit();
+  if (ConfigFileUtil.isDevelop()) {
+    menuTemplate.push(
+        {
+          label: 'develop',
+          submenu: [
+            {
+              label: '&Reload',
+              accelerator: 'Ctrl+R',
+              role: 'reload'
+            },
+            {
+              label: 'Toggle &Full Screen',
+              accelerator: 'F11',
+              role: 'togglefullscreen'
+            },
+            {
+              label: 'Toggle &Developer Tools',
+              accelerator: 'Shift+Ctrl+I',
+              role: 'toggledevtools'
+            }
+          ]
+        }
+    );
   }
-});
 
-function cleanUpTempDir() {
-  var tempDir = 'bpmn-temp';
-  if(fs.existsSync(tempDir)) {
-    removeDir(tempDir);
-  }
-}
-
-function removeDir(directory) {
-  var files = fs.readdirSync(directory);
-  for (var key in files) {
-    var childPath = directory + '/' + files[key];
-    if (fs.statSync(childPath).isDirectory()) {
-      removeDir(childPath)
-    } else {
-      fs.unlinkSync(childPath);
-    }
-  }
-  fs.rmdirSync(directory);
-}
-
-function isDirty() {
-  var openData = '';
-  var tempData = '';
-  if (appInfo.openFilePath !== '' && fs.existsSync(appInfo.openFilePath)) {
-    openData = fs.readFileSync(appInfo.openFilePath, 'utf8');
-  }
-  if (appInfo.tempFilePath !== '' && fs.existsSync(appInfo.tempFilePath)) {
-    tempData = fs.readFileSync(appInfo.tempFilePath, 'utf8');
-  }
-  return (openData !== tempData);
+  var menu = Menu.buildFromTemplate(menuTemplate);
+  win.setMenu(menu);
 }

@@ -15,6 +15,17 @@ var initialDiagram =
   </bpmndi:BPMNDiagram>\n\
 </bpmn:definitions>\n';
 
+
+var electron = window.require('electron');
+var remote = electron.remote;
+var ipc = electron.ipcRenderer;
+
+var fs = require('fs');
+var path = require('path');
+var _ = require('lodash');
+
+var appInfo = remote.getGlobal('appInfo');
+
 var ETLDesignerModeler = require('./etl-designer-modeler');
 
 var propertiesPanelModule = require('bpmn-js-properties-panel'),
@@ -43,12 +54,20 @@ var modeler = new ETLDesignerModeler({
   }
 });
 
+var exportWorkBpmnString = _.debounce(function () {
+  saveDiagram(function (err, xml) {
+    appInfo.workBpmnString = xml;
+  });
+}, 500);
+
+modeler.on('commandStack.changed', exportWorkBpmnString);
+
 modeler.importXML(initialDiagram, function(err) {
   if (err) {
     console.error('something went wrong:', err);
   }
   modeler.get('canvas').zoom('fit-viewport');
-  createTempFile(initialDiagram);
+  appInfo.workBpmnString = initialDiagram;
 });
 
 function openDiagram(xml) {
@@ -56,7 +75,7 @@ function openDiagram(xml) {
     if(err){
       console.log('import error');
     }
-    createTempFile(xml);
+    appInfo.workBpmnString = xml;
   });
 }
 
@@ -70,104 +89,37 @@ function saveDiagram(done) {
   });
 }
 
-var electron = window.require('electron');
-var remote = electron.remote;
-var ipc = electron.ipcRenderer;
-var fs = require('fs');
-var path = require('path');
-
-var tempDir = 'bpmn-temp';
-
-var appInfo = remote.getGlobal('appInfo');
-
-ipc.on('main-process-new-file', function (event, args) {
-  openDiagram(initialDiagram);
-});
-
-ipc.on('main-process-save-file', function (event, args) {
-  saveDiagram(function (err, xml) {
-    writeFile(args.fileName, xml);
-    createTempFile(xml);
-  });
-});
-
-ipc.on('main-process-load-file', function(event, args) {
-  if(args.file){
-    readFile(args.file);
-  }
-});
-
-ipc.on('main-process-save-temp-file', function(event, args){
-  saveDiagram(function(err, xml){
-    createTempFile(xml);
-    var nextAction = args.action || '';
-    switch(nextAction){
-      case 'close':
-        ipc.send('renderer-process-post-close');
-        break;
-      case 'newFile':
-        ipc.send('renderer-process-post-new-file');
-        break;
-      case 'openFile':
-        ipc.send('renderer-process-post-open-file');
-        break;
-      case 'exportFile':
-        ipc.send('renderer-process-post-export-file');
-        break;
-    }
-  });
-});
-
-ipc.on('main-process-dirty-save', function(event, args){
-  saveDiagram(function (err, xml) {
-    writeFile(args.fileName, xml);
-  });
-  if(args.isClose){
-    ipc.send('renderer-process-post-close-save');
-  }
-});
-
-function writeFile(path, data){
-  fs.writeFile(path, data, function (err) {
-    if (err !== null) {
-      throw err;
-    }
-  });
-}
-
-function readFile(path) {
-  fs.readFile(path, 'utf8', function (err, data) {
-    if (err) {
-      throw err;
-    }
-    openDiagram(data);
-  });
-}
-
-function createTempFile(data) {
-  if(!fs.existsSync(tempDir)) {
-    fs.mkdir(tempDir);
-  }
-  var baseName = "no-title.bpmn";
-  if(appInfo.openFilePath) {
-    baseName = path.basename(appInfo.openFilePath);
-  }
-  var tempFilePath = fs.mkdtempSync(tempDir +'/') + '/' + baseName;
-  writeFile(tempFilePath, data);
-  appInfo.tempFilePath = tempFilePath;
-  if (appInfo.isNewFile && appInfo.openFilePath === '') {
-    appInfo.openFilePath = tempFilePath;
-  }
-}
-
 var exportEtlJson = require('./util/ExportEtlJson');
 var exportJobXml = require('./util/ExportJobXml');
-// var shell = window.require('electron').shell;
-ipc.on('main-process-export', function() {
-  // shell.openItem('C:/work/ADC/SSD/job-streamer/job-streamer-docs-master/job-streamer.github.io/ja/index.html');
-
+ipc.on('main-process-export-etl-files', function() {
   exportEtlJson.exportJson(appInfo.openFilePath, './test.json');
   exportJobXml.exportXml(appInfo.openFilePath, './test.xml');
+});
+
+ipc.on('main-process-import-bpmn-file', function (event, args) {
+  var bpmnString = args.bpmnString || initialDiagram;
+  modeler.importXML(bpmnString, function(err) {
+    if(err){
+      console.log('import error');
+      return;
+    }
+    appInfo.workBpmnString = bpmnString;
+  });
+});
+
+ipc.on('main-process-export-bpmn-file', function (event, args) {
+  appInfo.isSuccessExportBpmn = false;
+  appInfo.workBpmnString = '';
+  modeler.saveXML({ format: true }, function(err, xml) {
+    if(err){
+      appInfo.isSuccessExportBpmn = true;
+      console.log('import error');
+      return;
+    }
+    appInfo.workBpmnString = xml;
+    appInfo.isSuccessExportBpmn = true;
+    ipc.send('renderer-process-export-bpmn-file');
+  });
 });
 
 // expose bpmnjs to window for debugging purposes
