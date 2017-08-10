@@ -1,0 +1,33 @@
+<html>
+ <head>
+   <meta charset="UTF-8">
+   <title>Validation</title>
+   <style type="text/css">
+   .float{
+       float:right;
+   }
+   </style>
+   <link rel="stylesheet" href="css/photon.min.css">
+ </head>
+ <body>
+    <form id="setting-form">
+       <div class="tab-group">
+           <div id="error-tab" class="tab-item active">
+               <span class="icon"></span>
+                 Error
+           </div>
+           <div id="warning-tab" class="tab-item">
+               <span class="icon"></span>
+                 Warning
+           </div>
+       </div>
+       <textarea id="textarea" class="form-control" rows="20">
+       </textarea>
+       <div class="float">
+         <button type="button" id="check" value="check" class="btn btn-positive">check</button>
+         <button id="cancel" class="btn btn-negative">Cancel</button>
+       </div>
+     </form>
+    <script type="text/javascript" src="./etl-designer-validation-dialog.js"></script>
+ </body>
+</html>

@@ -60,13 +60,15 @@ module.exports = function (grunt) {
         },
         files: {
           '<%= config.dist %>/etl-designer.js': ['<%= config.sources %>/app.js'],
-          '<%= config.dist %>/setting-dialog/etl-designer-setting-dialog.js': ['<%= config.sources %>/setting-dialog/setting.js']
+          '<%= config.dist %>/setting-dialog/etl-designer-setting-dialog.js': ['<%= config.sources %>/setting-dialog/setting.js'],
+          '<%= config.dist %>/setting-dialog/etl-designer-validation-dialog.js': ['<%= config.sources %>/setting-dialog/validation.js']
         }
       },
       app: {
         files: {
           '<%= config.dist %>/etl-designer.js': ['<%= config.sources %>/app.js'],
-          '<%= config.dist %>/setting-dialog/etl-designer-setting-dialog.js': ['<%= config.sources %>/setting-dialog/setting.js']
+          '<%= config.dist %>/setting-dialog/etl-designer-setting-dialog.js': ['<%= config.sources %>/setting-dialog/setting.js'],
+          '<%= config.dist %>/setting-dialog/etl-designer-validation-dialog.js': ['<%= config.sources %>/setting-dialog/validation.js']
         }
       }
     },
