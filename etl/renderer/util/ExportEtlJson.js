@@ -5,8 +5,7 @@ var fs = require('fs');
 function ExportEtlJson() {
 }
 
-ExportEtlJson.exportJson = function (bpmnFilePath, outputFilePath) {
-  var xmlString = fs.readFileSync(bpmnFilePath, 'utf8');
+ExportEtlJson.exportJson = function (xmlString, outputFilePath) {
   var parser = new DOMParser();
   var bpmnDom = parser.parseFromString(xmlString, "text/xml");
   var rootNode = getRootNode();

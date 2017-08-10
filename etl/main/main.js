@@ -111,7 +111,7 @@ function createApplicationMenu() {
         {
           label: '変換',
           click: function (item, focusedWindow) {
-            win.webContents.send('main-process-export-etl-files');
+            MenuActions.exportJobXml(win);
           }
         },
         {

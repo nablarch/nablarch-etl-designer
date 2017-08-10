@@ -1,7 +1,6 @@
 'use strict';
 
 var fs = require('fs');
-var request = require('http').request;
 var edn = require('edn');
 
 var configFileUtil = require('./ConfigFileUtil');
@@ -9,8 +8,7 @@ var configFileUtil = require('./ConfigFileUtil');
 function ExportJobXml(){
 }
 
-ExportJobXml.exportXml = function(bpmnFilePath, outputFilePath) {
-  var bpmnXmlString = fs.readFileSync(bpmnFilePath, 'utf8');
+ExportJobXml.exportXml = function(bpmnXmlString, outputFilePath) {
   bpmnXmlString = bpmnXmlString.replace('\r', '').replace('\n', '');
 
   var result = callExportJobXml([{ednKey:'job-bpmn-xml', ednValue: bpmnXmlString}]);

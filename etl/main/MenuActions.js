@@ -105,12 +105,42 @@ function showSaveBpmnFileDialog(){
   return filePath;
 }
 
+function showSaveXmlFileDialog(){
+  var focusedWindow = BrowserWindow.getFocusedWindow();
+  var options = {
+    title: '名前を付けて保存',
+    // defaultPath: ,
+    filters: [{
+      name: 'xmlファイル',
+      extensions: ['xml']
+    }]
+  };
+
+  return dialog.showSaveDialog(focusedWindow, options);
+}
+
 MenuActions.canCloseWindow = function(win){
   var options = {
     buttons: ['はい', 'いいえ', 'キャンセル'],
     message: '編集されています。保存して終了しますか？'
   };
   return handleDirty(win, options);
+};
+
+MenuActions.exportJobXml = function(win){
+  var filePath = showSaveXmlFileDialog();
+  if(!filePath){
+    return;
+  }
+
+  var baseName = path.basename(filePath,'.xml');
+  var dirName = path.dirname(filePath);
+  var basePath = path.join(dirName, baseName);
+
+  win.webContents.send('main-process-export-etl-files', {
+    xmlPath: basePath + '.xml',
+    jsonPath: basePath + '.json'
+  });
 };
 
 MenuActions.validation = function(win){

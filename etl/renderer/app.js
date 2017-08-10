@@ -91,9 +91,9 @@ function saveDiagram(done) {
 
 var exportEtlJson = require('./util/ExportEtlJson');
 var exportJobXml = require('./util/ExportJobXml');
-ipc.on('main-process-export-etl-files', function() {
-  exportEtlJson.exportJson(appInfo.openFilePath, './test.json');
-  exportJobXml.exportXml(appInfo.openFilePath, './test.xml');
+ipc.on('main-process-export-etl-files', function(event, args) {
+  exportEtlJson.exportJson(appInfo.workBpmnString, args.jsonPath);
+  exportJobXml.exportXml(appInfo.workBpmnString, args.xmlPath);
 });
 
 ipc.on('main-process-import-bpmn-file', function (event, args) {
