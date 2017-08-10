@@ -15,8 +15,7 @@ var copiedProperties = [
   'isForCompensation',
   'associationDirection',
   'triggeredByEvent',
-  'cancelActivity',
-  'fontSize'
+  'cancelActivity'
 ];
 
 var pastedProperties = [
@@ -26,8 +25,7 @@ var pastedProperties = [
   'isExpanded',
   'isInterrupting',
   'cancelActivity',
-  'triggeredByEvent',
-  'fontSize'
+  'triggeredByEvent'
 ];
 
 var removedProperties = [
@@ -39,22 +37,8 @@ var removedProperties = [
   'loopCharacteristics',
   'isInterrupting',
   'cancelActivity',
-  'triggeredByEvent',
-  'fontSize'
+  'triggeredByEvent'
 ];
-
-var ETLProperties = [
-  'stepType',
-  'entities',
-  'bean',
-  'fileName',
-  'sqlId',
-  'errorEntity',
-  'mode',
-  'updateSize',
-  'extractBean'
-];
-
 
 function setProperties(descriptor, data, properties) {
   forEach(properties, function (property) {
@@ -74,7 +58,7 @@ function removeProperties(element, properties) {
 
 var BpmnCopyPaste = require('bpmn-js/lib/features/copy-paste/BpmnCopyPaste');
 
-function EtlDesignerCopyPaste(bpmnFactory, eventBus, copyPaste, clipboard, moddle, canvas, bpmnRules) {
+function JSR352CopyPaste(bpmnFactory, eventBus, copyPaste, clipboard, moddle, canvas, bpmnRules) {
 
   copyPaste.registerDescriptor(function (element, descriptor) {
     var businessObject = getBusinessObject(element),
@@ -87,7 +71,7 @@ function EtlDesignerCopyPaste(bpmnFactory, eventBus, copyPaste, clipboard, moddl
       return descriptor;
     }
 
-    setProperties(descriptor, businessObject, copiedProperties.concat(ETLProperties));
+    setProperties(descriptor, businessObject, copiedProperties);
 
     if (businessObject.default) {
       descriptor.default = businessObject.default.id;
@@ -179,7 +163,7 @@ function EtlDesignerCopyPaste(bpmnFactory, eventBus, copyPaste, clipboard, moddl
       descriptor.processRef = businessObject.processRef = bpmnFactory.create('bpmn:Process');
     }
 
-    setProperties(businessObject, descriptor, pastedProperties.concat(ETLProperties));
+    setProperties(businessObject, descriptor, pastedProperties);
     if(descriptor.type === 'jsr352:Chunk'){
       businessObject.copied = true;
     }
@@ -215,11 +199,11 @@ function EtlDesignerCopyPaste(bpmnFactory, eventBus, copyPaste, clipboard, moddl
       });
     }
 
-    removeProperties(descriptor, removedProperties.concat(ETLProperties));
+    removeProperties(descriptor, removedProperties);
   });
 }
 
-EtlDesignerCopyPaste.$inject = [
+JSR352CopyPaste.$inject = [
   'bpmnFactory',
   'eventBus',
   'copyPaste',
@@ -229,4 +213,22 @@ EtlDesignerCopyPaste.$inject = [
   'bpmnRules'
 ];
 
-module.exports = EtlDesignerCopyPaste;
+JSR352CopyPaste.appendCopiedProperties = function(properties){
+  properties.forEach(function(property){
+    copiedProperties.push(property);
+  });
+};
+
+JSR352CopyPaste.appendPastedProperties = function(properties){
+  properties.forEach(function(property){
+    pastedProperties.push(property);
+  });
+};
+
+JSR352CopyPaste.appendRemovedProperties = function(properties){
+  properties.forEach(function(property){
+    removedProperties.push(property);
+  });
+};
+
+module.exports = JSR352CopyPaste;
