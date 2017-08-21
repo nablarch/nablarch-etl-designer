@@ -130,15 +130,18 @@ function createApplicationMenu() {
           }
         }
       ]
+    },
+    {
+      label: 'ヘルプ',
+      submenu: [
+        {
+          label: 'バージョン情報',
+          click: function() {
+            MenuActions.checkVersion(win);
+          }
+        }
+      ]
     }
-    // {
-    //   label: 'ヘルプ',
-    //   submenu: [
-    //     {
-    //       label: 'バージョン確認'
-    //     }
-    //   ]
-    // }
   ];
 
   if (ConfigFileUtil.isDevelop()) {

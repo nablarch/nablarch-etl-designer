@@ -1,6 +1,6 @@
 {
   "name": "etl-designer",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "etl-designer",
   "main": "etl/main/main.js",
   "scripts": {
@@ -8,10 +8,7 @@
     "dev": "grunt auto-build",
     "all": "grunt"
   },
-  "keywords": [
-    "bpmnjs-example"
-  ],
-  "license": "MIT",
+  "license": "Apache-2.0",
   "devDependencies": {
     "brfs": "^1.2.0",
     "browserify": "^13.0.0",

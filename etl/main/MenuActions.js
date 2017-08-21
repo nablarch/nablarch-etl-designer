@@ -2,6 +2,7 @@ var electron = require('electron');
 var dialog = electron.dialog;
 var BrowserWindow = electron.BrowserWindow;
 var ipc = electron.ipcMain;
+var app = electron.app;
 
 var url = require('url');
 var path = require('path');
@@ -186,6 +187,21 @@ MenuActions.setting = function(win){
     protocol: 'file:',
     slashes: true
   }));
+};
+
+MenuActions.checkVersion = function(win){
+
+  var detail = '\n';
+
+  detail += 'バージョン ' + app.getVersion();
+
+  var options = {
+    type: 'info',
+    title: 'バージョン情報',
+    message: 'ETLデザイナー',
+    detail: detail
+  };
+  dialog.showMessageBox(options);
 };
 
 function isDirty() {
