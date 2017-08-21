@@ -15,8 +15,8 @@ for (var i = 0; i < tabItems.length; i++) {
 
 function onCheckClick() {
   var result = etlDesignerCheck.check();
-  validationResult.errorMessage = result.errors.join('\n');
-  validationResult.warningMessage = result.warnings.join('\n');
+  validationResult.errorMessage = (result.errors.length === 0) ? 'エラーは検出されていません。' : result.errors.join('\n');
+  validationResult.warningMessage = (result.warnings.length === 0) ? '警告は検出されていません。' : result.warnings.join('\n');
   loadActiveTab(document.querySelector('.active'));
 }
 function onCancelClick() {
