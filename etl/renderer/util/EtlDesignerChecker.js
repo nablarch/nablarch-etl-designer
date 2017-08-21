@@ -11,6 +11,7 @@ var checkUtil = require('./CheckUtil');
 var etlRequirePropertiesCheck = require('./check/EtlRequirePropertiesCheck');
 var stepNameCheck = require('./check/StepNameCheck');
 var jobListenerCheck = require('./check/jobListenerCheck');
+var jobNameCheck = require('./check/JobNameCheck');
 
 function EtlDesignChecker(){
 }
@@ -21,8 +22,7 @@ EtlDesignChecker.check = function(){
   var bpmnDom = parser.parseFromString(bpmnXmlString, "text/xml");
   var checkerFuncs =
       [
-        // fooCheck,
-        // barCheck,
+        jobNameCheck,
         etlRequirePropertiesCheck,
         stepNameCheck
         // jobListenerCheck
@@ -53,14 +53,6 @@ function doCheck(bpmnDom, checkerFuncs){
     "errors": errors,
     "warnings": warnings
   };
-}
-
-function fooCheck(bpmnDom) {
-  return ["foo1", "foo2"];
-}
-
-function barCheck(bpmnDom) {
-  return ["bar1", "bar2"];
 }
 
 module.exports = EtlDesignChecker;

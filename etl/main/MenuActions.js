@@ -1,6 +1,7 @@
 var electron = require('electron');
 var dialog = electron.dialog;
 var BrowserWindow = electron.BrowserWindow;
+var ipc = electron.ipcMain;
 
 var url = require('url');
 var path = require('path');
@@ -12,11 +13,7 @@ var MenuActions = function(){
 };
 
 MenuActions.createNewBpmn = function(win) {
-  var options = {
-    buttons: ['はい', 'いいえ', 'キャンセル'],
-    message: '編集されています。保存しますか？'
-  };
-  var dirty = handleDirty(win, options);
+  var dirty = handleDirty(win,'編集されています。保存しますか？');
   if(!dirty) {
     return;
   }
@@ -25,7 +22,12 @@ MenuActions.createNewBpmn = function(win) {
 };
 
 MenuActions.saveBpmn = function(win) {
-  doSaveBpmnFile(win);
+  if(appInfo.openFilePath){
+    doSaveBpmnFile(win);
+  }else{
+    doSaveAsBpmnFile(win);
+  }
+
 };
 
 function doSaveBpmnFile() {
@@ -35,11 +37,7 @@ function doSaveBpmnFile() {
 }
 
 MenuActions.saveAsBpmn = function(win) {
-  if(!appInfo.openFilePath){
-    doSaveAsBpmnFile(win);
-  }else{
-    doSaveBpmnFile(win);
-  }
+  doSaveAsBpmnFile(win);
 };
 
 function doSaveAsBpmnFile() {
@@ -52,11 +50,7 @@ function doSaveAsBpmnFile() {
 }
 
 MenuActions.openBpmn = function(win) {
-  var options = {
-    buttons: ['はい', 'いいえ', 'キャンセル'],
-    message: '編集されています。保存しますか？'
-  };
-  var dirty = handleDirty(win, options);
+  var dirty = handleDirty(win, '編集されています。保存しますか？');
   if(!dirty) {
     return;
   }
@@ -106,10 +100,15 @@ function showSaveBpmnFileDialog(){
 }
 
 function showSaveXmlFileDialog(){
+
+  var baseName = appInfo.jobName + '.xml';
+  var dirName = path.dirname(appInfo.openFilePath);
+  var basePath = path.join(dirName, baseName);
+
   var focusedWindow = BrowserWindow.getFocusedWindow();
   var options = {
     title: '名前を付けて保存',
-    // defaultPath: ,
+    defaultPath: basePath,
     filters: [{
       name: 'xmlファイル',
       extensions: ['xml']
@@ -120,14 +119,24 @@ function showSaveXmlFileDialog(){
 }
 
 MenuActions.canCloseWindow = function(win){
-  var options = {
-    buttons: ['はい', 'いいえ', 'キャンセル'],
-    message: '編集されています。保存して終了しますか？'
-  };
-  return handleDirty(win, options);
+
+
+  return handleDirty(win, '編集されています。保存して終了しますか？');
 };
 
 MenuActions.exportJobXml = function(win){
+  win.webContents.send('main-process-pre-export-etl-files');
+};
+
+ipc.on('renderer-process-checked-job-name', function(event, args){
+
+  if(args.message){
+    dialog.showMessageBox({
+      message: args.message
+    });
+    return;
+  }
+
   var filePath = showSaveXmlFileDialog();
   if(!filePath){
     return;
@@ -137,11 +146,11 @@ MenuActions.exportJobXml = function(win){
   var dirName = path.dirname(filePath);
   var basePath = path.join(dirName, baseName);
 
-  win.webContents.send('main-process-export-etl-files', {
+  event.sender.send('main-process-export-etl-files', {
     xmlPath: basePath + '.xml',
     jsonPath: basePath + '.json'
   });
-};
+});
 
 MenuActions.validation = function(win){
   var dialogWindow = new BrowserWindow(
@@ -157,7 +166,23 @@ MenuActions.validation = function(win){
   }
 
   dialogWindow.loadURL(url.format({
-    pathname: path.join(__dirname, '../../dist/setting-dialog/validation.html'),
+    pathname: path.join(__dirname, '../../dist/dialog/validation.html'),
+    protocol: 'file:',
+    slashes: true
+  }));
+};
+
+MenuActions.setting = function(win){
+  var dialogWindow = new BrowserWindow(
+      {
+        width: 400, height: 500,
+        parent: win, resizable: false,
+        modal: true, frame: true
+      });
+  dialogWindow.setMenu(null);
+
+  dialogWindow.loadURL(url.format({
+    pathname: path.join(__dirname, '../../dist/dialog/setting.html'),
     protocol: 'file:',
     slashes: true
   }));
@@ -186,8 +211,13 @@ function isDirty() {
   return (openData !== tempData);
 }
 
-function handleDirty(win, options) {
+function handleDirty(win, message) {
   if (isDirty()) {
+    var options = {
+      buttons: ['はい', 'いいえ', 'キャンセル'],
+      message: message,
+      cancelId: 2
+    };
     var result = dialog.showMessageBox(options);
     switch (result) {
       case 0:

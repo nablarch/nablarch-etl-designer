@@ -70,10 +70,7 @@ function EtlDesignerUpdater(eventBus, bpmnjs, elementFactory, bpmnFactory) {
             createChildShape('jsr352:Reader', shape, {x: 5, y: 5});
             createChildShape('jsr352:Writer', shape, {x: 5, y: 30});
             createChildShape('jsr352:Processor', shape, {x: 5, y: 55});
-          }else{
-            delete shape.businessObject.copied;
           }
-
         }
       }
     }

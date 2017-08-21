@@ -91,10 +91,26 @@ function saveDiagram(done) {
 
 var exportEtlJson = require('./util/ExportEtlJson');
 var exportJobXml = require('./util/ExportJobXml');
+var jobNameCheck = require('./util/check/JobNameCheck');
+
+ipc.on('main-process-pre-export-etl-files', function(event, args){
+  var validationResult = jobNameCheck();
+  var message;
+  if(validationResult.length > 0){
+    message = 'jobのname属性を設定してください'
+  }
+
+  ipc.send('renderer-process-checked-job-name', {
+    message: message
+  });
+});
+
 ipc.on('main-process-export-etl-files', function(event, args) {
   exportEtlJson.exportJson(appInfo.workBpmnString, args.jsonPath);
   exportJobXml.exportXml(appInfo.workBpmnString, args.xmlPath);
+  alert('出力しました');
 });
+
 
 ipc.on('main-process-import-bpmn-file', function (event, args) {
   var bpmnString = args.bpmnString || initialDiagram;

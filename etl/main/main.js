@@ -14,7 +14,8 @@ var ConfigFileUtil = require('../renderer/util/ConfigFileUtil');
 
 var appInfo = {
   openFilePath: '',
-  workBpmnString: ''
+  workBpmnString: '',
+  jobName: ''
 };
 
 global.appInfo = appInfo;
@@ -125,19 +126,7 @@ function createApplicationMenu() {
           label: '設定',
           accelerator: 'Ctrl+Shift+S',
           click: function () {
-            var dialogWindow = new BrowserWindow(
-                {
-                  width: 400, height: 500,
-                  parent: win, resizable: false,
-                  modal: true, frame: true
-                });
-            dialogWindow.setMenu(null);
-
-            dialogWindow.loadURL(url.format({
-              pathname: path.join(__dirname, '../../dist/setting-dialog/setting.html'),
-              protocol: 'file:',
-              slashes: true
-            }));
+            MenuActions.setting(win);
           }
         }
       ]

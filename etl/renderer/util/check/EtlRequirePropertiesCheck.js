@@ -1,8 +1,21 @@
 var checkUtil = require('../CheckUtil');
 
 function etlRequirePropertiesCheck(bpmnDom){
-  var tagNames = ['step', 'listener'];
-  var nodesGroup = [getStepNodes(),getListenerNodes()];
+  var tagNames = [
+    'step',
+    'listener',
+    'batchlet',
+    'reader',
+    'writer',
+    'processor'
+  ];
+  var nodesGroup = [
+    getStepNodes(),
+    getListenerNodes(),
+    getBatchletNodes(),
+    getReaderNodes(),
+    getWriterNodes(),
+    getProcessorNodes()];
   var validationResult = [];
   for(var i=0; i < tagNames.length; i++) {
     var nodes = nodesGroup[i];
@@ -94,6 +107,46 @@ function getListenerNodes() {
           [attr('ref', 'string', 'Listener名(ref)')]
       );
   result.push(listenerNode);
+  return result;
+}
+
+function getBatchletNodes() {
+  var result = [];
+  var batchletNode =
+      node('batchlet', '', '', 'ref',
+          [attr('ref', 'string', 'Batchlet名(ref)')]
+      );
+  result.push(batchletNode);
+  return result;
+}
+
+function getReaderNodes() {
+  var result = [];
+  var readerNode =
+      node('reader', '', '', 'ref',
+          [attr('ref', 'string', 'Reader名(ref)')]
+      );
+  result.push(readerNode);
+  return result;
+}
+
+function getWriterNodes() {
+  var result = [];
+  var writerNode =
+      node('writer', '', '', 'ref',
+          [attr('ref', 'string', 'Writer名(ref)')]
+      );
+  result.push(writerNode);
+  return result;
+}
+
+function getProcessorNodes() {
+  var result = [];
+  var processorNode =
+      node('processor', '', '', 'ref',
+          [attr('ref', 'string', 'Processor名(ref)')]
+      );
+  result.push(processorNode);
   return result;
 }
 
