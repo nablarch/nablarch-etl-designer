@@ -1,3 +1,5 @@
+'use strict';
+
 var is = require('bpmn-js/lib/util/ModelUtil').is,
     isAny = require('bpmn-js/lib/features/modeling/util/ModelingUtil').isAny;
 

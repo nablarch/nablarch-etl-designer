@@ -66,7 +66,6 @@ var setDefaultParameters = function( options ) {
 };
 
 function CustomEntryFactory() {
-
 }
 
 CustomEntryFactory.comboBox = function(options) {
@@ -76,7 +75,5 @@ CustomEntryFactory.comboBox = function(options) {
 CustomEntryFactory.multiSelectBox = function(options) {
   return multiSelect(options, setDefaultParameters(options));
 };
-
-
 
 module.exports = CustomEntryFactory;

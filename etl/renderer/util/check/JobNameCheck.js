@@ -1,3 +1,5 @@
+'use strict';
+
 var checkUtil = require('../CheckUtil');
 
 var electron = window.require('electron');
@@ -6,7 +8,6 @@ var remote = electron.remote;
 var appInfo = remote.getGlobal('appInfo');
 
 function jobNameCheck(bpmnDom){
-
   var validationResult = [];
 
   if(!bpmnDom){

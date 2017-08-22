@@ -107,7 +107,7 @@ function buildJson(jsonObj, node, element) {
           jsonObj[attr.jsonProp] = Number(elementAttr);
           break;
       }
-    }//j
+    }
   }
   for (var i = 0; i < node.childNodes.length; i++) {
     var childNode = node.childNodes[i];
@@ -125,7 +125,7 @@ function buildJson(jsonObj, node, element) {
         jsonObj[name] = childJsonObj;
       }
     }
-  }//i
+  }
 }
 
 function getNameAttribute(element, nameAttrs) {

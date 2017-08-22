@@ -1,3 +1,5 @@
+'use strict';
+
 var customEntryFactory = require('../../factory/CustomEntryFactory');
 
 var is = require('bpmn-js/lib/util/ModelUtil').is;

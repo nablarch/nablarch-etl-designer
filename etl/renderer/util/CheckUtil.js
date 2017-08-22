@@ -1,3 +1,5 @@
+'use strict';
+
 var self = checkUtil;
 
 function checkUtil(){

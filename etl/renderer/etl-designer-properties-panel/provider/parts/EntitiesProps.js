@@ -1,4 +1,5 @@
-var entryFactory = require('bpmn-js-properties-panel/lib/factory/EntryFactory');
+'use strict';
+
 var customEntryFactory = require('../../factory/CustomEntryFactory');
 
 var is = require('bpmn-js/lib/util/ModelUtil').is;
@@ -8,8 +9,7 @@ var selectOptionUtil = require('../../../../../jsr352-js/app/util/SelectOptionUt
 
 module.exports = function(group, element, bpmnFactory) {
   if (is(element, 'jsr352:Step')) {
-
-    //:TODO arrayとstringの復号をgetとsetでするように変更
+    //Note: In bpmn file, 'entities' are stored as one string. so it is necessary to split as array at once.
     if(typeof element.businessObject.entities === 'string') {
       element.businessObject.entities = element.businessObject.entities.split(',');
     }

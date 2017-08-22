@@ -3,62 +3,62 @@
 var config = {};
 var configFileUtil = require('./ConfigFileUtil');
 
-function ComponentProvider () {
+function EtlDesignerComponentProvider () {
 }
 
-ComponentProvider.readConfigFile = function () {
+EtlDesignerComponentProvider.readConfigFile = function () {
   config = configFileUtil.loadConfigFile();
 };
 
-ComponentProvider.getBatchlets = function () {
+EtlDesignerComponentProvider.getBatchlets = function () {
   this.readConfigFile();
   return config.properties.batchlet;
 };
-ComponentProvider.getItemReaders = function () {
+EtlDesignerComponentProvider.getItemReaders = function () {
   this.readConfigFile();
   return config.properties.itemReader;
 };
-ComponentProvider.getItemProcessors = function () {
+EtlDesignerComponentProvider.getItemProcessors = function () {
   this.readConfigFile();
   return [];
 };
-ComponentProvider.getItemWriters = function () {
+EtlDesignerComponentProvider.getItemWriters = function () {
   this.readConfigFile();
   return config.properties.itemWriter;
 };
-ComponentProvider.getListeners = function () {
+EtlDesignerComponentProvider.getListeners = function () {
   this.readConfigFile();
   return config.properties.listener;
 };
 
-ComponentProvider.getStepType = function () {
+EtlDesignerComponentProvider.getStepType = function () {
   return Object.keys(config.properties.stepType);
 };
 
-ComponentProvider.getEntities = function () {
+EtlDesignerComponentProvider.getEntities = function () {
   this.readConfigFile();
   return config.properties.entities;
 };
 
-ComponentProvider.getErrorEntities = function () {
+EtlDesignerComponentProvider.getErrorEntities = function () {
   this.readConfigFile();
   return config.properties.errorEntity;
 };
 
-ComponentProvider.getMode = function () {
+EtlDesignerComponentProvider.getMode = function () {
   return config.properties.mode;
 };
 
-ComponentProvider.getBean = function() {
+EtlDesignerComponentProvider.getBean = function() {
   this.readConfigFile();
   return config.properties.bean;
 };
 
-ComponentProvider.getColumns = function() {
+EtlDesignerComponentProvider.getColumns = function() {
   this.readConfigFile();
   return config.properties.columns;
 };
 
-ComponentProvider.readConfigFile();
+EtlDesignerComponentProvider.readConfigFile();
 
-module.exports = ComponentProvider;
+module.exports = EtlDesignerComponentProvider;

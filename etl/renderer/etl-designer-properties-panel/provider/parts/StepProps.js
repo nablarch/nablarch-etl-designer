@@ -11,34 +11,6 @@ var selectOptionUtil = require('../../../../../jsr352-js/app/util/SelectOptionUt
 
 var customEntryFactory = require('../../factory/CustomEntryFactory');
 
-function chunkChildEntry(element, bpmnFactory, id) {
-  var typeName = id.replace(/\b\w/g, function(l){ return l.toUpperCase() });
-  var entry = entryFactory.textBox({
-    id : id,
-    description : 'Specifies the name of a ' + id + ' artifact.',
-    label : typeName,
-    modelProperty : id
-  });
-
-  entry.get = function() {
-    var chunk = getBusinessObject(element).chunk;
-    var props = {};
-    props[id] = chunk[id] ? chunk[id].ref : '';
-    return props;
-  };
-
-  entry.set = function(element, values) {
-    var chunk = getBusinessObject(element).chunk;
-    if (values[id]) {
-      var newProperties = {};
-      newProperties[id] = bpmnFactory.create('jsr352:' + typeName, {ref: values[id]});
-      return cmdHelper.updateBusinessObject(chunk, getBusinessObject(chunk), newProperties);
-    }
-  };
-
-  return entry;
-}
-
 module.exports = function(group, element, bpmnFactory) {
   if (is(element, 'jsr352:Step')) {
     group.entries.push(entryFactory.validationAwareTextField({

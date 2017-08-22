@@ -7,17 +7,12 @@ var forEach = require('lodash/collection/forEach');
 
 var entryFieldDescription = require('bpmn-js-properties-panel/lib/factory/EntryFieldDescription');
 
-
 var isList = function(list) {
   return !(!list || Object.prototype.toString.call(list) !== '[object Array]');
 };
 
 var addEmptyParameter = function(list) {
   return list.concat([ { name: '', value: '' } ]);
-};
-
-var createOption = function(option) {
-  return '<option value="' + option.value + '">' + option.name + '</option>';
 };
 
 /**

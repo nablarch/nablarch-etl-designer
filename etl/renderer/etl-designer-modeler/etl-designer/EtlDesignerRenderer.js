@@ -2,13 +2,9 @@
 
 var inherits = require('inherits'),
     isObject = require('lodash/lang/isObject'),
-    is = require('bpmn-js/lib/util/ModelUtil').is,
-    isAny = require('bpmn-js/lib/features/modeling/util/ModelingUtil').isAny;
+    is = require('bpmn-js/lib/util/ModelUtil').is;
 
-var componentsToPath = require('diagram-js/lib/util/RenderUtil').componentsToPath,
-    createLine = require('diagram-js/lib/util/RenderUtil').createLine;
-
-var TextUtil = require('../../util/CustomText');
+var CustomTextUtil = require('../../util/CustomTextUtil');
 
 var svgAppend = require('tiny-svg/lib/append'),
     svgAttr = require('tiny-svg/lib/attr'),
@@ -20,7 +16,6 @@ var LABEL_STYLE = {
 };
 
 function splitStr(str, count){
-
   str = str || '';
   count = count || 10;
 
@@ -45,13 +40,12 @@ function extractClassName(str) {
   return array[array.length - 1];
 }
 
-var textUtil = new TextUtil({
+var customTextUtil = new CustomTextUtil({
   style: LABEL_STYLE,
   size: { width: 100 }
 });
 
  function drawDasharrayRect(parentGfx, width, height, r, offset) {
-
   offset = offset || 0;
 
    var attrs = {
@@ -71,14 +65,12 @@ var textUtil = new TextUtil({
     ry: r
   });
   svgAttr(rect, attrs);
-
   svgAppend(parentGfx, rect);
 
   return rect;
 }
 
 function drawCylinder(parentGfx, width, height, ry, x, y, attrs) {
-
   attrs = {
     stroke: 'green',
     strokeWidth: 2,
@@ -86,14 +78,6 @@ function drawCylinder(parentGfx, width, height, ry, x, y, attrs) {
   };
 
   var pathStr = "";
-
-
-  // pathStr += "M 0, " + ry + " A " + width / 2 + " " + ry + " 0 0 0 " + width + " ," + ry;
-  // pathStr += " M 0, " + ry + " A " + width / 2 + " " + ry + " 0 0 1 " + width + " ," + ry;
-  // pathStr += " M 0, " + ry + " V " + (height - ry * 2);
-  // pathStr += " M" + width + ", " + ry + " V " + (height - ry * 2);
-  // pathStr += " M 0, " + (height - ry * 2) + " A " + width / 2 + " " + ry + " 0 0 0 " + width + " ," + (height - ry * 2);
-
   pathStr += "M " + x + ", " + (y + ry) + " A " + width / 2 + " " + ry + " 0 0 0 " + (x + width) + " ," + (y + ry);
   pathStr += "M " + x + ", " + (y + ry) + " A " + width / 2 + " " + ry + " 0 0 1 " + (x + width) + " ," + (y + ry);
   pathStr += "M " + x + ", " + (y + ry) + " V " + (y + height - ry * 2);
@@ -105,14 +89,12 @@ function drawCylinder(parentGfx, width, height, ry, x, y, attrs) {
     d:pathStr
   });
   svgAttr(path, attrs);
-
   svgAppend(parentGfx, path);
 
   return path;
 }
 
 function drawTextRect (parentGfx, width, height, r, x, y, attrs) {
-
   attrs = {
     stroke: 'green',
     strokeWidth: 2,
@@ -129,11 +111,9 @@ function drawTextRect (parentGfx, width, height, r, x, y, attrs) {
     ry: r
   });
   svgAttr(rect, attrs);
-
   svgAppend(parentGfx, rect);
 
   var pathStr = '';
-
   pathStr += "M " + (x + width * 0.7) + ', ' + (y + height) + 'L ' + (x + width) + ', ' + (y + height * 0.7);
 
   var path = svgCreate('path');
@@ -145,7 +125,6 @@ function drawTextRect (parentGfx, width, height, r, x, y, attrs) {
     strokeWidth: 2,
     fill: 'white'
   });
-
   svgAppend(parentGfx, path);
 
   return rect;
@@ -175,7 +154,7 @@ EtlDesignerRenderer.prototype.drawShape = function(p, element){
     this.renderLabel(p, element.businessObject.name, { box: element, align: 'center-top', padding: 1});
     var beanClassName = element.businessObject.bean && extractClassName(element.businessObject.bean);
     if(element.businessObject.stepType === 'validation') {
-      textUtil.createText(p, splitStr(beanClassName) || '',
+      customTextUtil.createText(p, splitStr(beanClassName) || '',
           {
             box: element,
             align: 'left-bottom',
@@ -183,28 +162,28 @@ EtlDesignerRenderer.prototype.drawShape = function(p, element){
           });
       drawCylinder(p, element.width/12, element.height/4, element.height/36, 4, element.height/2,{});
     }else if(element.businessObject.stepType === 'file2db'){
-      textUtil.createText(p, splitStr(element.businessObject.fileName) || '', {box: element, align: 'left-bottom', padding: 1});
-      textUtil.createText(p, splitStr(beanClassName) || '', {box: element, align: 'right-bottom', padding: 1});
+      customTextUtil.createText(p, splitStr(element.businessObject.fileName) || '', {box: element, align: 'left-bottom', padding: 1});
+      customTextUtil.createText(p, splitStr(beanClassName) || '', {box: element, align: 'right-bottom', padding: 1});
       drawCylinder(p, element.width/12, element.height/4, element.height/36, element.width - element.width/12 - 4, element.height/2,{});
       drawTextRect(p, element.width/18, element.height/5, 0, 4, element.height/2, {});
 
     }else if(element.businessObject.stepType === 'db2db'){
       var extractBeanClassName = element.businessObject.extractBean && extractClassName(element.businessObject.extractBean);
       if(extractBeanClassName){
-        textUtil.createText(p, splitStr(extractBeanClassName) || '', {box: element, align: 'left-bottom', padding: 1});
+        customTextUtil.createText(p, splitStr(extractBeanClassName) || '', {box: element, align: 'left-bottom', padding: 1});
         drawCylinder(p, element.width/12, element.height/4, element.height/36, 4, element.height/2,{});
       }
-      textUtil.createText(p, splitStr(beanClassName) || '', {box: element, align: 'right-bottom', padding: 1});
+      customTextUtil.createText(p, splitStr(beanClassName) || '', {box: element, align: 'right-bottom', padding: 1});
       drawCylinder(p, element.width/12, element.height/4, element.height/36, element.width - element.width/12 - 4, element.height/2,{});
 
     }else if(element.businessObject.stepType === 'db2file'){
-      textUtil.createText(p, splitStr(beanClassName) || '',
+      customTextUtil.createText(p, splitStr(beanClassName) || '',
           {
             box: element,
             align: 'left-bottom',
             padding: 1
           });
-      textUtil.createText(p, splitStr(element.businessObject.fileName) || '',
+      customTextUtil.createText(p, splitStr(element.businessObject.fileName) || '',
           {
             box: element,
             align: 'right-bottom',

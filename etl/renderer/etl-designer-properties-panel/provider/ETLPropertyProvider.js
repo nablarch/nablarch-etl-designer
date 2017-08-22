@@ -32,7 +32,6 @@ var mergeOnColumnsProps = require('./parts/MergeOnColumnsProps');
 var stepTypeList = configFileUtil.loadConfigFile().properties.stepType || {};
 
 function createEtlPropertiesByStepTypeTabGroup(element, bpmnFactory, elementRegistry) {
-
   var propertyGroupsByStepType = [];
 
   var stepTypeGroup = {
@@ -51,7 +50,6 @@ function createEtlPropertiesByStepTypeTabGroup(element, bpmnFactory, elementRegi
 }
 
 function createInputGroups(stepTypeList, element, bpmnFactory) {
-
   var groups = [];
 
   for (var key in stepTypeList) {
@@ -106,7 +104,6 @@ function createInputGroups(stepTypeList, element, bpmnFactory) {
   }
 
   return groups;
-
 }
 
 function createGeneralTabGroups(element, bpmnFactory, elementRegistry) {
@@ -138,7 +135,6 @@ function createGeneralTabGroups(element, bpmnFactory, elementRegistry) {
 }
 
 function createExtensionElementsGroups(element, bpmnFactory, elementRegistry) {
-
   var propertiesGroup = {
     id: 'extensionElements-properties',
     label: 'Properties',
@@ -155,7 +151,6 @@ function createExtensionElementsGroups(element, bpmnFactory, elementRegistry) {
 }
 
 function createTextTabGroups(element, bpmnFactory, elementRegistry) {
-
   var textTabGroup = {
     id: 'textAnnotation',
     label: 'text annotation',
@@ -172,7 +167,6 @@ function createTextTabGroups(element, bpmnFactory, elementRegistry) {
 }
 
 function ETLPropertiesProvider(eventBus, bpmnFactory, elementRegistry) {
-
   PropertiesActivator.call(this, eventBus);
 
   this.getTabs = function (element) {

@@ -1,3 +1,5 @@
+'use strict';
+
 var checkUtil = require('../CheckUtil');
 
 function stepNameCheck(bpmnDom){

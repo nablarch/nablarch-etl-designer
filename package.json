@@ -5,8 +5,11 @@
   "main": "etl/main/main.js",
   "scripts": {
     "test": "grunt test",
-    "dev": "grunt auto-build",
-    "all": "grunt"
+    "dev": "node_modules\\.bin\\grunt auto-build",
+    "all": "grunt",
+    "electron": "node_modules\\.bin\\electron .",
+    "package": "node_modules\\.bin\\electron-packager . --platform=win32 --arch=ia32,x64 --electron-version=1.6.11"
+
   },
   "license": "Apache-2.0",
   "devDependencies": {
