@@ -10,19 +10,13 @@ checkUtil.errorTypes = {
   warning: 'warning'
 };
 
-checkUtil.validationTypes = {
-  required: 'required',
-  duplicate: 'duplicate'
-};
-
-checkUtil.createValidationInfo = function(element, message, errorType, validationType){
+checkUtil.createValidationInfo = function(element, message, errorType){
   return {
     id: element.getAttribute('id'),
     name: element.getAttribute('name'),
     elementType: self.getTagName(element),
     message: message,
-    errorType: errorType,
-    validationType: validationType || ''
+    errorType: errorType
   };
 };
 

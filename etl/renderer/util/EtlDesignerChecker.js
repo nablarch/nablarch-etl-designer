@@ -24,8 +24,8 @@ EtlDesignChecker.check = function(){
       [
         jobNameCheck,
         etlRequirePropertiesCheck,
-        stepNameCheck
-        // jobListenerCheck
+        stepNameCheck,
+        jobListenerCheck
       ];
   return doCheck(bpmnDom, checkerFuncs);
 };

@@ -24,8 +24,7 @@ function jobNameCheck(bpmnDom){
     validationResult.push(checkUtil.createValidationInfo(
         jobElements[0],
         'jobの［Name］ が設定されていません',
-        checkUtil.errorTypes.error,
-        checkUtil.validationTypes.required
+        checkUtil.errorTypes.error
     ));
   }else{
     appInfo.jobName = jobName;

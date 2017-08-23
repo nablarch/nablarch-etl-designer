@@ -1,3 +1,5 @@
+'use strict';
+
 var checkUtil = require('../CheckUtil');
 
 function etlRequirePropertiesCheck(bpmnDom){
@@ -9,6 +11,7 @@ function etlRequirePropertiesCheck(bpmnDom){
     'writer',
     'processor'
   ];
+
   var nodesGroup = [
     getStepNodes(),
     getListenerNodes(),
@@ -16,6 +19,7 @@ function etlRequirePropertiesCheck(bpmnDom){
     getReaderNodes(),
     getWriterNodes(),
     getProcessorNodes()];
+
   var validationResult = [];
   for(var i=0; i < tagNames.length; i++) {
     var nodes = nodesGroup[i];
@@ -40,15 +44,18 @@ function checkRequire(validationResult, node, elements){
           validationResult.push(checkUtil.createValidationInfo(
               element,
               '"' + (attr.label || attr.name) + '" が設定されていません',
-              checkUtil.errorTypes.error,
-              checkUtil.validationTypes.required
+              checkUtil.errorTypes.error
           ));
           continue;
         }
         switch (attr.type) {
           case 'integer':
             if(!checkUtil.isInteger(elementAttr)){
-              validationResult(element, '"' + (attr.label || attr.name) + '" は整数で入力してください')
+              validationResult.push(checkUtil.createValidationInfo(
+                  element,
+                  '"' + (attr.label || attr.name) + '" は整数で入力してください',
+                  checkUtil.errorTypes.error
+              ));
             }
             break;
         }
