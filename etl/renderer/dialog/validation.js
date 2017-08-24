@@ -1,5 +1,11 @@
 var etlDesignerCheck = require('../util/EtlDesignerChecker');
+var messageUtil = require('../util/MessageUtil');
 
+var electron = window.require('electron');
+var ipc = electron.ipcRenderer;
+var remote = electron.remote;
+
+var appInfo = remote.getGlobal('appInfo');
 var checkButton = document.querySelector('#check');
 var cancelButton = document.querySelector('#cancel');
 checkButton.addEventListener('click', onCheckClick);
@@ -15,18 +21,17 @@ for (var i = 0; i < tabItems.length; i++) {
 
 function onCheckClick() {
   var result = etlDesignerCheck.check();
-  validationResult.errorMessage = (result.errors.length === 0) ? 'エラーは検出されていません。' : result.errors.join('\n');
-  validationResult.warningMessage = (result.warnings.length === 0) ? '警告は検出されていません。' : result.warnings.join('\n');
+  validationResult.errorMessage = (result.errors.length === 0) ? messageUtil.getMessage('No error is detected.', appInfo.locale) : result.errors.join('\n');
+  validationResult.warningMessage = (result.warnings.length === 0) ? messageUtil.getMessage('No warning is detected.', appInfo.locale) : result.warnings.join('\n');
   loadActiveTab(document.querySelector('.active'));
 }
+
 function onCancelClick() {
   window.close();
 }
 
 function onTabClick() {
-
   var activeTab =document.querySelector('.active');
-
   saveActiveTab(activeTab);
 
   activeTab.classList.remove('active');
@@ -37,7 +42,6 @@ function onTabClick() {
 
 function saveActiveTab(activeTab){
   var contents = document.getElementById('textarea').value;
-
   switch (activeTab.id) {
     case 'error-tab':
       validationResult.errorMessage = contents;
@@ -59,6 +63,36 @@ function loadActiveTab(activeTab){
   }
 }
 
+function translateMessage(){
+  var convertMessage = {
+    errorTab: 'Error',
+    warningTab: 'Warning',
+    checkButton: 'Check',
+    closeButton: 'Close'
+  };
+
+  document.title = messageUtil.getMessage('Validation', appInfo.locale);
+  for(var key in convertMessage){
+    document.getElementById(key).textContent =  messageUtil.getMessage(convertMessage[key], appInfo.locale);
+  }
+}
+
 window.onload = function(){
-  onCheckClick();
+  translateMessage();
+
+  var result = etlDesignerCheck.check();
+  validationResult.errorMessage = (result.errors.length === 0) ? messageUtil.getMessage('No error is detected.', appInfo.locale) : result.errors.join('\n');
+  validationResult.warningMessage = (result.warnings.length === 0) ? messageUtil.getMessage('No warning is detected.', appInfo.locale) : result.warnings.join('\n');
+  loadActiveTab(document.querySelector('.active'));
+};
+
+window.onerror = function(message, url, line, colno, err) {
+  var errData = {
+    message: message,
+    url: url,
+    line: line,
+    colno: colno,
+    err: err
+  };
+  ipc.send('main-handle-error', errData);
 };

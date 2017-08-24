@@ -6,6 +6,7 @@ var electron = window.require('electron');
 var remote = electron.remote;
 
 var appInfo = remote.getGlobal('appInfo');
+var messageUtil = require('../MessageUtil');
 
 function jobNameCheck(bpmnDom){
   var validationResult = [];
@@ -23,7 +24,7 @@ function jobNameCheck(bpmnDom){
   if(!jobName){
     validationResult.push(checkUtil.createValidationInfo(
         jobElements[0],
-        'jobの［Name］ が設定されていません',
+        messageUtil.getMessage('Job [Name] must be set.', appInfo.locale),
         checkUtil.errorTypes.error
     ));
   }else{

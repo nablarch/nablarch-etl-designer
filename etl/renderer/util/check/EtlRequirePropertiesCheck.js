@@ -2,6 +2,12 @@
 
 var checkUtil = require('../CheckUtil');
 
+var electron = window.require('electron');
+var remote = electron.remote;
+
+var appInfo = remote.getGlobal('appInfo');
+var messageUtil = require('../MessageUtil');
+
 function etlRequirePropertiesCheck(bpmnDom){
   var tagNames = [
     'step',
@@ -43,7 +49,7 @@ function checkRequire(validationResult, node, elements){
         if (!elementAttr) {
           validationResult.push(checkUtil.createValidationInfo(
               element,
-              '"' + (attr.label || attr.name) + '" が設定されていません',
+              messageUtil.getMessage('"{0}" is required.', appInfo.locale, [(attr.label || attr.name)]),
               checkUtil.errorTypes.error
           ));
           continue;
@@ -53,7 +59,7 @@ function checkRequire(validationResult, node, elements){
             if(!checkUtil.isInteger(elementAttr)){
               validationResult.push(checkUtil.createValidationInfo(
                   element,
-                  '"' + (attr.label || attr.name) + '" は整数で入力してください',
+                  messageUtil.getMessage('"{0}" must be integer.', appInfo.locale, [(attr.label || attr.name)]),
                   checkUtil.errorTypes.error
               ));
             }
@@ -111,7 +117,7 @@ function getListenerNodes() {
   var result = [];
   var listenerNode =
       node('listener', '', '', 'ref',
-          [attr('ref', 'string', 'Listener名(ref)')]
+          [attr('ref', 'string', messageUtil.getMessage('Listener name (ref)', appInfo.locale))]
       );
   result.push(listenerNode);
   return result;
@@ -121,7 +127,7 @@ function getBatchletNodes() {
   var result = [];
   var batchletNode =
       node('batchlet', '', '', 'ref',
-          [attr('ref', 'string', 'Batchlet名(ref)')]
+          [attr('ref', 'string', messageUtil.getMessage('Batchlet name (ref)', appInfo.locale))]
       );
   result.push(batchletNode);
   return result;
@@ -131,7 +137,7 @@ function getReaderNodes() {
   var result = [];
   var readerNode =
       node('reader', '', '', 'ref',
-          [attr('ref', 'string', 'Reader名(ref)')]
+          [attr('ref', 'string', messageUtil.getMessage('Reader name (ref)', appInfo.locale))]
       );
   result.push(readerNode);
   return result;
@@ -141,7 +147,7 @@ function getWriterNodes() {
   var result = [];
   var writerNode =
       node('writer', '', '', 'ref',
-          [attr('ref', 'string', 'Writer名(ref)')]
+          [attr('ref', 'string', messageUtil.getMessage('Writer name (ref)', appInfo.locale))]
       );
   result.push(writerNode);
   return result;
@@ -151,7 +157,7 @@ function getProcessorNodes() {
   var result = [];
   var processorNode =
       node('processor', '', '', 'ref',
-          [attr('ref', 'string', 'Processor名(ref)')]
+          [attr('ref', 'string', messageUtil.getMessage('Processor name (ref)', appInfo.locale))]
       );
   result.push(processorNode);
   return result;

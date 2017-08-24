@@ -70,7 +70,8 @@ var initConfig = {
   jobStreamer:{
     hostName:'localhost',
     portNumber:45102
-  }
+  },
+  locale: 'ja'
 };
 
 ConfigFileUtil.saveConfigFile = function(config){
@@ -90,6 +91,10 @@ ConfigFileUtil.isDevelop = function() {
 
 ConfigFileUtil.getJobStreamerInfo = function(){
   return this.loadConfigFile().jobStreamer;
+};
+
+ConfigFileUtil.getLocale = function(){
+  return this.loadConfigFile().locale;
 };
 
 module.exports = ConfigFileUtil;

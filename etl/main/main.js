@@ -2,6 +2,7 @@ var electron = require('electron');
 var app = electron.app;
 var BrowserWindow = electron.BrowserWindow;
 var dialog = electron.dialog;
+var ipc = electron.ipcMain;
 
 var path = require('path');
 var url = require('url');
@@ -11,11 +12,13 @@ var Menu = electron.Menu;
 
 var MenuActions = require('./MenuActions');
 var ConfigFileUtil = require('../renderer/util/ConfigFileUtil');
+var messageUtil = require('../renderer/util/MessageUtil');
 
 var appInfo = {
   openFilePath: '',
   workBpmnString: '',
-  jobName: ''
+  jobName: '',
+  locale: ''
 };
 
 global.appInfo = appInfo;
@@ -27,6 +30,8 @@ function createWindow() {
   if (ConfigFileUtil.isDevelop()) {
     win.openDevTools();
   }
+
+  appInfo.locale = ConfigFileUtil.getLocale();
 
   createApplicationMenu();
 
@@ -61,40 +66,49 @@ app.on('activate', function () {
   }
 });
 
+ipc.on('main-handle-error', function(event, errData){
+  var content = messageUtil.getMessage('Details:', appInfo.locale) + '\n';
+  content += messageUtil.getMessage('File: {0}', appInfo.locale, [errData.url]) + '\n';
+  content += messageUtil.getMessage('Line: {0}', appInfo.locale, [errData.line]) + '\n';
+  content += messageUtil.getMessage('Column: {0}', appInfo.locale, [errData.colno]) + '\n';
+
+  dialog.showErrorBox(errData.message.replace('Uncaught Error: ', ''), content);
+});
+
 function createApplicationMenu() {
   var menuTemplate = [
     {
-      label: 'ファイル',
+      label: messageUtil.getMessage('File', appInfo.locale),
       submenu: [
         {
-          label: '新規作成',
+          label: messageUtil.getMessage('New File', appInfo.locale),
           accelerator: 'Ctrl+N',
           click: function () {
             MenuActions.createNewBpmn(win);
           }
         },
         {
-          label: '上書き保存',
+          label: messageUtil.getMessage('Save...', appInfo.locale),
           accelerator: 'Ctrl+S',
           click: function () {
             MenuActions.saveBpmn(win);
           }
         },
         {
-          label: '名前を付けて保存',
+          label: messageUtil.getMessage('Save As...', appInfo.locale),
           click: function () {
             MenuActions.saveAsBpmn(win);
           }
         },
         {
-          label: '開く',
+          label: messageUtil.getMessage('Open...', appInfo.locale),
           accelerator: 'Ctrl+O',
           click: function () {
             MenuActions.openBpmn(win);
           }
         },
         {
-          label: '終了',
+          label: messageUtil.getMessage('Exit', appInfo.locale),
           click: function(item, focusedWindow) {
             if(MenuActions.canCloseWindow(win)){
               win = null;
@@ -107,23 +121,23 @@ function createApplicationMenu() {
       ]
     },
     {
-      label: 'ツール',
+      label: messageUtil.getMessage('Tool', appInfo.locale),
       submenu: [
         {
-          label: '変換',
+          label: messageUtil.getMessage('Export ETL files', appInfo.locale),
           click: function (item, focusedWindow) {
             MenuActions.exportJobXml(win);
           }
         },
         {
-          label: 'バリデーション',
+          label: messageUtil.getMessage('Validate...', appInfo.locale),
           accelerator: 'Ctrl+T',
           click: function (item, focusedWindow) {
             MenuActions.validation(win);
           }
         },
         {
-          label: '設定',
+          label: messageUtil.getMessage('Settings...', appInfo.locale),
           accelerator: 'Ctrl+Shift+S',
           click: function () {
             MenuActions.setting(win);
@@ -132,10 +146,10 @@ function createApplicationMenu() {
       ]
     },
     {
-      label: 'ヘルプ',
+      label: messageUtil.getMessage('Help ', appInfo.locale),
       submenu: [
         {
-          label: 'バージョン情報',
+          label: messageUtil.getMessage('About...', appInfo.locale),
           click: function() {
             MenuActions.checkVersion(win);
           }

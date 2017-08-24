@@ -25,6 +25,7 @@ var path = require('path');
 var _ = require('lodash');
 
 var appInfo = remote.getGlobal('appInfo');
+var messageUtil = require('./util/MessageUtil');
 
 var ETLDesignerModeler = require('./etl-designer-modeler');
 
@@ -97,7 +98,7 @@ ipc.on('main-process-pre-export-etl-files', function(event, args){
   var validationResult = jobNameCheck();
   var message;
   if(validationResult.length > 0){
-    message = 'jobのname属性を設定してください'
+    message = messageUtil.getMessage('Job name attribute must be set.', appInfo.locale);
   }
 
   ipc.send('renderer-process-checked-job-name', {
@@ -106,9 +107,17 @@ ipc.on('main-process-pre-export-etl-files', function(event, args){
 });
 
 ipc.on('main-process-export-etl-files', function(event, args) {
-  exportEtlJson.exportJson(appInfo.workBpmnString, args.jsonPath);
-  exportJobXml.exportXml(appInfo.workBpmnString, args.xmlPath);
-  alert('出力しました');
+  try {
+    exportJobXml.exportXml(appInfo.workBpmnString, args.xmlPath);
+  } catch (e) {
+    throw new Error(messageUtil.getMessage('Failed to convert the xml file.\n{0}', appInfo.locale, [e.message]));
+  }
+  try {
+    exportEtlJson.exportJson(appInfo.workBpmnString, args.jsonPath);
+  } catch (e) {
+    throw new Error(messageUtil.getMessage('Failed to convert the json file.\n{0}', appInfo.locale, [e.message]));
+  }
+  alert(messageUtil.getMessage('Export is finished successfully.', appInfo.locale));
 });
 
 
@@ -117,26 +126,23 @@ ipc.on('main-process-import-bpmn-file', function (event, args) {
   modeler.importXML(bpmnString, function(err) {
     if(err){
       console.log('import error');
-      return;
+      console.log(err);
+      throw new Error(messageUtil.getMessage('Failed to load a bpmn file.\n{0}', appInfo.locale, [e.message]));
     }
     appInfo.workBpmnString = bpmnString;
   });
 });
 
-ipc.on('main-process-export-bpmn-file', function (event, args) {
-  appInfo.isSuccessExportBpmn = false;
-  appInfo.workBpmnString = '';
-  modeler.saveXML({ format: true }, function(err, xml) {
-    if(err){
-      appInfo.isSuccessExportBpmn = true;
-      console.log('import error');
-      return;
-    }
-    appInfo.workBpmnString = xml;
-    appInfo.isSuccessExportBpmn = true;
-    ipc.send('renderer-process-export-bpmn-file');
-  });
-});
+window.onerror = function(message, url, line, colno, err) {
+  var errData = {
+    message: message,
+    url: url,
+    line: line,
+    colno: colno,
+    err: err
+  };
+  ipc.send('main-handle-error', errData);
+};
 
 // expose bpmnjs to window for debugging purposes
 window.bpmnjs = modeler;

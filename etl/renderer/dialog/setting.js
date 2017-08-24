@@ -1,5 +1,10 @@
 var fs = require('fs');
 
+var electron = window.require('electron');
+var ipc = electron.ipcRenderer;
+var remote = electron.remote;
+var appInfo = remote.getGlobal('appInfo');
+
 var okButton = document.querySelector('#ok');
 var cancelButton = document.querySelector('#cancel');
 okButton.addEventListener('click', onOkClick);
@@ -7,6 +12,7 @@ cancelButton.addEventListener('click', onCancelClick);
 
 var config = {};
 var configFileUtil = require('../util/ConfigFileUtil');
+var messageUtil = require('../util/MessageUtil');
 
 var tabItems = document.querySelectorAll('.tab-item');
 
@@ -21,14 +27,13 @@ function onOkClick() {
   configFileUtil.saveConfigFile(config);
   window.close()
 }
+
 function onCancelClick() {
   window.close()
 }
 
 function onTabClick() {
-
   var activeTab =document.querySelector('.active');
-
   saveActiveTabToConfig(activeTab);
 
   activeTab.classList.remove('active');
@@ -39,7 +44,6 @@ function onTabClick() {
 
 function saveActiveTabToConfig(activeTab){
   var contents = document.getElementById('textarea').value;
-
   switch (activeTab.id) {
     case 'bean-tab':
       config.properties.bean = contents.split('\n');
@@ -53,7 +57,6 @@ function saveActiveTabToConfig(activeTab){
     case 'file-name-tab':
       config.properties.fileName = contents.split('\n');
       break;
-
   }
 }
 
@@ -74,8 +77,32 @@ function loadActiveTabFromConfig(activeTab){
   }
 }
 
+function translateMessage(){
+  var convertMessage = {
+    okButton: 'OK',
+    cancelButton: 'Cancel'
+  };
+
+  document.title = messageUtil.getMessage('Settings', appInfo.locale);
+  for(var key in convertMessage){
+    document.getElementById(key).textContent =  messageUtil.getMessage(convertMessage[key], appInfo.locale);
+  }
+}
+
 window.onload = function(){
+  translateMessage();
+
   config = configFileUtil.loadConfigFile();
   document.getElementById('textarea').value = config.properties.bean.join('\n');
+};
 
+window.onerror = function(message, url, line, colno, err) {
+  var errData = {
+    message: message,
+    url: url,
+    line: line,
+    colno: colno,
+    err: err
+  };
+  ipc.send('main-handle-error', errData);
 };

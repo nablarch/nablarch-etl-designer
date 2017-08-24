@@ -1,7 +1,7 @@
 <html>
  <head>
    <meta charset="UTF-8">
-   <title>バリデーション</title>
+   <title>Validation</title>
    <style type="text/css">
    .float{
        float:right;
@@ -14,18 +14,18 @@
        <div class="tab-group">
            <div id="error-tab" class="tab-item active">
                <span class="icon"></span>
-                 エラー
+                 <span id="errorTab">Error</span>
            </div>
            <div id="warning-tab" class="tab-item">
                <span class="icon"></span>
-                 警告
+                 <span id="warningTab">Warning</span>
            </div>
        </div>
        <textarea id="textarea" class="form-control" rows="20" readonly="true">
        </textarea>
        <div class="float">
-         <button type="button" id="check" class="btn btn-positive">再チェック</button>
-         <button id="cancel" class="btn btn-negative">閉じる</button>
+         <button type="button" id="check" class="btn btn-positive"><span id="checkButton">Check</span></button>
+         <button id="cancel" class="btn btn-negative"><span id="closeButton">Close</span></button>
        </div>
      </form>
     <script type="text/javascript" src="./etl-designer-validation-dialog.js"></script>

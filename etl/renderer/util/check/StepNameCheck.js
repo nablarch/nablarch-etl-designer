@@ -2,6 +2,12 @@
 
 var checkUtil = require('../CheckUtil');
 
+var electron = window.require('electron');
+var remote = electron.remote;
+
+var appInfo = remote.getGlobal('appInfo');
+var messageUtil = require('../MessageUtil');
+
 function stepNameCheck(bpmnDom){
   var nameSet = {};
   var validationResult = [];
@@ -12,7 +18,7 @@ function stepNameCheck(bpmnDom){
     if(!stepName){
       validationResult.push(checkUtil.createValidationInfo(
           stepElements[i],
-          'Stepの名前が設定されていません',
+          messageUtil.getMessage('Step name is required.', appInfo.locale),
           checkUtil.errorTypes.warning
       ));
       continue;
@@ -30,7 +36,7 @@ function stepNameCheck(bpmnDom){
       for(var i = 0; i < elements.length; i++){
         validationResult.push(checkUtil.createValidationInfo(
             elements[i],
-            'Stepの名前が重複しています',
+            messageUtil.getMessage('The step name is duplicated.', appInfo.locale),
             checkUtil.errorTypes.error
         ));
       }
