@@ -9,7 +9,6 @@
     "all": "grunt",
     "electron": "node_modules\\.bin\\electron .",
     "package": "node_modules\\.bin\\electron-packager . --platform=win32 --arch=ia32,x64 --electron-version=1.6.11"
-
   },
   "license": "Apache-2.0",
   "devDependencies": {
@@ -28,6 +27,7 @@
     "grunt-contrib-uglify": "^2.0.0",
     "grunt-contrib-watch": "~1.0.0",
     "grunt-karma": "^1.0.0",
+    "grunt-simple-mocha": "^0.4.1",
     "jquery": "^2.1.1",
     "karma": "^0.13.0",
     "karma-browserify": "^5.0.1",
