@@ -157,6 +157,13 @@ module.exports = function (grunt) {
         }
       }
     },
+    simplemocha: {
+      backend: {
+        src: [
+            'test/spec/ConfigFileUtilSpec.js'
+        ]
+      }
+    },
     karma: {
       options: {
         configFile: 'test/config/karma.unit.js'
@@ -193,6 +200,8 @@ module.exports = function (grunt) {
     'connect:livereload',
     'watch'
   ]);
+
+  grunt.registerTask('test-mocha', ['simplemocha']);
 
   grunt.registerTask('test', ['karma:single']);
 
