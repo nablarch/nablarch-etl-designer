@@ -25,7 +25,9 @@ var path = require('path');
 var _ = require('lodash');
 
 var appInfo = remote.getGlobal('appInfo');
+var configFileUtil = require('./util/ConfigFileUtil');
 var messageUtil = require('./util/MessageUtil');
+messageUtil.setLocale(configFileUtil.getLocale());
 
 var ETLDesignerModeler = require('./etl-designer-modeler');
 
@@ -98,7 +100,7 @@ ipc.on('main-process-pre-export-etl-files', function(event, args){
   var validationResult = jobNameCheck();
   var message;
   if(validationResult.length > 0){
-    message = messageUtil.getMessage('Job name attribute must be set.', appInfo.locale);
+    message = messageUtil.getMessage('Job name attribute must be set.');
   }
 
   ipc.send('renderer-process-checked-job-name', {
@@ -110,14 +112,14 @@ ipc.on('main-process-export-etl-files', function(event, args) {
   try {
     exportJobXml.exportXml(appInfo.workBpmnString, args.xmlPath);
   } catch (e) {
-    throw new Error(messageUtil.getMessage('Failed to convert the xml file.\n{0}', appInfo.locale, [e.message]));
+    throw new Error(messageUtil.getMessage('Failed to convert the xml file.\n{0}', [e.message]));
   }
   try {
     exportEtlJson.exportJson(appInfo.workBpmnString, args.jsonPath);
   } catch (e) {
-    throw new Error(messageUtil.getMessage('Failed to convert the json file.\n{0}', appInfo.locale, [e.message]));
+    throw new Error(messageUtil.getMessage('Failed to convert the json file.\n{0}', [e.message]));
   }
-  alert(messageUtil.getMessage('Export is finished successfully.', appInfo.locale));
+  alert(messageUtil.getMessage('Export is finished successfully.'));
 });
 
 
@@ -127,7 +129,7 @@ ipc.on('main-process-import-bpmn-file', function (event, args) {
     if(err){
       console.log('import error');
       console.log(err);
-      throw new Error(messageUtil.getMessage('Failed to load a bpmn file.\n{0}', appInfo.locale, [e.message]));
+      throw new Error(messageUtil.getMessage('Failed to load a bpmn file.\n{0}', [err.message]));
     }
     appInfo.workBpmnString = bpmnString;
   });

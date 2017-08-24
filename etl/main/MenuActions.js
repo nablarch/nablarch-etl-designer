@@ -15,7 +15,7 @@ var MenuActions = function(){
 };
 
 MenuActions.createNewBpmn = function(win) {
-  var dirty = handleDirty(win,messageUtil.getMessage('The data is edited, do you want to save?', appInfo.locale));
+  var dirty = handleDirty(win,messageUtil.getMessage('The data is edited, do you want to save?'));
   if(!dirty) {
     return;
   }
@@ -55,15 +55,15 @@ function doSaveBpmn(filePath) {
     return true;
   }catch(e){
     showErrorDialog(
-        messageUtil.getMessage('Failed to save a bpmn file.', appInfo.locale),
-        messageUtil.getMessage('Path: {0}', appInfo.locale, [filePath]),
+        messageUtil.getMessage('Failed to save a bpmn file.'),
+        messageUtil.getMessage('Path: {0}', [filePath]),
         e.message);
     return false;
   }
 }
 
 MenuActions.openBpmn = function(win) {
-  var dirty = handleDirty(win, messageUtil.getMessage('The data is edited, do you want to save?', appInfo.locale));
+  var dirty = handleDirty(win, messageUtil.getMessage('The data is edited, do you want to save?'));
   if(!dirty) {
     return;
   }
@@ -76,8 +76,8 @@ MenuActions.openBpmn = function(win) {
     var bpmnString = fs.readFileSync(filePaths[0],'utf8');
   }catch(e){
     showErrorDialog(
-        messageUtil.getMessage('Failed to load a bpmn file.', appInfo.locale),
-        messageUtil.getMessage('Path: {0}', appInfo.locale, [filePaths[0]]),
+        messageUtil.getMessage('Failed to load a bpmn file.'),
+        messageUtil.getMessage('Path: {0}', [filePaths[0]]),
         e.message);
   }
   importBpmn(win, bpmnString);
@@ -91,10 +91,10 @@ function importBpmn(win, bpmnString) {
 function showOpenBpmnFileDialog(){
   var focusedWindow = BrowserWindow.getFocusedWindow();
   var options = {
-    title: messageUtil.getMessage('Open', appInfo.locale),
+    title: messageUtil.getMessage('Open'),
     properties: ['openFile'],
     filters: [{
-      name: messageUtil.getMessage('bpmn file.', appInfo.locale),
+      name: messageUtil.getMessage('bpmn file.'),
       extensions: ['bpmn']
     }]
   };
@@ -105,10 +105,10 @@ function showOpenBpmnFileDialog(){
 function showSaveBpmnFileDialog(){
   var focusedWindow = BrowserWindow.getFocusedWindow();
   var options = {
-    title: messageUtil.getMessage('Save as', appInfo.locale),
+    title: messageUtil.getMessage('Save as'),
     defaultPath: appInfo.openFilePath,
     filters: [{
-      name: messageUtil.getMessage('bpmn file.', appInfo.locale),
+      name: messageUtil.getMessage('bpmn file.'),
       extensions: ['bpmn']
     }]
   };
@@ -127,10 +127,10 @@ function showSaveXmlFileDialog(){
 
   var focusedWindow = BrowserWindow.getFocusedWindow();
   var options = {
-    title: messageUtil.getMessage('Save as', appInfo.locale),
+    title: messageUtil.getMessage('Save as'),
     defaultPath: basePath,
     filters: [{
-      name: messageUtil.getMessage('xml file.', appInfo.locale),
+      name: messageUtil.getMessage('xml file.'),
       extensions: ['xml']
     }]
   };
@@ -139,7 +139,7 @@ function showSaveXmlFileDialog(){
 }
 
 MenuActions.canCloseWindow = function(win){
-  return handleDirty(win, messageUtil.getMessage('The data is edited, do you want to save and quit?', appInfo.locale));
+  return handleDirty(win, messageUtil.getMessage('The data is edited, do you want to save and quit?'));
 };
 
 MenuActions.exportJobXml = function(win){
@@ -209,20 +209,20 @@ MenuActions.setting = function(win){
 };
 
 MenuActions.checkVersion = function(win){
-  var detail = '\n' + messageUtil.getMessage('Version {0}', appInfo.locale, [app.getVersion()]);
+  var detail = '\n' + messageUtil.getMessage('Version {0}', [app.getVersion()]);
 
   var options = {
     type: 'info',
-    title: messageUtil.getMessage('Version Information', appInfo.locale),
-    message: messageUtil.getMessage('ETL Designer', appInfo.locale),
+    title: messageUtil.getMessage('Version Information'),
+    message: messageUtil.getMessage('ETL Designer'),
     detail: detail
   };
   dialog.showMessageBox(options);
 };
 
 function showErrorDialog(title, message, option){
-  title = title || messageUtil.getMessage('Error', appInfo.locale);
-  var content = message || messageUtil.getMessage('An unexpected error occurred.', appInfo.locale);
+  title = title || messageUtil.getMessage('Error');
+  var content = message || messageUtil.getMessage('An unexpected error occurred.');
   if(option) {
     content += '\n' + option;
   }
@@ -251,8 +251,8 @@ function isDirty() {
       openData = fs.readFileSync(global.appInfo.openFilePath, 'utf8');
     }catch(e){
       showErrorDialog(
-          messageUtil.getMessage('Failed to load a bpmn file.', appInfo.locale),
-          messageUtil.getMessage('Path: {0}', appInfo.locale, [global.appInfo.openFilePath]),
+          messageUtil.getMessage('Failed to load a bpmn file.'),
+          messageUtil.getMessage('Path: {0}', [global.appInfo.openFilePath]),
           e.message);
     }
   }
@@ -265,9 +265,9 @@ function handleDirty(win, message) {
   if (isDirty()) {
     var options = {
       buttons: [
-        messageUtil.getMessage('Yes', appInfo.locale),
-        messageUtil.getMessage('No', appInfo.locale),
-        messageUtil.getMessage('Cancel', appInfo.locale)
+        messageUtil.getMessage('Yes'),
+        messageUtil.getMessage('No'),
+        messageUtil.getMessage('Cancel')
       ],
       message: message,
       cancelId: 2

@@ -3,11 +3,7 @@
 var fs = require('fs');
 var edn = require('edn');
 
-var electron = window.require('electron');
-var remote = electron.remote;
-
 var configFileUtil = require('./ConfigFileUtil');
-var appInfo = remote.getGlobal('appInfo');
 var messageUtil = require('./MessageUtil');
 
 function ExportJobXml(){
@@ -62,7 +58,7 @@ function executeJobStreamerApi(method, url, postData, token){
   xhr.send(postData);
 
   if(xhr.status < 200 || xhr.status >= 300){
-    throw new Error(messageUtil.getMessage('Failed to call control-bus API. ({0})', appInfo.locale, [xhr.status]));
+    throw new Error(messageUtil.getMessage('Failed to call control-bus API. ({0})', [xhr.status]));
   }
 
   return xhr.responseText;

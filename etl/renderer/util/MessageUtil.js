@@ -22,10 +22,10 @@ var messages_ja = {
   'Failed to save a bpmn file.': 'bpmnファイルの保存に失敗しました',
   'Path: {0}': 'パス：{0}',
   'Failed to load a bpmn file.': 'bpmnファイルのロードに失敗しました',
-  'bpmn file': 'bpmnファイル',
+  'bpmn file.': 'bpmnファイル',
   'Save as': '名前を付けて保存',
   'Open': '開く',
-  'xml file': 'xmlファイル',
+  'xml file.': 'xmlファイル',
   'The data is edited, do you want to save and quit?': '編集されています。保存して終了しますか？',
   'Version {0}': 'バージョン {0}',
   'Version Information': 'バージョン情報',
@@ -63,7 +63,13 @@ var messages_ja = {
 function messageUtil() {
 }
 
-messageUtil.getMessage = function(id, locale, options){
+var locale;
+
+messageUtil.setLocale = function(val) {
+  locale = val;
+};
+
+messageUtil.getMessage = function(id, options){
   var message = id;
 
   if(locale === 'ja'){

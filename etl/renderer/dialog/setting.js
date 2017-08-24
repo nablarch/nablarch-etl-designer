@@ -2,8 +2,6 @@ var fs = require('fs');
 
 var electron = window.require('electron');
 var ipc = electron.ipcRenderer;
-var remote = electron.remote;
-var appInfo = remote.getGlobal('appInfo');
 
 var okButton = document.querySelector('#ok');
 var cancelButton = document.querySelector('#cancel');
@@ -13,6 +11,7 @@ cancelButton.addEventListener('click', onCancelClick);
 var config = {};
 var configFileUtil = require('../util/ConfigFileUtil');
 var messageUtil = require('../util/MessageUtil');
+messageUtil.setLocale(configFileUtil.getLocale());
 
 var tabItems = document.querySelectorAll('.tab-item');
 
@@ -83,9 +82,9 @@ function translateMessage(){
     cancelButton: 'Cancel'
   };
 
-  document.title = messageUtil.getMessage('Settings', appInfo.locale);
+  document.title = messageUtil.getMessage('Settings');
   for(var key in convertMessage){
-    document.getElementById(key).textContent =  messageUtil.getMessage(convertMessage[key], appInfo.locale);
+    document.getElementById(key).textContent =  messageUtil.getMessage(convertMessage[key]);
   }
 }
 

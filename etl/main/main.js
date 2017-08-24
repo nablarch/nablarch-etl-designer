@@ -17,8 +17,7 @@ var messageUtil = require('../renderer/util/MessageUtil');
 var appInfo = {
   openFilePath: '',
   workBpmnString: '',
-  jobName: '',
-  locale: ''
+  jobName: ''
 };
 
 global.appInfo = appInfo;
@@ -31,7 +30,7 @@ function createWindow() {
     win.openDevTools();
   }
 
-  appInfo.locale = ConfigFileUtil.getLocale();
+  messageUtil.setLocale(ConfigFileUtil.getLocale());
 
   createApplicationMenu();
 
@@ -67,10 +66,10 @@ app.on('activate', function () {
 });
 
 ipc.on('main-handle-error', function(event, errData){
-  var content = messageUtil.getMessage('Details:', appInfo.locale) + '\n';
-  content += messageUtil.getMessage('File: {0}', appInfo.locale, [errData.url]) + '\n';
-  content += messageUtil.getMessage('Line: {0}', appInfo.locale, [errData.line]) + '\n';
-  content += messageUtil.getMessage('Column: {0}', appInfo.locale, [errData.colno]) + '\n';
+  var content = messageUtil.getMessage('Details:') + '\n';
+  content += messageUtil.getMessage('File: {0}', [errData.url]) + '\n';
+  content += messageUtil.getMessage('Line: {0}', [errData.line]) + '\n';
+  content += messageUtil.getMessage('Column: {0}', [errData.colno]) + '\n';
 
   dialog.showErrorBox(errData.message.replace('Uncaught Error: ', ''), content);
 });
@@ -78,37 +77,37 @@ ipc.on('main-handle-error', function(event, errData){
 function createApplicationMenu() {
   var menuTemplate = [
     {
-      label: messageUtil.getMessage('File', appInfo.locale),
+      label: messageUtil.getMessage('File'),
       submenu: [
         {
-          label: messageUtil.getMessage('New File', appInfo.locale),
+          label: messageUtil.getMessage('New File'),
           accelerator: 'Ctrl+N',
           click: function () {
             MenuActions.createNewBpmn(win);
           }
         },
         {
-          label: messageUtil.getMessage('Save...', appInfo.locale),
+          label: messageUtil.getMessage('Save...'),
           accelerator: 'Ctrl+S',
           click: function () {
             MenuActions.saveBpmn(win);
           }
         },
         {
-          label: messageUtil.getMessage('Save As...', appInfo.locale),
+          label: messageUtil.getMessage('Save As...'),
           click: function () {
             MenuActions.saveAsBpmn(win);
           }
         },
         {
-          label: messageUtil.getMessage('Open...', appInfo.locale),
+          label: messageUtil.getMessage('Open...'),
           accelerator: 'Ctrl+O',
           click: function () {
             MenuActions.openBpmn(win);
           }
         },
         {
-          label: messageUtil.getMessage('Exit', appInfo.locale),
+          label: messageUtil.getMessage('Exit'),
           click: function(item, focusedWindow) {
             if(MenuActions.canCloseWindow(win)){
               win = null;
@@ -121,23 +120,23 @@ function createApplicationMenu() {
       ]
     },
     {
-      label: messageUtil.getMessage('Tool', appInfo.locale),
+      label: messageUtil.getMessage('Tool'),
       submenu: [
         {
-          label: messageUtil.getMessage('Export ETL files', appInfo.locale),
+          label: messageUtil.getMessage('Export ETL files'),
           click: function (item, focusedWindow) {
             MenuActions.exportJobXml(win);
           }
         },
         {
-          label: messageUtil.getMessage('Validate...', appInfo.locale),
+          label: messageUtil.getMessage('Validate...'),
           accelerator: 'Ctrl+T',
           click: function (item, focusedWindow) {
             MenuActions.validation(win);
           }
         },
         {
-          label: messageUtil.getMessage('Settings...', appInfo.locale),
+          label: messageUtil.getMessage('Settings...'),
           accelerator: 'Ctrl+Shift+S',
           click: function () {
             MenuActions.setting(win);
@@ -146,10 +145,10 @@ function createApplicationMenu() {
       ]
     },
     {
-      label: messageUtil.getMessage('Help ', appInfo.locale),
+      label: messageUtil.getMessage('Help '),
       submenu: [
         {
-          label: messageUtil.getMessage('About...', appInfo.locale),
+          label: messageUtil.getMessage('About...'),
           click: function() {
             MenuActions.checkVersion(win);
           }

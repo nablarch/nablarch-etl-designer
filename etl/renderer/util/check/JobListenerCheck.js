@@ -1,11 +1,6 @@
 'use strict';
 
 var checkUtil = require('../CheckUtil');
-
-var electron = window.require('electron');
-var remote = electron.remote;
-
-var appInfo = remote.getGlobal('appInfo');
 var messageUtil = require('../MessageUtil');
 
 function jobListenerCheck(bpmnDom){
@@ -21,7 +16,7 @@ function jobListenerCheck(bpmnDom){
 
   validationResult.push(checkUtil.createValidationInfo(
       jobElement,
-      messageUtil.getMessage('Job [Listener] should be set.', appInfo.locale),
+      messageUtil.getMessage('Job [Listener] should be set.'),
       checkUtil.errorTypes.warning
   ));
 

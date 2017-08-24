@@ -1,11 +1,11 @@
 var etlDesignerCheck = require('../util/EtlDesignerChecker');
+var configFileUtil = require('../util/ConfigFileUtil');
 var messageUtil = require('../util/MessageUtil');
+messageUtil.setLocale(configFileUtil.getLocale());
 
 var electron = window.require('electron');
 var ipc = electron.ipcRenderer;
-var remote = electron.remote;
 
-var appInfo = remote.getGlobal('appInfo');
 var checkButton = document.querySelector('#check');
 var cancelButton = document.querySelector('#cancel');
 checkButton.addEventListener('click', onCheckClick);
@@ -21,8 +21,8 @@ for (var i = 0; i < tabItems.length; i++) {
 
 function onCheckClick() {
   var result = etlDesignerCheck.check();
-  validationResult.errorMessage = (result.errors.length === 0) ? messageUtil.getMessage('No error is detected.', appInfo.locale) : result.errors.join('\n');
-  validationResult.warningMessage = (result.warnings.length === 0) ? messageUtil.getMessage('No warning is detected.', appInfo.locale) : result.warnings.join('\n');
+  validationResult.errorMessage = (result.errors.length === 0) ? messageUtil.getMessage('No error is detected.') : result.errors.join('\n');
+  validationResult.warningMessage = (result.warnings.length === 0) ? messageUtil.getMessage('No warning is detected.') : result.warnings.join('\n');
   loadActiveTab(document.querySelector('.active'));
 }
 
@@ -71,9 +71,9 @@ function translateMessage(){
     closeButton: 'Close'
   };
 
-  document.title = messageUtil.getMessage('Validation', appInfo.locale);
+  document.title = messageUtil.getMessage('Validation');
   for(var key in convertMessage){
-    document.getElementById(key).textContent =  messageUtil.getMessage(convertMessage[key], appInfo.locale);
+    document.getElementById(key).textContent =  messageUtil.getMessage(convertMessage[key]);
   }
 }
 
@@ -81,8 +81,8 @@ window.onload = function(){
   translateMessage();
 
   var result = etlDesignerCheck.check();
-  validationResult.errorMessage = (result.errors.length === 0) ? messageUtil.getMessage('No error is detected.', appInfo.locale) : result.errors.join('\n');
-  validationResult.warningMessage = (result.warnings.length === 0) ? messageUtil.getMessage('No warning is detected.', appInfo.locale) : result.warnings.join('\n');
+  validationResult.errorMessage = (result.errors.length === 0) ? messageUtil.getMessage('No error is detected.') : result.errors.join('\n');
+  validationResult.warningMessage = (result.warnings.length === 0) ? messageUtil.getMessage('No warning is detected.') : result.warnings.join('\n');
   loadActiveTab(document.querySelector('.active'));
 };
 

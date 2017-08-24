@@ -24,7 +24,7 @@ function jobNameCheck(bpmnDom){
   if(!jobName){
     validationResult.push(checkUtil.createValidationInfo(
         jobElements[0],
-        messageUtil.getMessage('Job [Name] must be set.', appInfo.locale),
+        messageUtil.getMessage('Job [Name] must be set.'),
         checkUtil.errorTypes.error
     ));
   }else{
