@@ -5,14 +5,14 @@ var fs = require('fs');
 function ExportEtlJson() {
 }
 
-ExportEtlJson.exportJson = function (xmlString, outputFilePath) {
+ExportEtlJson.exportJson = function (xmlString) {
   var parser = new DOMParser();
   var bpmnDom = parser.parseFromString(xmlString, "text/xml");
   var rootNode = getRootNode();
   var elements = bpmnDom.getElementsByTagName(rootNode.tagName);
   var jsonObj = {};
   buildJson(jsonObj, rootNode, elements[0]);
-  fs.writeFileSync(outputFilePath, JSON.stringify(jsonObj, null, '    '), 'utf8');
+  return jsonObj;
 };
 
 function getRootNode() {

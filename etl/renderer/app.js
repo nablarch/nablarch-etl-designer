@@ -110,18 +110,19 @@ ipc.on('main-process-pre-export-etl-files', function(event, args){
 
 ipc.on('main-process-export-etl-files', function(event, args) {
   try {
-    exportJobXml.exportXml(appInfo.workBpmnString, args.xmlPath);
+    var xmlString = exportJobXml.exportXml(appInfo.workBpmnString);
+    fs.writeFileSync(args.xmlPath, xmlString, 'utf8');
   } catch (e) {
     throw new Error(messageUtil.getMessage('Failed to convert the xml file.\n{0}', [e.message]));
   }
   try {
-    exportEtlJson.exportJson(appInfo.workBpmnString, args.jsonPath);
+    var jsonObj = exportEtlJson.exportJson(appInfo.workBpmnString);
+    fs.writeFileSync(args.jsonPath, JSON.stringify(jsonObj, null, '    '), 'utf8');
   } catch (e) {
     throw new Error(messageUtil.getMessage('Failed to convert the json file.\n{0}', [e.message]));
   }
   alert(messageUtil.getMessage('Export is finished successfully.'));
 });
-
 
 ipc.on('main-process-import-bpmn-file', function (event, args) {
   var bpmnString = args.bpmnString || initialDiagram;

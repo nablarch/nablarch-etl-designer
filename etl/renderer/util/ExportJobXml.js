@@ -9,11 +9,9 @@ var messageUtil = require('./MessageUtil');
 function ExportJobXml(){
 }
 
-ExportJobXml.exportXml = function(bpmnXmlString, outputFilePath) {
+ExportJobXml.exportXml = function(bpmnXmlString) {
   bpmnXmlString = bpmnXmlString.replace('\r', '').replace('\n', '');
-
-  var result = callExportJobXml([{ednKey:'job-bpmn-xml', ednValue: bpmnXmlString}]);
-  fs.writeFileSync(outputFilePath, result, 'utf8');
+  return callExportJobXml([{ednKey:'job-bpmn-xml', ednValue: bpmnXmlString}]);
 };
 
 function callExportJobXml(args) {
