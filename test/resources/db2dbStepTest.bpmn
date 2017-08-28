@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:jsr352="http://jsr352/" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <jsr352:job id="Job_1" bpmn:name="db to db step test" isExecutable="false">
+    <jsr352:start id="Start_1">
+      <bpmn:outgoing>Transition_0jtwtmm</bpmn:outgoing>
+    </jsr352:start>
+    <jsr352:step id="Step_0b6tvz9" name="transform1" stepType="db2db" bean="TransformedBean" fileName="INPUT.csv" sqlId="SQLID">
+      <bpmn:incoming>Transition_0jtwtmm</bpmn:incoming>
+      <bpmn:outgoing>Transition_1su9juv</bpmn:outgoing>
+    </jsr352:step>
+    <jsr352:transition id="Transition_0jtwtmm" sourceRef="Start_1" targetRef="Step_0b6tvz9" />
+    <jsr352:step id="Step_00356t4" name="transform2" stepType="db2db" bean="TransformedBean" fileName="INPUT.csv" sqlId="SQLID" updateSize="1000" extractBean="InputBean" mergeOnColumns="mergeColumn1,mergeColumn2">
+      <bpmn:incoming>Transition_1su9juv</bpmn:incoming>
+      <bpmn:outgoing>Transition_07xzs1l</bpmn:outgoing>
+    </jsr352:step>
+    <jsr352:transition id="Transition_1su9juv" sourceRef="Step_0b6tvz9" targetRef="Step_00356t4" />
+    <jsr352:end id="End_10h0atd">
+      <bpmn:incoming>Transition_07xzs1l</bpmn:incoming>
+    </jsr352:end>
+    <jsr352:transition id="Transition_07xzs1l" sourceRef="Step_00356t4" targetRef="End_10h0atd" />
+  </jsr352:job>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Job_1">
+      <bpmndi:BPMNShape id="_BPMNShape_Start_2" bpmnElement="Start_1">
+        <dc:Bounds x="233" y="92" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="251" y="128" width="0" height="0" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Step_0b6tvz9_di" bpmnElement="Step_0b6tvz9" isExpanded="true">
+        <dc:Bounds x="191" y="171" width="120" height="100" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Transition_0jtwtmm_di" bpmnElement="Transition_0jtwtmm">
+        <di:waypoint xsi:type="dc:Point" x="251" y="128" />
+        <di:waypoint xsi:type="dc:Point" x="251" y="171" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="266" y="149.5" width="0" height="0" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Step_00356t4_di" bpmnElement="Step_00356t4" isExpanded="true">
+        <dc:Bounds x="191" y="315" width="120" height="100" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Transition_1su9juv_di" bpmnElement="Transition_1su9juv">
+        <di:waypoint xsi:type="dc:Point" x="251" y="271" />
+        <di:waypoint xsi:type="dc:Point" x="251" y="315" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="266" y="283" width="0" height="0" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="End_10h0atd_di" bpmnElement="End_10h0atd" isExpanded="true">
+        <dc:Bounds x="231" y="467.4690618762475" width="40" height="40" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="251" y="507.46906187624745" width="0" height="0" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Transition_07xzs1l_di" bpmnElement="Transition_07xzs1l">
+        <di:waypoint xsi:type="dc:Point" x="251" y="415" />
+        <di:waypoint xsi:type="dc:Point" x="251" y="467" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="266" y="431" width="0" height="0" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:jsr352="http://jsr352/" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <jsr352:job id="Job_1" bpmn:name="validationAbortTest" isExecutable="false">
+    <jsr352:start id="Start_1">
+      <bpmn:outgoing>Transition_1hnw6ad</bpmn:outgoing>
+    </jsr352:start>
+    <jsr352:step id="Step_0lohu7g" name="validation" stepType="validation" bean="ValidationBean" errorEntity="ValidationErrorEntity" mode="ABORT">
+      <bpmn:incoming>Transition_1hnw6ad</bpmn:incoming>
+      <bpmn:outgoing>Transition_1g8ugbu</bpmn:outgoing>
+    </jsr352:step>
+    <jsr352:transition id="Transition_1hnw6ad" sourceRef="Start_1" targetRef="Step_0lohu7g" />
+    <jsr352:end id="End_04ieiqn">
+      <bpmn:incoming>Transition_1g8ugbu</bpmn:incoming>
+    </jsr352:end>
+    <jsr352:transition id="Transition_1g8ugbu" sourceRef="Step_0lohu7g" targetRef="End_04ieiqn" />
+  </jsr352:job>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Job_1">
+      <bpmndi:BPMNShape id="_BPMNShape_Start_2" bpmnElement="Start_1">
+        <dc:Bounds x="85" y="101" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="103" y="137" width="0" height="0" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Step_0lohu7g_di" bpmnElement="Step_0lohu7g" isExpanded="true">
+        <dc:Bounds x="42.8904244817374" y="168.93682132280355" width="120" height="100" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Transition_1hnw6ad_di" bpmnElement="Transition_1hnw6ad">
+        <di:waypoint xsi:type="dc:Point" x="103" y="137" />
+        <di:waypoint xsi:type="dc:Point" x="103" y="169" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="118" y="153" width="0" height="0" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="End_04ieiqn_di" bpmnElement="End_04ieiqn" isExpanded="true">
+        <dc:Bounds x="83" y="312.52295409181636" width="40" height="40" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="103" y="352.52295409181636" width="0" height="0" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Transition_1g8ugbu_di" bpmnElement="Transition_1g8ugbu">
+        <di:waypoint xsi:type="dc:Point" x="103" y="269" />
+        <di:waypoint xsi:type="dc:Point" x="103" y="313" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="118" y="281" width="0" height="0" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
