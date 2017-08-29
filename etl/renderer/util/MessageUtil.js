@@ -45,7 +45,7 @@ var messages_ja = {
   'Writer name (ref)': 'Writer名(ref)',
   'Processor name (ref)': 'Processor名(ref)',
   'Job [Name] must be set.': 'jobの［Name］ が設定されていません',
-  'Job [Listener] should be set.': 'jobの［Listener］ が設定されていません',
+  'nablarchJobListenerExecutor is not set.': 'nablarchJobListenerExecutor が設定されていません',
   'Step name is required.': 'Stepの名前が設定されていません',
   'The step name is duplicated.': 'Stepの名前が重複しています',
   'Failed to call control-bus API. ({0})': 'control-busのAPIの呼び出しに失敗しました({0})',

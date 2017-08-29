@@ -10,13 +10,15 @@ function jobListenerCheck(bpmnDom){
 
   for(var i = 0; i < jobChildNodes.length; i++){
     if(jobChildNodes[i].nodeName === 'jsr352:listener'){
-      return [];
+      if(jobChildNodes[i].getAttribute('ref') === 'nablarchJobListenerExecutor'){
+        return [];
+      }
     }
   }
 
   validationResult.push(checkUtil.createValidationInfo(
       jobElement,
-      messageUtil.getMessage('Job [Listener] should be set.'),
+      messageUtil.getMessage('nablarchJobListenerExecutor is not set.'),
       checkUtil.errorTypes.warning
   ));
 
