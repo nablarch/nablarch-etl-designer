@@ -5,6 +5,9 @@ messageUtil.setLocale(configFileUtil.getLocale());
 
 var electron = window.require('electron');
 var ipc = electron.ipcRenderer;
+var remote = electron.remote;
+
+var appInfo = remote.getGlobal('appInfo');
 
 var checkButton = document.querySelector('#check');
 var cancelButton = document.querySelector('#cancel');
@@ -20,7 +23,8 @@ for (var i = 0; i < tabItems.length; i++) {
 }
 
 function onCheckClick() {
-  var result = etlDesignerCheck.check();
+  var bpmnXmlString = appInfo.workBpmnString;
+  var result = etlDesignerCheck.check(bpmnXmlString);
   validationResult.errorMessage = (result.errors.length === 0) ? messageUtil.getMessage('No error is detected.') : result.errors.join('\n');
   validationResult.warningMessage = (result.warnings.length === 0) ? messageUtil.getMessage('No warning is detected.') : result.warnings.join('\n');
   loadActiveTab(document.querySelector('.active'));
@@ -80,7 +84,8 @@ function translateMessage(){
 window.onload = function(){
   translateMessage();
 
-  var result = etlDesignerCheck.check();
+  var bpmnXmlString = appInfo.workBpmnString;
+  var result = etlDesignerCheck.check(bpmnXmlString);
   validationResult.errorMessage = (result.errors.length === 0) ? messageUtil.getMessage('No error is detected.') : result.errors.join('\n');
   validationResult.warningMessage = (result.warnings.length === 0) ? messageUtil.getMessage('No warning is detected.') : result.warnings.join('\n');
   loadActiveTab(document.querySelector('.active'));

@@ -2,11 +2,6 @@
 
 var fs = require('fs');
 
-var electron = window.require('electron');
-var remote = electron.remote;
-
-var appInfo = remote.getGlobal('appInfo');
-
 var checkUtil = require('./CheckUtil');
 var etlRequirePropertiesCheck = require('./check/EtlRequirePropertiesCheck');
 var stepNameCheck = require('./check/StepNameCheck');
@@ -16,8 +11,7 @@ var jobNameCheck = require('./check/JobNameCheck');
 function EtlDesignChecker(){
 }
 
-EtlDesignChecker.check = function(){
-  var bpmnXmlString = appInfo.workBpmnString;
+EtlDesignChecker.check = function(bpmnXmlString){
   var parser = new DOMParser();
   var bpmnDom = parser.parseFromString(bpmnXmlString, "text/xml");
   var checkerFuncs =
