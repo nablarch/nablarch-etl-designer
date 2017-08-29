@@ -59,6 +59,11 @@ var modeler = new ETLDesignerModeler({
 
 var exportWorkBpmnString = _.debounce(function () {
   saveDiagram(function (err, xml) {
+    var parser = new DOMParser();
+    var bpmnDom = parser.parseFromString(xml, "text/xml");
+    var jobElements = bpmnDom.getElementsByTagName('job');
+    var jobName = jobElements[0].getAttribute('bpmn:name');
+    appInfo.jobName = jobName;
     appInfo.workBpmnString = xml;
   });
 }, 500);
@@ -97,7 +102,10 @@ var exportJobXml = require('./util/ExportJobXml');
 var jobNameCheck = require('./util/check/JobNameCheck');
 
 ipc.on('main-process-pre-export-etl-files', function(event, args){
-  var validationResult = jobNameCheck();
+  var bpmnXmlString = appInfo.workBpmnString;
+  var parser = new DOMParser();
+  var bpmnDom = parser.parseFromString(bpmnXmlString, "text/xml");
+  var validationResult = jobNameCheck(bpmnDom);
   var message;
   if(validationResult.length > 0){
     message = messageUtil.getMessage('Job name attribute must be set.');
