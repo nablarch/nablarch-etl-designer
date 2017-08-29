@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:jsr352="http://jsr352/" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <jsr352:job id="Job_1" isExecutable="false">
+    <jsr352:start id="Start_1">
+      <bpmn:outgoing>Transition_1f2uuuy</bpmn:outgoing>
+    </jsr352:start>
+    <jsr352:step id="Step_1puizp9">
+      <bpmn:incoming>Transition_1f2uuuy</bpmn:incoming>
+      <bpmn:outgoing>Transition_1lae351</bpmn:outgoing>
+      <jsr352:listener id="Listener_1xbi2o0" />
+    </jsr352:step>
+    <jsr352:transition id="Transition_1f2uuuy" sourceRef="Start_1" targetRef="Step_1puizp9" />
+    <jsr352:end id="End_1tht7vk">
+      <bpmn:incoming>Transition_1lae351</bpmn:incoming>
+    </jsr352:end>
+    <jsr352:transition id="Transition_1lae351" sourceRef="Step_1puizp9" targetRef="End_1tht7vk" />
+    <jsr352:listener id="Listener_1t7uowu" ref="nablarchStepListenerExecutor" />
+  </jsr352:job>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Job_1">
+      <bpmndi:BPMNShape id="_BPMNShape_Start_2" bpmnElement="Start_1">
+        <dc:Bounds x="173" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Step_1puizp9_di" bpmnElement="Step_1puizp9" isExpanded="true">
+        <dc:Bounds x="-19" y="172" width="420" height="100" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Transition_1f2uuuy_di" bpmnElement="Transition_1f2uuuy">
+        <di:waypoint xsi:type="dc:Point" x="191" y="138" />
+        <di:waypoint xsi:type="dc:Point" x="191" y="172" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="206" y="155" width="0" height="0" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="End_1tht7vk_di" bpmnElement="End_1tht7vk" isExpanded="true">
+        <dc:Bounds x="171" y="317" width="40" height="40" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="191" y="357" width="0" height="0" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Transition_1lae351_di" bpmnElement="Transition_1lae351">
+        <di:waypoint xsi:type="dc:Point" x="191" y="272" />
+        <di:waypoint xsi:type="dc:Point" x="191" y="295" />
+        <di:waypoint xsi:type="dc:Point" x="191" y="295" />
+        <di:waypoint xsi:type="dc:Point" x="191" y="317" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="206" y="295" width="0" height="0" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Listener_1xbi2o0_di" bpmnElement="Listener_1xbi2o0">
+        <dc:Bounds x="81" y="227" width="220" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Listener_1t7uowu_di" bpmnElement="Listener_1t7uowu">
+        <dc:Bounds x="232" y="110" width="220" height="20" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

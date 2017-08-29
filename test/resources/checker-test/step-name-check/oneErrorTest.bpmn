@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:jsr352="http://jsr352/" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <jsr352:job id="Job_1" bpmn:name="correctStepNameCheckTest" isExecutable="false">
+    <jsr352:start id="Start_1">
+      <bpmn:outgoing>Transition_0iz81pc</bpmn:outgoing>
+    </jsr352:start>
+    <jsr352:step id="Step_1dmcndb" name="step1">
+      <bpmn:incoming>Transition_1mrtk22</bpmn:incoming>
+      <bpmn:outgoing>Transition_0n633z6</bpmn:outgoing>
+    </jsr352:step>
+    <jsr352:end id="End_083xtpm">
+      <bpmn:incoming>Transition_0n633z6</bpmn:incoming>
+    </jsr352:end>
+    <jsr352:transition id="Transition_0n633z6" sourceRef="Step_1dmcndb" targetRef="End_083xtpm" />
+    <jsr352:step id="Step_0sorbrl" name="step1">
+      <bpmn:incoming>Transition_0iz81pc</bpmn:incoming>
+      <bpmn:outgoing>Transition_1mrtk22</bpmn:outgoing>
+    </jsr352:step>
+    <jsr352:transition id="Transition_0iz81pc" sourceRef="Start_1" targetRef="Step_0sorbrl" />
+    <jsr352:transition id="Transition_1mrtk22" sourceRef="Step_0sorbrl" targetRef="Step_1dmcndb" />
+  </jsr352:job>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Job_1">
+      <bpmndi:BPMNShape id="_BPMNShape_Start_2" bpmnElement="Start_1">
+        <dc:Bounds x="173" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Step_1dmcndb_di" bpmnElement="Step_1dmcndb" isExpanded="true">
+        <dc:Bounds x="133" y="335.511" width="120" height="100" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_083xtpm_di" bpmnElement="End_083xtpm" isExpanded="true">
+        <dc:Bounds x="173" y="488.511" width="40" height="40" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="193" y="528.511" width="0" height="0" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Transition_0n633z6_di" bpmnElement="Transition_0n633z6">
+        <di:waypoint xsi:type="dc:Point" x="193" y="436" />
+        <di:waypoint xsi:type="dc:Point" x="193" y="489" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="208" y="452.5" width="0" height="0" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Step_0sorbrl_di" bpmnElement="Step_0sorbrl" isExpanded="true">
+        <dc:Bounds x="131" y="182" width="120" height="100" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Transition_0iz81pc_di" bpmnElement="Transition_0iz81pc">
+        <di:waypoint xsi:type="dc:Point" x="191" y="138" />
+        <di:waypoint xsi:type="dc:Point" x="192" y="182" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="192" y="135" width="0" height="0" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Transition_1mrtk22_di" bpmnElement="Transition_1mrtk22">
+        <di:waypoint xsi:type="dc:Point" x="191" y="282" />
+        <di:waypoint xsi:type="dc:Point" x="191" y="336" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="206" y="299" width="0" height="0" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
