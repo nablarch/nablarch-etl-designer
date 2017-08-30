@@ -9,7 +9,7 @@ var exportEtlJson = require('../../etl/renderer/util/ExportEtlJson');
 var testCases = [
   {
     caseName: 'truncate step',
-    bpmnFilePath: path.join(__dirname, '../resources/truncateStepTest.bpmn'),
+    bpmnFilePath: path.join(__dirname, '../resources/export-json-test/truncateStepTest.bpmn'),
     expected: {
       truncate:{
         "type": "truncate",
@@ -22,7 +22,7 @@ var testCases = [
   },
   {
     caseName: 'validation abort step',
-    bpmnFilePath: path.join(__dirname, '../resources/validationAbortStepTest.bpmn'),
+    bpmnFilePath: path.join(__dirname, '../resources/export-json-test/validationAbortStepTest.bpmn'),
     expected: {
       validation:{
         "type": "validation",
@@ -34,7 +34,7 @@ var testCases = [
   },
   {
     caseName: 'validation continue step',
-    bpmnFilePath: path.join(__dirname, '../resources/validationContinueStepTest.bpmn'),
+    bpmnFilePath: path.join(__dirname, '../resources/export-json-test/validationContinueStepTest.bpmn'),
     expected: {
       "validation": {
         "type": "validation",
@@ -47,7 +47,7 @@ var testCases = [
   },
   {
     caseName: 'file2db step',
-    bpmnFilePath: path.join(__dirname, '../resources/file2dbStepTest.bpmn'),
+    bpmnFilePath: path.join(__dirname, '../resources/export-json-test/file2dbStepTest.bpmn'),
     expected: {
       "extract": {
         "type": "file2db",
@@ -58,7 +58,7 @@ var testCases = [
   },
   {
     caseName: 'db2db step',
-    bpmnFilePath: path.join(__dirname, '../resources/db2dbStepTest.bpmn'),
+    bpmnFilePath: path.join(__dirname, '../resources/export-json-test/db2dbStepTest.bpmn'),
     expected: {
       "transform1": {
         "type": "db2db",
@@ -82,7 +82,7 @@ var testCases = [
   },
   {
     caseName: 'db2file step',
-    bpmnFilePath: path.join(__dirname, '../resources/db2fileStepTest.bpmn'),
+    bpmnFilePath: path.join(__dirname, '../resources/export-json-test/db2fileStepTest.bpmn'),
     expected: {
       "load": {
         "type": "db2file",
