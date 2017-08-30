@@ -29,6 +29,6 @@ function testExportJobXml(testCase){
     var expected = fs.readFileSync(testCase.expectedFilePath, 'utf8');
     var actual = exportJobXml.exportXml(bpmnString);
 
-    expect(expected).to.deep.equal(actual);
+    expect(expected).to.equal(actual);
   }
 }
