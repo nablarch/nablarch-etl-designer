@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<job id="OneStepJobTest">
+ <step id="Step_07du98s">
+  <listeners>
+   <listener ref="nablarchStepListenerExecutor"></listener>
+  </listeners>
+  <end on="*"></end>
+  <batchlet ref="tableCleaningBatchlet"></batchlet>
+ </step>
+</job>
