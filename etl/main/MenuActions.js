@@ -51,7 +51,7 @@ function doSaveAsBpmnFile() {
 function doSaveBpmn(filePath) {
   var bpmnString = appInfo.workBpmnString;
   try{
-    fs.writeFileSync(filePath, bpmnString, 'utf8');
+    writeFileAppendAppVersion(filePath, bpmnString);
     return true;
   }catch(e){
     showErrorDialog(
@@ -73,7 +73,7 @@ MenuActions.openBpmn = function(win) {
   }
   global.appInfo.openFilePath = filePaths[0];
   try{
-    var bpmnString = fs.readFileSync(filePaths[0],'utf8');
+    var bpmnString = readFileRemoveAppVersion(filePaths[0],'utf8');
   }catch(e){
     showErrorDialog(
         messageUtil.getMessage('Failed to load a bpmn file.'),
@@ -248,7 +248,7 @@ function isDirty() {
 
   if (global.appInfo.openFilePath !== '' && fs.existsSync(global.appInfo.openFilePath)) {
     try{
-      openData = fs.readFileSync(global.appInfo.openFilePath, 'utf8');
+      openData = readFileRemoveAppVersion(global.appInfo.openFilePath);
     }catch(e){
       showErrorDialog(
           messageUtil.getMessage('Failed to load a bpmn file.'),
@@ -290,6 +290,31 @@ function handleDirty(win, message) {
   }
 
   return true;
+}
+
+function appendAppVersion(bpmnString) {
+  var strArray = bpmnString.split(/\r\n|\r|\n/);
+  var versionLabel = '<!-- etl designer version ' + app.getVersion()  + ' -->';
+  if(strArray.length > 1 && strArray[1].indexOf('etl designer version') === -1){
+    strArray.splice(1, 0, versionLabel);
+  }
+  return strArray.join('\n');
+}
+
+function removeAppVersion(bpmnString){
+  var strArray = bpmnString.split(/\r\n|\r|\n/);
+  if(strArray.length > 1 && strArray[1].indexOf('etl designer version') !== -1){
+    strArray.splice(1,1);
+  }
+  return strArray.join('\n');
+}
+
+function writeFileAppendAppVersion(filePath, bpmnString) {
+  fs.writeFileSync(filePath, appendAppVersion(bpmnString), 'utf8');
+}
+
+function readFileRemoveAppVersion(filePath){
+  return removeAppVersion(fs.readFileSync(filePath, 'utf8'));
 }
 
 module.exports = MenuActions;
