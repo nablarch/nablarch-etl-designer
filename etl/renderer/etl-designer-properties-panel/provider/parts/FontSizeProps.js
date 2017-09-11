@@ -21,7 +21,7 @@ module.exports = function(group, element, bpmnFactory) {
       },
       validate: function(element, values) {
         var isValid = /^[0-9]+$/.test(values['fontSize']);
-        return isValid ? {} : {'font-size': 'Must be integer'};
+        return isValid ? {} : {'fontSize': 'Must be integer'};
       }
     }));
   }

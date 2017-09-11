@@ -106,10 +106,7 @@ module.exports = function(group, element, bpmnFactory) {
       },
       setProperty: function(element, properties) {
         var bo = getBusinessObject(element);
-        if (properties['item-count']) {
-          properties['item-count'] = parseInt(properties['item-count']);
-          return cmdHelper.updateBusinessObject(element, bo, properties);
-        }
+        return cmdHelper.updateBusinessObject(element, bo, properties);
       },
       validate: function(element, values) {
         var isValid = /^[0-9]+$/.test(values['item-count']);

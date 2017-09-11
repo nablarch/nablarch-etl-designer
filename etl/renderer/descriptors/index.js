@@ -13,8 +13,8 @@ var elementTypes =
           {
             "name": "fontSize",
             "isAttr": true,
-            "type": "Integer",
-            "default": 12
+            "type": "String",
+            "default": "12"
           }
         ]
       }
@@ -69,7 +69,7 @@ var etlProps = [
   {
     "name": "errorLimit",
     "isAttr": true,
-    "type": "Integer"
+    "type": "String"
   },
   {
     "name": "mergeOnColumns",
