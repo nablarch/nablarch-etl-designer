@@ -1,17 +1,25 @@
 var fs = require('fs');
+var path = require('path');
 
 var electron = window.require('electron');
 var ipc = electron.ipcRenderer;
+var remote = electron.remote;
+var app = remote.app;
+
+var appInfo = remote.getGlobal('appInfo');
+
+var properties = {};
+var configFileUtil = require('../util/ConfigFileUtil');
+var messageUtil = require('../util/MessageUtil');
+
+var registryFilePath = appInfo.argDev ? app.getAppPath() : path.join(app.getPath('exe'), '../');
+configFileUtil.init(registryFilePath, app.getPath('userData'));
+messageUtil.setLocale(configFileUtil.getLocale());
 
 var okButton = document.querySelector('#ok');
 var cancelButton = document.querySelector('#cancel');
 okButton.addEventListener('click', onOkClick);
 cancelButton.addEventListener('click', onCancelClick);
-
-var config = {};
-var configFileUtil = require('../util/ConfigFileUtil');
-var messageUtil = require('../util/MessageUtil');
-messageUtil.setLocale(configFileUtil.getLocale());
 
 var tabItems = document.querySelectorAll('.tab-item');
 
@@ -20,10 +28,10 @@ for (var i = 0; i < tabItems.length; i++) {
 }
 
 function onOkClick() {
-  var activeTab =document.querySelector('.active');
+  var activeTab = document.querySelector('.active');
   saveActiveTabToConfig(activeTab);
 
-  configFileUtil.saveConfigFile(config);
+  configFileUtil.setProperties(properties);
   window.close()
 }
 
@@ -32,7 +40,7 @@ function onCancelClick() {
 }
 
 function onTabClick() {
-  var activeTab =document.querySelector('.active');
+  var activeTab = document.querySelector('.active');
   saveActiveTabToConfig(activeTab);
 
   activeTab.classList.remove('active');
@@ -41,61 +49,61 @@ function onTabClick() {
   loadActiveTabFromConfig(this);
 }
 
-function saveActiveTabToConfig(activeTab){
+function saveActiveTabToConfig(activeTab) {
   var contents = document.getElementById('textarea').value;
   switch (activeTab.id) {
     case 'bean-tab':
-      config.properties.bean = contents.split('\n');
+      properties.bean = contents.split('\n');
       break;
     case 'entity-tab':
-      config.properties.entities = contents.split('\n');
+      properties.entities = contents.split('\n');
       break;
     case 'error-entity-tab':
-      config.properties.errorEntity = contents.split('\n');
+      properties.errorEntity = contents.split('\n');
       break;
     case 'file-name-tab':
-      config.properties.fileName = contents.split('\n');
+      properties.fileName = contents.split('\n');
       break;
   }
 }
 
-function loadActiveTabFromConfig(activeTab){
+function loadActiveTabFromConfig(activeTab) {
   switch (activeTab.id) {
     case 'bean-tab':
-      document.getElementById('textarea').value = config.properties.bean.join('\n');
+      document.getElementById('textarea').value = properties.bean.join('\n');
       break;
     case 'entity-tab':
-      document.getElementById('textarea').value = config.properties.entities.join('\n');
+      document.getElementById('textarea').value = properties.entities.join('\n');
       break;
     case 'error-entity-tab':
-      document.getElementById('textarea').value = config.properties.errorEntity.join('\n');
+      document.getElementById('textarea').value = properties.errorEntity.join('\n');
       break;
     case 'file-name-tab':
-      document.getElementById('textarea').value = config.properties.fileName.join('\n');
+      document.getElementById('textarea').value = properties.fileName.join('\n');
       break;
   }
 }
 
-function translateMessage(){
+function translateMessage() {
   var convertMessage = {
     okButton: 'OK',
     cancelButton: 'Cancel'
   };
 
   document.title = messageUtil.getMessage('Settings');
-  for(var key in convertMessage){
-    document.getElementById(key).textContent =  messageUtil.getMessage(convertMessage[key]);
+  for (var key in convertMessage) {
+    document.getElementById(key).textContent = messageUtil.getMessage(convertMessage[key]);
   }
 }
 
-window.onload = function(){
+window.onload = function () {
   translateMessage();
 
-  config = configFileUtil.loadConfigFile();
-  document.getElementById('textarea').value = config.properties.bean.join('\n');
+  properties = configFileUtil.getProperties();
+  document.getElementById('textarea').value = properties.bean.join('\n');
 };
 
-window.onerror = function(message, url, line, colno, err) {
+window.onerror = function (message, url, line, colno, err) {
   var errData = {
     message: message,
     url: url,

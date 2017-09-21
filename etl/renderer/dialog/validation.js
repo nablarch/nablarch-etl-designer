@@ -1,13 +1,19 @@
-var etlDesignerCheck = require('../util/EtlDesignerChecker');
-var configFileUtil = require('../util/ConfigFileUtil');
-var messageUtil = require('../util/MessageUtil');
-messageUtil.setLocale(configFileUtil.getLocale());
+var path = require('path');
 
 var electron = window.require('electron');
 var ipc = electron.ipcRenderer;
 var remote = electron.remote;
+var app = remote.app;
 
 var appInfo = remote.getGlobal('appInfo');
+
+var etlDesignerCheck = require('../util/EtlDesignerChecker');
+var configFileUtil = require('../util/ConfigFileUtil');
+var messageUtil = require('../util/MessageUtil');
+
+var registryFilePath = appInfo.argDev ? app.getAppPath() : path.join(app.getPath('exe'), '../');
+configFileUtil.init(registryFilePath, app.getPath('userData'));
+messageUtil.setLocale(configFileUtil.getLocale());
 
 var checkButton = document.querySelector('#check');
 var cancelButton = document.querySelector('#cancel');
@@ -35,7 +41,7 @@ function onCancelClick() {
 }
 
 function onTabClick() {
-  var activeTab =document.querySelector('.active');
+  var activeTab = document.querySelector('.active');
   saveActiveTab(activeTab);
 
   activeTab.classList.remove('active');
@@ -44,7 +50,7 @@ function onTabClick() {
   loadActiveTab(this);
 }
 
-function saveActiveTab(activeTab){
+function saveActiveTab(activeTab) {
   var contents = document.getElementById('textarea').value;
   switch (activeTab.id) {
     case 'error-tab':
@@ -56,7 +62,7 @@ function saveActiveTab(activeTab){
   }
 }
 
-function loadActiveTab(activeTab){
+function loadActiveTab(activeTab) {
   switch (activeTab.id) {
     case 'error-tab':
       document.getElementById('textarea').value = validationResult.errorMessage;
@@ -67,7 +73,7 @@ function loadActiveTab(activeTab){
   }
 }
 
-function translateMessage(){
+function translateMessage() {
   var convertMessage = {
     errorTab: 'Error',
     warningTab: 'Warning',
@@ -76,12 +82,12 @@ function translateMessage(){
   };
 
   document.title = messageUtil.getMessage('Validation');
-  for(var key in convertMessage){
-    document.getElementById(key).textContent =  messageUtil.getMessage(convertMessage[key]);
+  for (var key in convertMessage) {
+    document.getElementById(key).textContent = messageUtil.getMessage(convertMessage[key]);
   }
 }
 
-window.onload = function(){
+window.onload = function () {
   translateMessage();
 
   var bpmnXmlString = appInfo.workBpmnString;
@@ -91,7 +97,7 @@ window.onload = function(){
   loadActiveTab(document.querySelector('.active'));
 };
 
-window.onerror = function(message, url, line, colno, err) {
+window.onerror = function (message, url, line, colno, err) {
   var errData = {
     message: message,
     url: url,

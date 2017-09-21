@@ -8,13 +8,14 @@
     "dev": "node_modules\\.bin\\grunt auto-build",
     "all": "grunt",
     "electron": "node_modules\\.bin\\electron .",
-    "package": "node_modules\\.bin\\electron-packager . --platform=win32 --arch=ia32,x64 --electron-version=1.6.11"
+    "package": "node_modules\\.bin\\electron-packager . --platform=win32 --arch=x64,ia32 --electron-version=1.6.11 --out=../dist --asar=true --overwrite"
   },
   "license": "Apache-2.0",
   "devDependencies": {
     "brfs": "^1.2.0",
     "browserify": "^13.0.0",
     "chai": "^3.2.0",
+    "devtron": "^1.4.0",
     "electron-connect": "^0.6.1",
     "electron-mocha": "^4.0.0",
     "electron-packager": "^8.7.2",

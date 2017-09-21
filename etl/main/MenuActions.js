@@ -8,7 +8,7 @@ var url = require('url');
 var path = require('path');
 var fs = require('fs');
 
-var ConfigFileUtil = require('../renderer/util/ConfigFileUtil');
+var configFileUtil = require('../renderer/util/ConfigFileUtil');
 var messageUtil = require('../renderer/util/MessageUtil');
 
 var MenuActions = function(){
@@ -98,8 +98,7 @@ function showOpenBpmnFileDialog(){
       extensions: ['bpmn']
     }]
   };
-  var filePaths = dialog.showOpenDialog(focusedWindow, options);
-  return filePaths;
+  return dialog.showOpenDialog(focusedWindow, options);
 }
 
 function showSaveBpmnFileDialog(){
@@ -178,7 +177,7 @@ MenuActions.validation = function(win){
 
       });
   dialogWindow.setMenu(null);
-  if(ConfigFileUtil.isDevelop()){
+  if(configFileUtil.isDevelop()){
     dialogWindow.openDevTools();
   }
 
@@ -193,11 +192,11 @@ MenuActions.setting = function(win){
   var dialogWindow = new BrowserWindow(
       {
         width: 400, height: 500,
-        parent: win, resizable: ConfigFileUtil.isDevelop(),
+        parent: win, resizable: configFileUtil.isDevelop(),
         modal: true, frame: true
       });
   dialogWindow.setMenu(null);
-  if(ConfigFileUtil.isDevelop()){
+  if(configFileUtil.isDevelop()){
     dialogWindow.openDevTools();
   }
 
@@ -208,7 +207,7 @@ MenuActions.setting = function(win){
   }));
 };
 
-MenuActions.checkVersion = function(win){
+MenuActions.checkVersion = function(){
   var detail = '\n' + messageUtil.getMessage('Version {0}', [app.getVersion()]);
 
   var options = {

@@ -10,8 +10,21 @@ var fs = require('fs');
 
 var Menu = electron.Menu;
 
+process.on('uncaughtException', function (err) {
+  dialog.showErrorBox(err.message, ' ');
+});
+
+ipc.on('main-handle-error', function (event, errData) {
+  var content = messageUtil.getMessage('Details:') + '\n';
+  content += messageUtil.getMessage('File: {0}', [errData.url]) + '\n';
+  content += messageUtil.getMessage('Line: {0}', [errData.line]) + '\n';
+  content += messageUtil.getMessage('Column: {0}', [errData.col]) + '\n';
+
+  dialog.showErrorBox(errData.message.replace('Uncaught Error: ', ''), content);
+});
+
 var MenuActions = require('./MenuActions');
-var ConfigFileUtil = require('../renderer/util/ConfigFileUtil');
+var configFileUtil = require('../renderer/util/ConfigFileUtil');
 var messageUtil = require('../renderer/util/MessageUtil');
 
 var appInfo = {
@@ -19,18 +32,21 @@ var appInfo = {
   workBpmnString: '',
   jobName: ''
 };
-
+appInfo.argDev = process.argv.indexOf('--dev') >= 0;
 global.appInfo = appInfo;
 
 var win;
 
 function createWindow() {
   win = new BrowserWindow({width: 800, height: 600});
-  if (ConfigFileUtil.isDevelop()) {
+
+  var registryFilePath = appInfo.argDev ? app.getAppPath() : path.join(app.getPath('exe'), '../');
+  configFileUtil.init(registryFilePath, app.getPath('userData'));
+  if (configFileUtil.isDevelop()) {
     win.openDevTools();
   }
 
-  messageUtil.setLocale(ConfigFileUtil.getLocale());
+  messageUtil.setLocale(configFileUtil.getLocale());
 
   createApplicationMenu();
 
@@ -41,7 +57,7 @@ function createWindow() {
   }));
 
   win.on('close', function (event) {
-    if(!MenuActions.canCloseWindow(win)){
+    if (!MenuActions.canCloseWindow(win)) {
       event.preventDefault();
     }
   });
@@ -53,7 +69,7 @@ function createWindow() {
 
 app.on('ready', createWindow);
 
-app.on('window-all-closed', function (event) {
+app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') {
     app.quit();
   }
@@ -65,14 +81,6 @@ app.on('activate', function () {
   }
 });
 
-ipc.on('main-handle-error', function(event, errData){
-  var content = messageUtil.getMessage('Details:') + '\n';
-  content += messageUtil.getMessage('File: {0}', [errData.url]) + '\n';
-  content += messageUtil.getMessage('Line: {0}', [errData.line]) + '\n';
-  content += messageUtil.getMessage('Column: {0}', [errData.colno]) + '\n';
-
-  dialog.showErrorBox(errData.message.replace('Uncaught Error: ', ''), content);
-});
 
 function createApplicationMenu() {
   var menuTemplate = [
@@ -108,8 +116,8 @@ function createApplicationMenu() {
         },
         {
           label: messageUtil.getMessage('Exit'),
-          click: function(item, focusedWindow) {
-            if(MenuActions.canCloseWindow(win)){
+          click: function () {
+            if (MenuActions.canCloseWindow(win)) {
               win = null;
               if (process.platform !== 'darwin') {
                 app.quit();
@@ -124,14 +132,14 @@ function createApplicationMenu() {
       submenu: [
         {
           label: messageUtil.getMessage('Export ETL files'),
-          click: function (item, focusedWindow) {
+          click: function () {
             MenuActions.exportJobXml(win);
           }
         },
         {
           label: messageUtil.getMessage('Validate...'),
           accelerator: 'Ctrl+T',
-          click: function (item, focusedWindow) {
+          click: function () {
             MenuActions.validation(win);
           }
         },
@@ -149,7 +157,7 @@ function createApplicationMenu() {
       submenu: [
         {
           label: messageUtil.getMessage('About...'),
-          click: function() {
+          click: function () {
             MenuActions.checkVersion(win);
           }
         }
@@ -157,7 +165,7 @@ function createApplicationMenu() {
     }
   ];
 
-  if (ConfigFileUtil.isDevelop()) {
+  if (configFileUtil.isDevelop()) {
     menuTemplate.push(
         {
           label: 'develop',

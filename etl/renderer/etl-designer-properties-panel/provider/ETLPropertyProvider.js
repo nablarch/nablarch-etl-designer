@@ -16,22 +16,22 @@ var stepProps = require('./parts/StepProps'),
     properties = require('bpmn-js-properties-panel/lib/provider/camunda/parts/PropertiesProps'),
     documentationProps = require('bpmn-js-properties-panel/lib/provider/bpmn/parts/DocumentationProps');
 
-var typeProps = require('./parts/TypeProps');
-var entitiesProps = require('./parts/EntitiesProps');
-var beanProps = require('./parts/BeanProps');
-var fileNameProps = require('./parts/FileNameProps');
-var sqlIdProps = require('./parts/sqlIdProps');
-var errorEntityProps = require('./parts/ErrorEntityProps');
-var modeProps = require('./parts/ModeProps');
-var extractBeanProps = require('./parts/ExtractBeanProps');
-var updateSizeProps = require('./parts/UpdateSizeProps');
-var fontSizeProps = require('./parts/FontSizeProps');
-var errorLimitProps = require('./parts/ErrorLimitProprs');
-var mergeOnColumnsProps = require('./parts/MergeOnColumnsProps');
+var typeProps = require('./parts/TypeProps'),
+    entitiesProps = require('./parts/EntitiesProps'),
+    beanProps = require('./parts/BeanProps'),
+    fileNameProps = require('./parts/FileNameProps'),
+    sqlIdProps = require('./parts/sqlIdProps'),
+    errorEntityProps = require('./parts/ErrorEntityProps'),
+    modeProps = require('./parts/ModeProps'),
+    extractBeanProps = require('./parts/ExtractBeanProps'),
+    updateSizeProps = require('./parts/UpdateSizeProps'),
+    fontSizeProps = require('./parts/FontSizeProps'),
+    errorLimitProps = require('./parts/ErrorLimitProprs'),
+    mergeOnColumnsProps = require('./parts/MergeOnColumnsProps');
 
-var stepTypeList = configFileUtil.loadConfigFile().properties.stepType || {};
+var stepTypeList = configFileUtil.getProperties().stepType || {};
 
-function createEtlPropertiesByStepTypeTabGroup(element, bpmnFactory, elementRegistry) {
+function createEtlPropertiesByStepTypeTabGroup(element, bpmnFactory) {
   var propertyGroupsByStepType = [];
 
   var stepTypeGroup = {
@@ -106,7 +106,7 @@ function createInputGroups(stepTypeList, element, bpmnFactory) {
   return groups;
 }
 
-function createGeneralTabGroups(element, bpmnFactory, elementRegistry) {
+function createGeneralTabGroups(element, bpmnFactory) {
   var generalGroup = {
     id: 'general',
     label: 'General',
@@ -134,7 +134,7 @@ function createGeneralTabGroups(element, bpmnFactory, elementRegistry) {
   ];
 }
 
-function createExtensionElementsGroups(element, bpmnFactory, elementRegistry) {
+function createExtensionElementsGroups(element, bpmnFactory) {
   var propertiesGroup = {
     id: 'extensionElements-properties',
     label: 'Properties',
@@ -150,7 +150,7 @@ function createExtensionElementsGroups(element, bpmnFactory, elementRegistry) {
   ];
 }
 
-function createTextTabGroups(element, bpmnFactory, elementRegistry) {
+function createTextTabGroups(element, bpmnFactory) {
   var textTabGroup = {
     id: 'textAnnotation',
     label: 'text annotation',
@@ -201,14 +201,11 @@ function ETLPropertiesProvider(eventBus, bpmnFactory, elementRegistry) {
       tabs.push(generalTab);
       tabs.push(extensionsTab);
       tabs.push(etlPropertyTab);
-
     } else if (is(element, 'jsr352:DataComponent')) {
       tabs.push(textPropertyTab);
-
     } else {
       tabs.push(generalTab);
       tabs.push(extensionsTab);
-
     }
 
     return tabs;

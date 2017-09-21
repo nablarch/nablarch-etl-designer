@@ -3,5 +3,6 @@ node_modules
 dist
 .idea
 
-bpmn-temp
-propertyConfig.json
+registry.json
+appConfig.json
+propertiesConfig.json

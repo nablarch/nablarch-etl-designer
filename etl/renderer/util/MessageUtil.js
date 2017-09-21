@@ -57,7 +57,9 @@ var messages_ja = {
   'Validation': 'バリデーション',
   'Warning': '警告',
   'Check': '再チェック',
-  'Close': '閉じる'
+  'Close': '閉じる',
+  'Config file is not exist.\nFile: {0}': '設定ファイルが存在しません\nファイル: {0}',
+  'Config file is invalid.\nFile: {0}': '設定ファイルの構文にエラーがあります\nファイル: {0}'
 };
 
 function messageUtil() {
@@ -65,19 +67,19 @@ function messageUtil() {
 
 var locale;
 
-messageUtil.setLocale = function(val) {
+messageUtil.setLocale = function (val) {
   locale = val;
 };
 
-messageUtil.getMessage = function(id, options){
+messageUtil.getMessage = function (id, options) {
   var message = id;
 
-  if(locale === 'ja'){
+  if (locale === 'ja') {
     message = messages_ja[id] || id;
   }
 
-  if(options){
-    for(var i = 0; i < options.length; i++){
+  if (options) {
+    for (var i = 0; i < options.length; i++) {
       message = message.replace('{' + i + '}', options[i]);
     }
   }
