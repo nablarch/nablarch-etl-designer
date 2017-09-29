@@ -19,12 +19,12 @@ function getRootNode() {
   var root =
       node(null, 'job', '', '', '', [], false, []);
   var truncateNode =
-      node(root, 'step', 'stepType', 'truncate', '', ['name','id'], false,
+      node(root, 'step', 'stepType', 'truncate', '', ['name', 'id'], false,
           [attr('stepType', 'type', 'string'),
             attr('entities', 'entities', 'stringArray')]
       );
   var validationNode =
-      node(root, 'step', 'stepType', 'validation', '', ['name'], false,
+      node(root, 'step', 'stepType', 'validation', '', ['name', 'id'], false,
           [attr('stepType', 'type', 'string'),
             attr('bean', 'bean', 'string'),
             attr('errorEntity', 'errorEntity', 'string'),
@@ -32,14 +32,14 @@ function getRootNode() {
             attr('errorLimit', 'errorLimit', 'integer')]
       );
   var file2dbNode =
-      node(root, 'step', 'stepType', 'file2db', '', ['name'], false,
+      node(root, 'step', 'stepType', 'file2db', '', ['name', 'id'], false,
           [attr('stepType', 'type', 'string'),
             attr('bean', 'bean', 'string'),
             attr('fileName', 'fileName', 'string'),
             attr('sqlId', 'sqlId', 'string')]
       );
   var db2dbNode =
-      node(root, 'step', 'stepType', 'db2db', '', ['name'], true,
+      node(root, 'step', 'stepType', 'db2db', '', ['name', 'id'], true,
           [attr('stepType', 'type', 'string'),
             attr('bean', 'bean', 'string'),
             attr('sqlId', 'sqlId', 'string'),
@@ -51,7 +51,7 @@ function getRootNode() {
             attr('extractBean', 'bean', 'string')]
       );
   var db2fileNode =
-      node(root, 'step', 'stepType', 'db2file', '', ['name'], false,
+      node(root, 'step', 'stepType', 'db2file', '', ['name', 'id'], false,
           [attr('stepType', 'type', 'string'),
             attr('bean', 'bean', 'string'),
             attr('fileName', 'fileName', 'string'),
@@ -113,7 +113,7 @@ function buildJson(jsonObj, node, element) {
     var childNode = node.childNodes[i];
     var tagName = childNode.tagName || '*';
     var childElements = element.getElementsByTagName(tagName);
-    if(node.useParentElement){
+    if (node.useParentElement) {
       childElements = [element];
     }
     for (var j = 0; j < childElements.length; j++) {
@@ -130,9 +130,9 @@ function buildJson(jsonObj, node, element) {
 
 function getNameAttribute(element, nameAttrs) {
   var result = '';
-  for(var i=0; i<nameAttrs.length; i++ ) {
+  for (var i = 0; i < nameAttrs.length; i++) {
     result = element.getAttribute(nameAttrs[i]);
-    if(result) {
+    if (result) {
       return result;
     }
   }
