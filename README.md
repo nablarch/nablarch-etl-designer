@@ -1,5 +1,4 @@
-# ETLDesigner
-ETLDesigner
+# nablarch-etl-designer
 
 # Getting Started
 
