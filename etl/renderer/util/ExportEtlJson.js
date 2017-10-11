@@ -43,7 +43,8 @@ function getRootNode() {
           [attr('stepType', 'type', 'string'),
             attr('bean', 'bean', 'string'),
             attr('sqlId', 'sqlId', 'string'),
-            attr('mergeOnColumns', 'mergeOnColumns', 'stringArray')]
+            attr('mergeOnColumns', 'mergeOnColumns', 'stringArray'),
+            attr('insertMode', 'insertMode', 'string')]
       );
   var updateSizeNode =
       node(db2dbNode, 'updateSize', '', '', 'updateSize', [], false,

@@ -27,7 +27,8 @@ var typeProps = require('./parts/TypeProps'),
     updateSizeProps = require('./parts/UpdateSizeProps'),
     fontSizeProps = require('./parts/FontSizeProps'),
     errorLimitProps = require('./parts/ErrorLimitProprs'),
-    mergeOnColumnsProps = require('./parts/MergeOnColumnsProps');
+    mergeOnColumnsProps = require('./parts/MergeOnColumnsProps'),
+    insertModeProps = require('./parts/InsertModeProp');
 
 var stepTypeList = configFileUtil.getProperties().stepType || {};
 
@@ -96,6 +97,9 @@ function createInputGroups(stepTypeList, element, bpmnFactory) {
           break;
         case 'mergeOnColumns':
           mergeOnColumnsProps(group, element);
+          break;
+        case 'insertMode':
+          insertModeProps(group, element);
           break;
         default:
           break;

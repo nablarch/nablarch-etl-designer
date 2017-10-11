@@ -75,6 +75,11 @@ var etlProps = [
     "name": "mergeOnColumns",
     "isAttr": true,
     "type": "String"
+  },
+  {
+    "name": "insertMode",
+    "isAttr": true,
+    "type": "String"
   }
 ];
 
@@ -83,8 +88,8 @@ mergeEtlDescriptor(jsr352ModdleDescriptor);
 module.exports = jsr352ModdleDescriptor;
 
 function mergeEtlDescriptor(descriptor) {
-  descriptor.types.map(function(element){
-    if( element.name === "Step" ) {
+  descriptor.types.map(function (element) {
+    if (element.name === "Step") {
       element.properties = element.properties.concat(etlProps);
     }
 

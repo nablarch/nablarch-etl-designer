@@ -12,7 +12,8 @@ var appendProperties = [
   'updateSize',
   'extractBean',
   'errorLimit',
-  'mergeOnColumns'
+  'mergeOnColumns',
+  'insertMode'
 ];
 
 copypasteModule.appendCopiedProperties(appendProperties);
@@ -23,6 +24,6 @@ module.exports = {
   __depends__: [
     require('bpmn-js/lib/features/copy-paste')
   ],
-  __init__: [ 'bpmnCopyPaste' ],
-  bpmnCopyPaste: [ 'type',  copypasteModule]
+  __init__: ['bpmnCopyPaste'],
+  bpmnCopyPaste: ['type', copypasteModule]
 };

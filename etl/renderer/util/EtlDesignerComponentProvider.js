@@ -59,6 +59,10 @@ EtlDesignerComponentProvider.getColumns = function () {
   return properties.columns;
 };
 
+EtlDesignerComponentProvider.getInsertMode = function () {
+  return properties.insertMode;
+};
+
 EtlDesignerComponentProvider.readConfigFile();
 
 module.exports = EtlDesignerComponentProvider;

@@ -51,6 +51,10 @@ initConfig[propertiesConfigFileName] = {
     "CONTINUE"
   ],
   columns: [],
+  insertMode: [
+    "NORMAL",
+    "ORACLE_DIRECT_PATH"
+  ],
   stepType: {
     truncate: [
       "entities"
@@ -70,6 +74,7 @@ initConfig[propertiesConfigFileName] = {
       "bean",
       "sqlId",
       "mergeOnColumns",
+      "insertMode",
       "updateSize"
     ],
     db2file: [
