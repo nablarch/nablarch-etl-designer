@@ -117,11 +117,9 @@ function createApplicationMenu() {
         {
           label: messageUtil.getMessage('Exit'),
           click: function () {
-            if (MenuActions.canCloseWindow(win)) {
-              win = null;
-              if (process.platform !== 'darwin') {
-                app.quit();
-              }
+            win = null;
+            if (process.platform !== 'darwin') {
+              app.quit();
             }
           }
         }
