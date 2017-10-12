@@ -192,7 +192,7 @@ MenuActions.setting = function(win){
   var dialogWindow = new BrowserWindow(
       {
         width: 400, height: 500,
-        parent: win, resizable: configFileUtil.isDevelop(),
+        parent: win, resizable: false,
         modal: true, frame: true
       });
   dialogWindow.setMenu(null);
