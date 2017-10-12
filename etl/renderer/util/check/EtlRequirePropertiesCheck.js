@@ -79,8 +79,7 @@ function getStepNodes() {
       node('step', 'stepType', 'validation', 'name',
           [attr('stepType', 'string'),
             attr('bean', 'string'),
-            attr('errorEntity', 'string'),
-            attr('mode', 'string')]
+            attr('errorEntity', 'string')]
       );
   result.push(validationNode);
   var file2dbNode =
