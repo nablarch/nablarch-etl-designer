@@ -25,7 +25,7 @@ ETLDesignerModeler.prototype._modules = [].concat(
 /**
  * Add a single custom element to the underlying diagram
  *
- * @param {Object} customElement
+ * @param {Object} element
  */
 ETLDesignerModeler.prototype._addCustomShape = function(element) {
 

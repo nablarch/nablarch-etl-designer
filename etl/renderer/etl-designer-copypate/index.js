@@ -1,6 +1,16 @@
-var copypasteModule = require('./EtlDesignerCopyPaste');
+var copypasteModule = require('../../../jsr352-js/app/copy-paste/JSR352CopyPaste');
 
 var appendProperties = [
+  'on',
+  'exit-status',
+  'restart',
+  'start-limit',
+  'allow-start-if-complete',
+  'checkpoint-policy',
+  'item-count',
+  'time-limit',
+  'skip-limit',
+  'retry-limit',
   'fontSize',
   'stepType',
   'entities',
