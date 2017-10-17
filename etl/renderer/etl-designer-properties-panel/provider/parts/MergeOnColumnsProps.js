@@ -9,10 +9,6 @@ var selectOptionUtil = require('../../../../../jsr352-js/app/util/SelectOptionUt
 
 module.exports = function(group, element, bpmnFactory) {
   if (is(element, 'jsr352:Step')) {
-    //Note: In bpmn file, 'mergeOnColumns' are stored as one string. so it is necessary to split as array at once.
-    if(typeof element.businessObject.mergeOnColumns === 'string') {
-      element.businessObject.mergeOnColumns = element.businessObject.mergeOnColumns.split(',');
-    }
 
     var options = {
       id: 'mergeOnColumns',

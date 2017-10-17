@@ -124,6 +124,7 @@ var multiSelect = function (options, defaultParameters) {
       forEach(values, function(value){
         res[prop].push(value[prop]);
       });
+      res[prop] = res[prop].join(',');
     }else{
       res[prop] = undefined;
     }
@@ -150,11 +151,15 @@ var multiSelect = function (options, defaultParameters) {
     var prop = options.modelProperty;
 
     if(!element.businessObject[prop]){
-      element.businessObject[prop] = [];
+      element.businessObject[prop] = '';
     }
 
     res[prop] = element.businessObject[prop];
-    res[prop].push(textBox.value);
+    if(res[prop].length > 0){
+      res[prop] += ',' + textBox.value;
+    }else{
+      res[prop] = textBox.value;
+    }
 
     updateOptions(res[prop], domQuery('select[name="' + options.modelProperty + '"]'));
 
@@ -173,14 +178,15 @@ var multiSelect = function (options, defaultParameters) {
     var values = element.businessObject[prop];
     var deletedIndex = -1;
 
-    for(var i = 0; i < values.length; i++){
-      if(selectBox.value === values[i]){
-        values.splice(i, 1);
+    var valuesArray = values.split(',');
+    for(var i = 0; i < valuesArray.length; i++){
+      if(selectBox.value === valuesArray[i]){
+        valuesArray.splice(i, 1);
         deletedIndex = i;
         break;
       }
     }
-    res[prop] = values;
+    res[prop] = valuesArray.join(',');
 
     updateOptions(res[prop], domQuery('select[name="' + options.modelProperty + '"]'));
     selectBox.selectedIndex = i;
@@ -189,6 +195,10 @@ var multiSelect = function (options, defaultParameters) {
   };
 
   var updateOptions = function(selectOptions, selectBox) {
+    if(!selectOptions){
+      return;
+    }
+    selectOptions = selectOptions.split(',');
     for(var i=selectBox.options.length-1 ; i >= 0 ; i--) {
       selectBox.remove(i);
     }
