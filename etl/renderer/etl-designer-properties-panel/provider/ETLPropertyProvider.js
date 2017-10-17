@@ -14,7 +14,8 @@ var stepProps = require('./parts/StepProps'),
     restartableProps = require('../../../../jsr352-js/app/jsr352-properties-panel/provider/parts/RestartableProps'),
     transitionProps = require('../../../../jsr352-js/app/jsr352-properties-panel/provider/parts/TransitionProps'),
     properties = require('bpmn-js-properties-panel/lib/provider/camunda/parts/PropertiesProps'),
-    documentationProps = require('bpmn-js-properties-panel/lib/provider/bpmn/parts/DocumentationProps');
+    documentationProps = require('bpmn-js-properties-panel/lib/provider/bpmn/parts/DocumentationProps'),
+    restartProps = require('../../../../jsr352-js/app/jsr352-properties-panel/provider/parts/RestartProps');
 
 var typeProps = require('./parts/TypeProps'),
     entitiesProps = require('./parts/EntitiesProps'),
@@ -123,6 +124,7 @@ function createGeneralTabGroups(element, bpmnFactory) {
   listenerProps(generalGroup, element, bpmnFactory);
   transitionProps(generalGroup, element);
   restartableProps(generalGroup, element);
+  restartProps(generalGroup, element);
 
   var documentationGroup = {
     id: 'documentation',

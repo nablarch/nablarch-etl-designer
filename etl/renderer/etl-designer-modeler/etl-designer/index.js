@@ -3,7 +3,7 @@ module.exports = {
   elementFactory: [ 'type', require('../../../../jsr352-js/app/jsr352-modeler/jsr352/JSR352ElementFactory') ],
   customRenderer: [ 'type', require('./EtlDesignerRenderer') ],
   paletteProvider: [ 'type', require('./EtlDesignerPalette') ],
-  bpmnRules: [ 'type', require('./EtlDesignerRules') ],
-  customUpdater: [ 'type', require('./EtlDesignerUpdater') ],
+  bpmnRules: [ 'type', require('../../../../jsr352-js/app/jsr352-modeler/jsr352/JSR352Rules') ],
+  customUpdater: [ 'type', require('../../../../jsr352-js/app/jsr352-modeler/jsr352/JSR352Updater') ],
   contextPadProvider: [ 'type', require('./EtlDesignerContextPadProvider') ]
 };
