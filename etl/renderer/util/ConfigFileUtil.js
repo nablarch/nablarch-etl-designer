@@ -14,7 +14,8 @@ var initConfig = {};
 initConfig[appConfigFileName] = {
   jobStreamer: {
     hostName: 'localhost',
-    portNumber: 45102
+    portNumber: 45102,
+    timeoutCount: 20
   },
   locale: "ja",
   xmlAttr: {
