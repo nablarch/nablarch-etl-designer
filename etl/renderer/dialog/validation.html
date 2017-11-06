@@ -1,33 +1,36 @@
 <html>
- <head>
-   <meta charset="UTF-8">
-   <title>Validation</title>
-   <style type="text/css">
-   .float{
-       float:right;
-   }
-   </style>
-   <link rel="stylesheet" href="css/photon.min.css">
- </head>
- <body>
-    <form id="setting-form">
-       <div class="tab-group">
-           <div id="error-tab" class="tab-item active">
-               <span class="icon"></span>
-                 <span id="errorTab">Error</span>
-           </div>
-           <div id="warning-tab" class="tab-item">
-               <span class="icon"></span>
-                 <span id="warningTab">Warning</span>
-           </div>
-       </div>
-       <textarea id="textarea" class="form-control" rows="20" readonly="true">
-       </textarea>
-       <div class="float">
-         <button type="button" id="check" class="btn btn-positive"><span id="checkButton">Check</span></button>
-         <button id="cancel" class="btn btn-negative"><span id="closeButton">Close</span></button>
-       </div>
-     </form>
-    <script type="text/javascript" src="./etl-designer-validation-dialog.js"></script>
- </body>
+<head>
+    <meta charset="UTF-8">
+    <title>Validation</title>
+    <style type="text/css">
+        .float {
+            float: right;
+        }
+    </style>
+    <link rel="stylesheet" href="css/photon.min.css">
+</head>
+<body>
+<div style="height: 100%">
+    <div class="tab-group">
+        <div id="error-tab" class="tab-item active">
+            <span class="icon"></span>
+            <span id="errorTab">Error</span>
+        </div>
+        <div id="warning-tab" class="tab-item">
+            <span class="icon"></span>
+            <span id="warningTab">Warning</span>
+        </div>
+        <div id="test-tab" class="tab-item">
+            <span class="icon"></span>
+            <span id="testTab">Test result</span>
+        </div>
+    </div>
+    <textarea id="result-area" readonly style="height: 80%;width: 100%;overflow: scroll; -webkit-user-select: text;"></textarea>
+    <div class="float">
+        <button type="button" id="check" class="btn btn-positive"><span id="checkButton">Check</span></button>
+        <button id="cancel" class="btn btn-negative"><span id="closeButton">Close</span></button>
+    </div>
+</div>
+<script type="text/javascript" src="./etl-designer-validation-dialog.js"></script>
+</body>
 </html>

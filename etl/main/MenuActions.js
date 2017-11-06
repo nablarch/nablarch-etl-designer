@@ -168,24 +168,36 @@ ipc.on('renderer-process-checked-job-name', function(event, args){
   });
 });
 
+var validationDialogWindow;
 MenuActions.validation = function(win){
-  var dialogWindow = new BrowserWindow(
+
+  if(validationDialogWindow){
+    validationDialogWindow.focus();
+    validationDialogWindow.flashFrame(true);
+    return;
+  }
+
+  validationDialogWindow = new BrowserWindow(
       {
         width: 800, height: 500,
         parent: win, resizable: true,
         modal: false, frame: true
 
       });
-  dialogWindow.setMenu(null);
+  validationDialogWindow.setMenu(null);
   if(configFileUtil.isDevelop()){
-    dialogWindow.openDevTools();
+    validationDialogWindow.openDevTools();
   }
 
-  dialogWindow.loadURL(url.format({
+  validationDialogWindow.loadURL(url.format({
     pathname: path.join(__dirname, '../../dist/dialog/validation.html'),
     protocol: 'file:',
     slashes: true
   }));
+
+  validationDialogWindow.on('closed', function () {
+    validationDialogWindow = null;
+  });
 };
 
 MenuActions.setting = function(win){

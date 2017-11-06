@@ -10,6 +10,7 @@ var appInfo = remote.getGlobal('appInfo');
 var etlDesignerCheck = require('../util/EtlDesignerChecker');
 var configFileUtil = require('../util/ConfigFileUtil');
 var messageUtil = require('../util/MessageUtil');
+var testExecution = require('../util/TestExecution');
 
 var registryFilePath = appInfo.argDev ? app.getAppPath() : path.join(app.getPath('exe'), '../');
 configFileUtil.init(registryFilePath, app.getPath('userData'));
@@ -28,9 +29,38 @@ for (var i = 0; i < tabItems.length; i++) {
   tabItems[i].addEventListener('click', onTabClick);
 }
 
+var successCallback = function (batchStatus, logMessage, logException) {
+  if (logMessage) {
+    validationResult.structureMessage = formatErrorMessage(logMessage, logException);
+  } else {
+    validationResult.structureMessage = messageUtil.getMessage('No error is detected.');
+  }
+
+  var activeTab = document.querySelector('.active');
+  loadActiveTab(activeTab);
+};
+
+var timeoutCallback = function () {
+  validationResult.structureMessage = messageUtil.getMessage('Access time out.');
+
+  var activeTab = document.querySelector('.active');
+  loadActiveTab(activeTab);
+};
+
+function formatErrorMessage(logMessage, logException) {
+  var message = messageUtil.getMessage('The following error occurred during test execution.') + '\n\n';
+  message += 'Stack trace:\n';
+  message += logMessage + '\n';
+  message += logException;
+
+  return message;
+}
+
 function onCheckClick() {
   var bpmnXmlString = appInfo.workBpmnString;
   var result = etlDesignerCheck.check(bpmnXmlString);
+  testExecution.execute(appInfo.workBpmnString, successCallback, timeoutCallback);
+  validationResult.structureMessage = messageUtil.getMessage('Checking...');
   validationResult.errorMessage = (result.errors.length === 0) ? messageUtil.getMessage('No error is detected.') : result.errors.join('\n');
   validationResult.warningMessage = (result.warnings.length === 0) ? messageUtil.getMessage('No warning is detected.') : result.warnings.join('\n');
   loadActiveTab(document.querySelector('.active'));
@@ -51,7 +81,7 @@ function onTabClick() {
 }
 
 function saveActiveTab(activeTab) {
-  var contents = document.getElementById('textarea').value;
+  var contents = document.getElementById('result-area').value;
   switch (activeTab.id) {
     case 'error-tab':
       validationResult.errorMessage = contents;
@@ -59,16 +89,22 @@ function saveActiveTab(activeTab) {
     case 'warning-tab':
       validationResult.warningMessage = contents;
       break;
+    case 'test-tab':
+      validationResult.structureMessage = contents;
+      break;
   }
 }
 
 function loadActiveTab(activeTab) {
   switch (activeTab.id) {
     case 'error-tab':
-      document.getElementById('textarea').value = validationResult.errorMessage;
+      document.getElementById('result-area').value = validationResult.errorMessage;
       break;
     case 'warning-tab':
-      document.getElementById('textarea').value = validationResult.warningMessage;
+      document.getElementById('result-area').value = validationResult.warningMessage;
+      break;
+    case 'test-tab':
+      document.getElementById('result-area').value = validationResult.structureMessage;
       break;
   }
 }
@@ -77,6 +113,7 @@ function translateMessage() {
   var convertMessage = {
     errorTab: 'Error',
     warningTab: 'Warning',
+    testTab: 'Test result',
     checkButton: 'Check',
     closeButton: 'Close'
   };
@@ -92,6 +129,8 @@ window.onload = function () {
 
   var bpmnXmlString = appInfo.workBpmnString;
   var result = etlDesignerCheck.check(bpmnXmlString);
+  testExecution.execute(appInfo.workBpmnString, successCallback, timeoutCallback);
+  validationResult.structureMessage = messageUtil.getMessage('Checking...');
   validationResult.errorMessage = (result.errors.length === 0) ? messageUtil.getMessage('No error is detected.') : result.errors.join('\n');
   validationResult.warningMessage = (result.warnings.length === 0) ? messageUtil.getMessage('No warning is detected.') : result.warnings.join('\n');
   loadActiveTab(document.querySelector('.active'));
