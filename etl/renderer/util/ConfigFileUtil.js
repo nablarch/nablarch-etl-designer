@@ -13,8 +13,7 @@ var registry = {};
 var initConfig = {};
 initConfig[appConfigFileName] = {
   jobStreamer: {
-    hostName: 'localhost',
-    portNumber: 45102,
+    url:"http://localhost:45102",
     timeoutCount: 20
   },
   locale: "ja",

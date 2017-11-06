@@ -15,7 +15,7 @@ jobStreamerApiUtil.callAuthToken = function () {
     ednValue: 'password123'
   }];
   var postData = jobStreamerApiUtil.createPostData(args);
-  var ednObj = jobStreamerApiUtil.executeJobStreamerApi('POST', '/auth', postData);
+  var ednObj = jobStreamerApiUtil.executeJobStreamerApi('POST', '/auth', postData, null, false);
 
   return jobStreamerApiUtil.getValueFromEdnObject(ednObj, 'token');
 };
@@ -33,45 +33,35 @@ jobStreamerApiUtil.getValueFromEdnObject = function (ednObj, ednKey) {
   return edn.valueOf(edn.parse(ednObj))[ednKey];
 };
 
-jobStreamerApiUtil.executeJobStreamerApi = function (method, url, postData, token) {
+jobStreamerApiUtil.executeJobStreamerApi = function (method, url, postData, token, async, onloadCallback) {
   var jobStreamerInfo = configFileUtil.getJobStreamerInfo();
-  var hostName = jobStreamerInfo.hostName;
-  var portNumber = jobStreamerInfo.portNumber;
+  var apiUrl = jobStreamerInfo.url;
+  onloadCallback = onloadCallback || function(){};
 
   var xhr = new XMLHttpRequest();
-  xhr.open(method, 'http://' + hostName + ':' + portNumber + url, false);
+  xhr.open(method, apiUrl + url, async);
   xhr.setRequestHeader('Content-Type', 'application/edn');
   if (token) {
     xhr.setRequestHeader('Authorization', 'Token ' + token);
   }
-  xhr.send(postData);
 
-  if (xhr.status < 200 || xhr.status >= 300) {
-    throw new Error(messageUtil.getMessage('Failed to call control-bus API. ({0})', [xhr.status]));
-  }
+  if(!async){
+    xhr.send(postData);
 
-  return xhr.responseText;
-};
-
-jobStreamerApiUtil.executeJobStreamerApiAsync = function (method, url, postData, token, onloadCallback) {
-  var jobStreamerInfo = configFileUtil.getJobStreamerInfo();
-  var hostName = jobStreamerInfo.hostName;
-  var portNumber = jobStreamerInfo.portNumber;
-
-  var xhr = new XMLHttpRequest();
-  xhr.open(method, 'http://' + hostName + ':' + portNumber + url, true);
-  xhr.setRequestHeader('Content-Type', 'application/edn');
-  if (token) {
-    xhr.setRequestHeader('Authorization', 'Token ' + token);
-  }
-  xhr.onload = function () {
     if (xhr.status < 200 || xhr.status >= 300) {
       throw new Error(messageUtil.getMessage('Failed to call control-bus API. ({0})', [xhr.status]));
     }
-    onloadCallback(xhr);
-  };
-  xhr.send(postData);
 
+    return xhr.responseText;
+  }else{
+    xhr.onload = function () {
+      if (xhr.status < 200 || xhr.status >= 300) {
+        throw new Error(messageUtil.getMessage('Failed to call control-bus API. ({0})', [xhr.status]));
+      }
+      onloadCallback(xhr);
+    };
+    xhr.send(postData);
+  }
 };
 
 module.exports = jobStreamerApiUtil;

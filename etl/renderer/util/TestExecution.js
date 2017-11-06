@@ -20,7 +20,7 @@ TestExecution.execute = function (bpmnXmlString, successCallback, timeoutCallbac
 function callExecute(args, successCallback, timeoutCallback, errorCallback) {
   var token = jobStreamerApiUtil.callAuthToken();
   var postData = jobStreamerApiUtil.createPostData(args);
-  var ednObj = jobStreamerApiUtil.executeJobStreamerApi('POST', '/test-executions', postData, token);
+  var ednObj = jobStreamerApiUtil.executeJobStreamerApi('POST', '/test-executions', postData, token, false);
   var stateId = jobStreamerApiUtil.getValueFromEdnObject(ednObj, 'state-id');
 
   var batchStatus = '';
@@ -39,23 +39,23 @@ function callExecute(args, successCallback, timeoutCallback, errorCallback) {
 
     if (callCheckApiCount > timeOutCount) {
       timeoutCallback();
-      jobStreamerApiUtil.executeJobStreamerApiAsync('DELETE', '/test-execution/' + stateId, null, token, function () {
+      jobStreamerApiUtil.executeJobStreamerApi('DELETE', '/test-execution/' + stateId, null, token, true, function () {
       });
       return;
     }
 
     if (batchStatus === 'batch-status/completed' || logMessage) {
       successCallback(batchStatus, logMessage, logException);
-      jobStreamerApiUtil.executeJobStreamerApiAsync('DELETE', '/test-execution/' + stateId, null, token, function () {
+      jobStreamerApiUtil.executeJobStreamerApi('DELETE', '/test-execution/' + stateId, null, token, true, function () {
       });
     } else {
       setTimeout(function () {
-        jobStreamerApiUtil.executeJobStreamerApiAsync('GET', '/test-execution/' + stateId, null, token, executionCallback);
+        jobStreamerApiUtil.executeJobStreamerApi('GET', '/test-execution/' + stateId, null, token, true, executionCallback);
       }, 1000);
     }
   };
 
-  jobStreamerApiUtil.executeJobStreamerApiAsync('GET', '/test-execution/' + stateId, null, token, executionCallback);
+  jobStreamerApiUtil.executeJobStreamerApi('GET', '/test-execution/' + stateId, null, token, true, executionCallback);
 }
 
 module.exports = TestExecution;

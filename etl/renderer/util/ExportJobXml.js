@@ -16,7 +16,7 @@ ExportJobXml.exportXml = function(bpmnXmlString) {
 function callExportJobXml(args) {
   var token = jobStreamerApiUtil.callAuthToken();
   var postData = jobStreamerApiUtil.createPostData(args);
-  var ednObj = jobStreamerApiUtil.executeJobStreamerApi('POST', '/jobs/convert-xml', postData, token);
+  var ednObj = jobStreamerApiUtil.executeJobStreamerApi('POST', '/jobs/convert-xml', postData, token, false);
 
   return jobStreamerApiUtil.getValueFromEdnObject(ednObj, 'job-xml');
 }
