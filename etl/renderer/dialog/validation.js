@@ -10,7 +10,7 @@ var appInfo = remote.getGlobal('appInfo');
 var etlDesignerCheck = require('../util/EtlDesignerChecker');
 var configFileUtil = require('../util/ConfigFileUtil');
 var messageUtil = require('../util/MessageUtil');
-var structureValidation = require('../util/StructureValidation');
+var testExecution = require('../util/TestExecution');
 
 var registryFilePath = appInfo.argDev ? app.getAppPath() : path.join(app.getPath('exe'), '../');
 configFileUtil.init(registryFilePath, app.getPath('userData'));
@@ -48,9 +48,10 @@ var timeoutCallback = function () {
 };
 
 function formatErrorMessage(logMessage, logException) {
-  var message = messageUtil.getMessage('Job structure has error.') + '\n';
+  var message = messageUtil.getMessage('The following error occurred during test execution.') + '\n\n';
+  message += 'Stack trace:\n';
   message += logMessage + '\n';
-  message += logException.split('\r\n')[0] + '\n';
+  message += logException;
 
   return message;
 }
@@ -58,7 +59,7 @@ function formatErrorMessage(logMessage, logException) {
 function onCheckClick() {
   var bpmnXmlString = appInfo.workBpmnString;
   var result = etlDesignerCheck.check(bpmnXmlString);
-  structureValidation.checkStructure(appInfo.workBpmnString, successCallback, timeoutCallback);
+  testExecution.execute(appInfo.workBpmnString, successCallback, timeoutCallback);
   validationResult.structureMessage = messageUtil.getMessage('Checking...');
   validationResult.errorMessage = (result.errors.length === 0) ? messageUtil.getMessage('No error is detected.') : result.errors.join('\n');
   validationResult.warningMessage = (result.warnings.length === 0) ? messageUtil.getMessage('No warning is detected.') : result.warnings.join('\n');
@@ -80,7 +81,7 @@ function onTabClick() {
 }
 
 function saveActiveTab(activeTab) {
-  var contents = document.getElementById('result-area').innerText;
+  var contents = document.getElementById('result-area').value;
   switch (activeTab.id) {
     case 'error-tab':
       validationResult.errorMessage = contents;
@@ -88,7 +89,7 @@ function saveActiveTab(activeTab) {
     case 'warning-tab':
       validationResult.warningMessage = contents;
       break;
-    case 'structure-tab':
+    case 'test-tab':
       validationResult.structureMessage = contents;
       break;
   }
@@ -97,13 +98,13 @@ function saveActiveTab(activeTab) {
 function loadActiveTab(activeTab) {
   switch (activeTab.id) {
     case 'error-tab':
-      document.getElementById('result-area').innerText = validationResult.errorMessage;
+      document.getElementById('result-area').value = validationResult.errorMessage;
       break;
     case 'warning-tab':
-      document.getElementById('result-area').innerText = validationResult.warningMessage;
+      document.getElementById('result-area').value = validationResult.warningMessage;
       break;
-    case 'structure-tab':
-      document.getElementById('result-area').innerText = validationResult.structureMessage;
+    case 'test-tab':
+      document.getElementById('result-area').value = validationResult.structureMessage;
       break;
   }
 }
@@ -112,7 +113,7 @@ function translateMessage() {
   var convertMessage = {
     errorTab: 'Error',
     warningTab: 'Warning',
-    structureTab: 'Job structure check',
+    testTab: 'Test result',
     checkButton: 'Check',
     closeButton: 'Close'
   };
@@ -128,7 +129,7 @@ window.onload = function () {
 
   var bpmnXmlString = appInfo.workBpmnString;
   var result = etlDesignerCheck.check(bpmnXmlString);
-  structureValidation.checkStructure(appInfo.workBpmnString, successCallback, timeoutCallback);
+  testExecution.execute(appInfo.workBpmnString, successCallback, timeoutCallback);
   validationResult.structureMessage = messageUtil.getMessage('Checking...');
   validationResult.errorMessage = (result.errors.length === 0) ? messageUtil.getMessage('No error is detected.') : result.errors.join('\n');
   validationResult.warningMessage = (result.warnings.length === 0) ? messageUtil.getMessage('No warning is detected.') : result.warnings.join('\n');

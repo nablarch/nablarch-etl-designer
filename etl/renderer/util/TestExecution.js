@@ -6,22 +6,19 @@ var edn = require('edn');
 var jobStreamerApiUtil = require('./JobStremaerApiUtil');
 var configFileUtil = require('./ConfigFileUtil');
 
-function StructureValidation() {
+function TestExecution() {
 }
 
-StructureValidation.checkStructure = function (bpmnXmlString, successCallback, timeoutCallback, errorCallback) {
+TestExecution.execute = function (bpmnXmlString, successCallback, timeoutCallback, errorCallback) {
   bpmnXmlString = bpmnXmlString.replace('\r', '').replace('\n', '');
-  return callCheckStructure([{
+  return callExecute([{
     ednKey: 'bpmn',
     ednValue: bpmnXmlString
   }], successCallback, timeoutCallback, errorCallback);
 };
 
-function callCheckStructure(args, successCallback, timeoutCallback, errorCallback) {
-  var token = jobStreamerApiUtil.callAuthToken([{ednKey: 'user/id', ednValue: 'admin'}, {
-    ednKey: 'user/password',
-    ednValue: 'password123'
-  }]);
+function callExecute(args, successCallback, timeoutCallback, errorCallback) {
+  var token = jobStreamerApiUtil.callAuthToken();
   var postData = jobStreamerApiUtil.createPostData(args);
   var ednObj = jobStreamerApiUtil.executeJobStreamerApi('POST', '/test-executions', postData, token);
   var stateId = jobStreamerApiUtil.getValueFromEdnObject(ednObj, 'state-id');
@@ -61,4 +58,4 @@ function callCheckStructure(args, successCallback, timeoutCallback, errorCallbac
   jobStreamerApiUtil.executeJobStreamerApiAsync('GET', '/test-execution/' + stateId, null, token, executionCallback);
 }
 
-module.exports = StructureValidation;
+module.exports = TestExecution;

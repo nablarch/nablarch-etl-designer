@@ -9,7 +9,11 @@ function jobStreamerApiUtil() {
 
 }
 
-jobStreamerApiUtil.callAuthToken = function (args) {
+jobStreamerApiUtil.callAuthToken = function () {
+  var args = [{ednKey: 'user/id', ednValue: 'admin'}, {
+    ednKey: 'user/password',
+    ednValue: 'password123'
+  }];
   var postData = jobStreamerApiUtil.createPostData(args);
   var ednObj = jobStreamerApiUtil.executeJobStreamerApi('POST', '/auth', postData);
 
