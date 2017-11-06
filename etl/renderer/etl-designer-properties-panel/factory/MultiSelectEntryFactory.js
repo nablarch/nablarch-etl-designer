@@ -196,6 +196,7 @@ var multiSelect = function (options, defaultParameters) {
 
   var updateOptions = function(selectOptions, selectBox) {
     if(!selectOptions){
+      selectBox.remove(0);
       return;
     }
     selectOptions = selectOptions.split(',');
