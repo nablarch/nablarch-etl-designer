@@ -1,66 +1,65 @@
 # ETLデザイナー
 - ETLデザイナーの紹介
-    - ETLデザイナーとは
-    - ETLデザイナーでできること
-    - 前提・制約
-    - ライセンス
-    - 利用申請
-    - フィードバック
-- [アーキテクチャ](doc/architecture.md)
-- [チュートリアル](doc/tutorial.md)
-- [セットアップガイド](doc/setup-guide.md)
-- [操作ガイド](doc/operation-guide.md)
+    - [ETLデザイナー](#etletlデザイナー)
+    - [前提知識](#前提知識)
+    - [制約](#制約)
+    - [動作環境](#動作環境)
+    - [アーキテクチャ](#アーキテクチャ)
+    - [ライセンス](#ライセンス)
+- [Getting Started](doc/getting-started.md)
+- [利用方法](doc/operation-guide.md)
 
-## ETLデザイナーとは
-- JSR352に準拠したバッチジョブ、並びにNablarchのETLの設計/実装を行うデスクトップアプリケーションです。
-- ETLデザイナーにより、バッチの設計/実装の効率上昇を目指します。
+## ETL/ETLデザイナー
 
-## ETLデザイナーでできること
-- GUIでバッチジョブ、ETLの設計/実装ができます。
-    - ビジネスプロセスモデリング表記法(Business Process Model and Notation 2.0, 以降BPMN)を使用してジョブ定義を行います。
-    - バッチの部品(Step、Listener等)に該当するBPMN図形を配置・接続していくことで、ジョブの流れを定義します。
-    - ![image1](doc/image/etl-designer-image1.png)
-    - Stepを配置し、1個目のStepにListenerとChunkを設定しています。
-    - Stepで処理の対象となるファイル名やbeanを設定することで実装が行えます。
-    - ![image2](doc/image/etl-designer-image2.png)
-    - 1個目のStepでデータの入力元となるファイル名を設定しています。
-- ETLのテンプレートを使用することで、ジョブの設計を定型化できます。
+単純なデータロードやデータ出力のバッチを、他のバッチと同じように仰々しく設計書を書き、
+重いテストをすることが、特に大規模開発における生産性向上の阻害要因となっています。
+この問題を解消するため、SQLとBeanの作成、そしていくつかの設定を行うだけで、
+バッチを作成できる[ETL](https://nablarch.github.io/docs/LATEST/doc/extension_components/etl/index.html)が登場しました。
 
-- 設定ファイルが出力できます。
-    - GUIで作成したジョブ定義を元に、バッチで使用するJOB定義ファイルとETL用JOB設定ファイルが出力できます。
-    - 出力したファイルを用いてすぐにバッチを動作させることができます。
+そして、この[ETL](https://nablarch.github.io/docs/LATEST/doc/extension_components/etl/index.html)をさらに使いやすくするため、
+ETLデザイナーを開発しました。
 
-## 前提・制約
-- ETLデザイナーを用いてバッチを設計するにあたって、JSR352、NablarchのETLの知識が必要になります。
-    - JSR352のバッチに関しては[このあたり](https://www.google.co.jp/search?ei=8E8BWrKNLIz88gXPpaEI&q=JSR352&oq=JSR352&gs_l=psy-ab.3..0l2j0i7i30k1l6.4271.4625.0.5098.3.3.0.0.0.0.98.256.3.3.0....0...1.1.64.psy-ab..0.3.255....0.gCW8AHGw38M)を参考にしてください。
-    - NablarchのETLに関しては[NablarchのドキュメントのETLのページ](https://nablarch.github.io/docs/LATEST/doc/extension_components/etl/index.html)を参考にしてください
+ETLデザイナーを使うと、バッチの処理フロー等の定義をGUIでモデリングでき、[ETL](https://nablarch.github.io/docs/LATEST/doc/extension_components/etl/index.html)で実行可能な設定ファイルを出力できます。
+ETLデザイナーにより、バッチの設計/実装作業を大幅に簡略化し、生産性向上を実現します。
 
-- ETLデザイナーはAWS上のAPIサーバを利用します。
-    - 設定ファイルを出力する際に、AWS上のAPIサーバにアクセスします。
-    - AWSへはtetra環境からのみアクセスできます。
+![比較](doc/image/compare.png)
+
+## 前提知識
+ETLデザイナーを用いてバッチを開発するにあたって、Nablarchの[ETL](https://nablarch.github.io/docs/LATEST/doc/extension_components/etl/index.html)、JSR352の知識が必要になります。
+- 以下の点が分からない方は、[JSR352とETLの簡単な説明](doc/jsr352-etl-simple-guide.md)を参照ください。
+- JSR352
+    - Job、Step、Listener、Chunk、Batchletといった用語
+    - ChunkとBatchletの違い
+
+- ETL
+    - ETLで提供しているChunkとBatchletの使い方
+        - ChunkやBatchletで必要となるもの(BeanやSQL)
+        - ChunkやBatchletの設定内容
+    
+- 詳しい仕様に関しては、以下を参照ください
+    - [JSR352の仕様原本(英語)](https://jcp.org/en/jsr/detail?id=352)
+    - [NablarchドキュメントのETL](https://nablarch.github.io/docs/LATEST/doc/extension_components/etl/index.html)
+
+## 制約
+ETLデザイナーはAWS上のAPIサーバを利用します。
+- AWS上のAPIサーバへはTIS社内からのみアクセスできます。
+- サーバが必要な理由に関しては[アーキテクチャ](#アーキテクチャ)を参照ください。
 
 ## 動作環境
 - Windows端末でのみ利用可能です。
-- 動作を確認した環境は以下になります。
+- 動作確認した環境は以下になります。
     - Windows10 64bit
     - Windows7 32bit
 
+## アーキテクチャ
+![architecture](doc/image/architecture.png)
+- ETLデザイナーではビジネスプロセスモデリング表記法(BPMN)を用いてJOB定義を行います。
+- BPMN形式のJOB定義をJSR352のJOB定義に変換する機能は、[JobStreamer](http://job-streamer.github.io/ja/)を使用します。
+- JobStreamerがRESTで上記の機能を提供しているため、APIサーバが必要となります。
+
 ## ライセンス
-ETLデザイナーは Apache License 2.0 で提供します。
+Apache License 2.0
 
-## 利用申請
+## [Getting Started](doc/getting-started.md)
 
-
-## フィードバック
-使ってみた感想、要望、不具合など、フィードバックをお待ちしています。
-
-[フィードバックシステム](http://adcfb.intra.tis.co.jp/redmine/feedbktop?id=0001-04-0001)
-
-## Getting Started
-
-```
-git submodule update -i
-npm install
-node_modules/.bin/grunt auto-build
-node_modules/.bin/electron . --dev
-```
+## [利用方法](doc/operation-guide.md)
