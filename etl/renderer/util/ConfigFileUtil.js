@@ -13,7 +13,7 @@ var registry = {};
 var initConfig = {};
 initConfig[appConfigFileName] = {
   jobStreamer: {
-    url:"http://localhost:45102",
+    url:"https://alfort.adc-tis.com/job-streamer-control-bus",
     timeoutCount: 20
   },
   locale: "ja",
@@ -26,7 +26,9 @@ initConfig[propertiesConfigFileName] = {
   batchlet: [
     "tableCleaningBatchlet",
     "sqlLoaderBatchlet",
-    "validationBatchlet"
+    "validationBatchlet",
+    "deleteInsertBatchlet",
+    "mergeBatchlet"
   ],
   itemReader: [
     "databaseItemReader",

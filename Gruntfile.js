@@ -187,8 +187,7 @@ module.exports = function (grunt) {
     'copy:bpmn_js',
     'copy:app',
     'less',
-    'browserify:app',
-    'uglify:build'
+    'browserify:app'
   ]);
 
   grunt.registerTask('auto-build', [
