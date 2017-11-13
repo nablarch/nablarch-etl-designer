@@ -22,7 +22,7 @@ module.exports = function(group, element) {
       validate: function(element, values) {
         var isValid;
         if(values['errorLimit']){
-          isValid = /~[0-9]+$/.test(values['errorLimit']);
+          isValid = /^[0-9]+$/.test(values['errorLimit']);
         }else if(typeof values['errorLimit'] === 'undefined'){
           isValid = true;
         }
