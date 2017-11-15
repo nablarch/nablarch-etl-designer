@@ -1,20 +1,5 @@
 'use strict';
 
-var initialDiagram =
-'<?xml version="1.0" encoding="UTF-8"?>\n\
-<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:jsr352="http://jsr352/" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">\n\
-  <jsr352:job id="Job_1" isExecutable="false">\n\
-    <jsr352:start id="Start_1" />\n\
-  </jsr352:job>\n\
-  <bpmndi:BPMNDiagram id="BPMNDiagram_1">\n\
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Job_1">\n\
-      <bpmndi:BPMNShape id="_BPMNShape_Start_2" bpmnElement="Start_1">\n\
-        <dc:Bounds x="173" y="102" width="36" height="36" />\n\
-      </bpmndi:BPMNShape>\n\
-    </bpmndi:BPMNPlane>\n\
-  </bpmndi:BPMNDiagram>\n\
-</bpmn:definitions>\n';
-
 window.onerror = function (message, url, line, col, err) {
   var errData = {
     message: message,
@@ -43,13 +28,14 @@ var registryFilePath = appInfo.argDev ? app.getAppPath() : path.join(app.getPath
 configFileUtil.init(registryFilePath, app.getPath('userData'));
 messageUtil.setLocale(configFileUtil.getLocale());
 
+var initialDiagram = require('../resources/initDiagram.js');
+
 var ETLDesignerModeler = require('./etl-designer-modeler');
 
 var propertiesPanelModule = require('bpmn-js-properties-panel'),
     propertiesProviderModule = require('./etl-designer-properties-panel/provider'),
     jsr352ModdleDescriptor = require('./descriptors'),
     camundaModdleDescriptor = require('camunda-bpmn-moddle/resources/camunda'),
-    // minimapModule = require('./diagram-js-minimap');
     copypasteModule = require('./etl-designer-copypate');
 
 var modeler = new ETLDesignerModeler({
@@ -61,7 +47,6 @@ var modeler = new ETLDesignerModeler({
   additionalModules: [
     propertiesPanelModule,
     propertiesProviderModule,
-    // minimapModule
     copypasteModule
   ],
   moddleExtensions: {
