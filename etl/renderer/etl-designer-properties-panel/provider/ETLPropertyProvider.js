@@ -55,6 +55,9 @@ function createInputGroups(stepTypeList, element, bpmnFactory) {
   var groups = [];
 
   for (var key in stepTypeList) {
+    if (!stepTypeList.hasOwnProperty(key)) {
+      continue;
+    }
     var propertyNameList = stepTypeList[key];
 
     var group = {
@@ -68,6 +71,9 @@ function createInputGroups(stepTypeList, element, bpmnFactory) {
 
     groups.push(group);
     for (var index in propertyNameList) {
+      if (!propertyNameList.hasOwnProperty(index)) {
+        continue;
+      }
       switch (propertyNameList[index]) {
         case 'entities':
           entitiesProps(group, element, bpmnFactory);
@@ -215,7 +221,7 @@ function ETLPropertiesProvider(eventBus, bpmnFactory, elementRegistry) {
     }
 
     return tabs;
-  }
+  };
 }
 
 inherits(ETLPropertiesProvider, PropertiesActivator);

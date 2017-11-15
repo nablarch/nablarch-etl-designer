@@ -36,7 +36,8 @@ jobStreamerApiUtil.getValueFromEdnObject = function (ednObj, ednKey) {
 jobStreamerApiUtil.executeJobStreamerApi = function (method, url, postData, token, async, onloadCallback) {
   var jobStreamerInfo = configFileUtil.getJobStreamerInfo();
   var apiUrl = jobStreamerInfo.url;
-  onloadCallback = onloadCallback || function(){};
+  onloadCallback = onloadCallback || function () {
+      };
 
   var xhr = new XMLHttpRequest();
   xhr.open(method, apiUrl + url, async);
@@ -45,7 +46,7 @@ jobStreamerApiUtil.executeJobStreamerApi = function (method, url, postData, toke
     xhr.setRequestHeader('Authorization', 'Token ' + token);
   }
 
-  if(!async){
+  if (!async) {
     xhr.send(postData);
 
     if (xhr.status < 200 || xhr.status >= 300) {
@@ -53,7 +54,7 @@ jobStreamerApiUtil.executeJobStreamerApi = function (method, url, postData, toke
     }
 
     return xhr.responseText;
-  }else{
+  } else {
     xhr.onload = function () {
       if (xhr.status < 200 || xhr.status >= 300) {
         throw new Error(messageUtil.getMessage('Failed to call control-bus API. ({0})', [xhr.status]));

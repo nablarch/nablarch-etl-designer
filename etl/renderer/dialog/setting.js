@@ -1,4 +1,3 @@
-var fs = require('fs');
 var path = require('path');
 
 var electron = window.require('electron');
@@ -32,11 +31,11 @@ function onOkClick() {
   saveActiveTabToConfig(activeTab);
 
   configFileUtil.setProperties(properties);
-  window.close()
+  window.close();
 }
 
 function onCancelClick() {
-  window.close()
+  window.close();
 }
 
 function onTabClick() {
@@ -92,6 +91,9 @@ function translateMessage() {
 
   document.title = messageUtil.getMessage('Settings');
   for (var key in convertMessage) {
+    if (!convertMessage.hasOwnProperty(key)) {
+      continue;
+    }
     document.getElementById(key).textContent = messageUtil.getMessage(convertMessage[key]);
   }
 }

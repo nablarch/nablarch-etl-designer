@@ -18,12 +18,12 @@ function EtlDesignerPaletteProvider(palette, create, elementFactory, spaceTool, 
 
 module.exports = EtlDesignerPaletteProvider;
 
-EtlDesignerPaletteProvider.$inject = [ 'palette', 'create', 'elementFactory', 'spaceTool', 'lassoTool', 'translate' ];
+EtlDesignerPaletteProvider.$inject = ['palette', 'create', 'elementFactory', 'spaceTool', 'lassoTool', 'translate'];
 
 
-EtlDesignerPaletteProvider.prototype.getPaletteEntries = function(element) {
+EtlDesignerPaletteProvider.prototype.getPaletteEntries = function (element) {
 
-  var actions  = {},
+  var actions = {},
       create = this._create,
       elementFactory = this._elementFactory,
       spaceTool = this._spaceTool,
@@ -34,7 +34,7 @@ EtlDesignerPaletteProvider.prototype.getPaletteEntries = function(element) {
   function createAction(type, group, className, title, options) {
 
     function createListener(event) {
-      var shape = elementFactory.createShape(assign({ type: type }, options));
+      var shape = elementFactory.createShape(assign({type: type}, options));
 
       if (options) {
         shape.businessObject.di.isExpanded = options.isExpanded;
@@ -43,7 +43,7 @@ EtlDesignerPaletteProvider.prototype.getPaletteEntries = function(element) {
       create.start(event, shape);
     }
 
-    var shortType = type.replace(/^[^\:]*\:/, '');
+    var shortType = type.replace(/^[^:]*:/, '');
 
     return {
       group: group,
@@ -58,13 +58,13 @@ EtlDesignerPaletteProvider.prototype.getPaletteEntries = function(element) {
 
   assign(actions, {
     'jsr352-step': createAction(
-      'jsr352:Step', 'custom', 'icon-jsr352-step'
+        'jsr352:Step', 'custom', 'icon-jsr352-step'
     ),
     'jsr352-flow': createAction(
-      'jsr352:Flow', 'custom', 'icon-jsr352-flow'
+        'jsr352:Flow', 'custom', 'icon-jsr352-flow'
     ),
     'jsr352-split': createAction(
-      'jsr352:Split', 'custom', 'icon-jsr352-split'
+        'jsr352:Split', 'custom', 'icon-jsr352-split'
     ),
     'jsr352-textBox': createAction(
         'jsr352:TextBox', 'custom', 'icon-jsr352-textBox'
@@ -74,20 +74,20 @@ EtlDesignerPaletteProvider.prototype.getPaletteEntries = function(element) {
       separator: true
     },
     'jsr352-batchlet': createAction(
-      'jsr352:Batchlet', 'custom', 'icon-jsr352-batchlet'
+        'jsr352:Batchlet', 'custom', 'icon-jsr352-batchlet'
     ),
     'jsr352-chunk': createAction(
-      'jsr352:Chunk', 'custom', 'icon-jsr352-chunk'
+        'jsr352:Chunk', 'custom', 'icon-jsr352-chunk'
     ),
     'jsr352-listener': createAction(
-      'jsr352:Listener', 'custom', 'icon-jsr352-listener'
+        'jsr352:Listener', 'custom', 'icon-jsr352-listener'
     ),
     'lasso-tool': {
       group: 'tools',
       className: 'bpmn-icon-lasso-tool',
       title: 'Activate the lasso tool',
       action: {
-        click: function(event) {
+        click: function (event) {
           lassoTool.activateSelection(event);
         }
       }
@@ -97,7 +97,7 @@ EtlDesignerPaletteProvider.prototype.getPaletteEntries = function(element) {
       className: 'bpmn-icon-space-tool',
       title: 'Activate the create/remove space tool',
       action: {
-        click: function(event) {
+        click: function (event) {
           spaceTool.activateSelection(event);
         }
       }
@@ -107,10 +107,10 @@ EtlDesignerPaletteProvider.prototype.getPaletteEntries = function(element) {
       separator: true
     },
     'create.start': createAction(
-      'jsr352:Start', 'event', 'bpmn-icon-start-event-none'
+        'jsr352:Start', 'event', 'bpmn-icon-start-event-none'
     ),
     'create.end-event': createAction(
-      'jsr352:End', 'event', 'bpmn-icon-end-event-terminate'
+        'jsr352:End', 'event', 'bpmn-icon-end-event-terminate'
     ),
     'create.fail-event': createAction(
         'jsr352:Fail', 'event', 'bpmn-icon-end-event-error'

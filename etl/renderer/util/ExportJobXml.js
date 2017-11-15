@@ -1,16 +1,13 @@
 'use strict';
 
-var fs = require('fs');
-var edn = require('edn');
+var jobStreamerApiUtil = require('./JobStreamerApiUtil');
 
-var jobStreamerApiUtil = require('./JobStremaerApiUtil');
-
-function ExportJobXml(){
+function ExportJobXml() {
 }
 
-ExportJobXml.exportXml = function(bpmnXmlString) {
+ExportJobXml.exportXml = function (bpmnXmlString) {
   bpmnXmlString = bpmnXmlString.replace('\r', '').replace('\n', '');
-  return callExportJobXml([{ednKey:'job-bpmn-xml', ednValue: bpmnXmlString}]);
+  return callExportJobXml([{ednKey: 'job-bpmn-xml', ednValue: bpmnXmlString}]);
 };
 
 function callExportJobXml(args) {

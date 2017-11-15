@@ -1,9 +1,6 @@
 'use strict';
 
-var fs = require('fs');
-var edn = require('edn');
-
-var jobStreamerApiUtil = require('./JobStremaerApiUtil');
+var jobStreamerApiUtil = require('./JobStreamerApiUtil');
 var configFileUtil = require('./ConfigFileUtil');
 
 function TestExecution() {

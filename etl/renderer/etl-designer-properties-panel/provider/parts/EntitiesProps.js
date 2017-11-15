@@ -7,14 +7,14 @@ var is = require('bpmn-js/lib/util/ModelUtil').is;
 var componentProvider = require('../../../util/EtlDesignerComponentProvider');
 var selectOptionUtil = require('../../../../../jsr352-js/app/util/SelectOptionUtil');
 
-module.exports = function(group, element, bpmnFactory) {
+module.exports = function (group, element) {
   if (is(element, 'jsr352:Step')) {
 
     var options = {
       id: 'entities',
       label: 'truncate entity',
       modelProperty: 'entities',
-      selectOptions : selectOptionUtil.toSelectOption(componentProvider.getEntities())
+      selectOptions: selectOptionUtil.toSelectOption(componentProvider.getEntities())
     };
     group.entries.push(customEntryFactory.multiSelectBox(options));
   }

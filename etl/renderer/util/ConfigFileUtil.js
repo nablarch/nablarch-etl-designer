@@ -1,6 +1,5 @@
 'use strict';
 
-var url = require('url');
 var path = require('path');
 var fs = require('fs');
 
@@ -13,7 +12,7 @@ var registry = {};
 var initConfig = {};
 initConfig[appConfigFileName] = {
   jobStreamer: {
-    url:"https://alfort.adc-tis.com/job-streamer-control-bus",
+    url: "https://alfort.adc-tis.com/job-streamer-control-bus",
     timeoutCount: 20
   },
   locale: "ja",

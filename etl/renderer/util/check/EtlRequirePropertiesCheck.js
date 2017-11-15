@@ -3,7 +3,7 @@
 var checkUtil = require('../CheckUtil');
 var messageUtil = require('../MessageUtil');
 
-function etlRequirePropertiesCheck(bpmnDom){
+function etlRequirePropertiesCheck(bpmnDom) {
   var tagNames = [
     'step',
     'listener',
@@ -22,11 +22,11 @@ function etlRequirePropertiesCheck(bpmnDom){
     getProcessorNodes()];
 
   var validationResult = [];
-  for(var i=0; i < tagNames.length; i++) {
+  for (var i = 0; i < tagNames.length; i++) {
     var nodes = nodesGroup[i];
     var elements = bpmnDom.getElementsByTagName(tagNames[i]);
 
-    for(var j = 0; j < nodes.length; j++){
+    for (var j = 0; j < nodes.length; j++) {
       var node = nodes[j];
       checkRequire(validationResult, node, elements);
     }
@@ -34,11 +34,11 @@ function etlRequirePropertiesCheck(bpmnDom){
   return validationResult;
 }
 
-function checkRequire(validationResult, node, elements){
-  for(var i=0; i<elements.length; i++) {
+function checkRequire(validationResult, node, elements) {
+  for (var i = 0; i < elements.length; i++) {
     var element = elements[i];
-    if (node.matchAttr === '' || node.matchVal === element.getAttribute(node.matchAttr)){
-      for(var j = 0; j < node.attrs.length; j++) {
+    if (node.matchAttr === '' || node.matchVal === element.getAttribute(node.matchAttr)) {
+      for (var j = 0; j < node.attrs.length; j++) {
         var attr = node.attrs[j];
         var elementAttr = element.getAttribute(attr.name);
         if (!elementAttr) {
@@ -51,7 +51,7 @@ function checkRequire(validationResult, node, elements){
         }
         switch (attr.type) {
           case 'integer':
-            if(!checkUtil.isInteger(elementAttr)){
+            if (!checkUtil.isInteger(elementAttr)) {
               validationResult.push(checkUtil.createValidationInfo(
                   element,
                   messageUtil.getMessage('"{0}" must be integer.', [(attr.label || attr.name)]),
@@ -158,19 +158,19 @@ function getProcessorNodes() {
 }
 
 function node(tagName, matchAttr, matchVal, nameAttr, attrs) {
-  return  {
-    "tagName": tagName,
-    "matchAttr": matchAttr,
-    "matchVal": matchVal,
-    "nameAttr": nameAttr,
-    "attrs": attrs
+  return {
+    'tagName': tagName,
+    'matchAttr': matchAttr,
+    'matchVal': matchVal,
+    'nameAttr': nameAttr,
+    'attrs': attrs
   };
 }
 
 function attr(attrName, attrType, attrLabel) {
-  return  {
-    "name": attrName,
-    "type": attrType,
-    "label": attrLabel || ''
+  return {
+    'name': attrName,
+    'type': attrType,
+    'label': attrLabel || ''
   };
 }

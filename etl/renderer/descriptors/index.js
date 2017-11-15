@@ -89,11 +89,10 @@ module.exports = jsr352ModdleDescriptor;
 
 function mergeEtlDescriptor(descriptor) {
   descriptor.types.map(function (element) {
-    if (element.name === "Step") {
+    if (element.name === 'Step') {
       element.properties = element.properties.concat(etlProps);
     }
 
   });
   descriptor.types = descriptor.types.concat(elementTypes);
-
 }

@@ -11,34 +11,34 @@ var selectOptionUtil = require('../../../../../jsr352-js/app/util/SelectOptionUt
 
 var customEntryFactory = require('../../factory/CustomEntryFactory');
 
-module.exports = function(group, element, bpmnFactory) {
+module.exports = function (group, element) {
   if (is(element, 'jsr352:Step')) {
     group.entries.push(entryFactory.validationAwareTextField({
-      id : 'start-limit',
-      description : 'Specifies the number of times this step may be started or restarted. It must be a valid XML integer value',
-      label : 'Start Limit',
-      modelProperty : 'start-limit',
-      getProperty: function(element) {
+      id: 'start-limit',
+      description: 'Specifies the number of times this step may be started or restarted. It must be a valid XML integer value',
+      label: 'Start Limit',
+      modelProperty: 'start-limit',
+      getProperty: function (element) {
         return getBusinessObject(element)['start-limit'];
       },
-      setProperty: function(element, properties) {
+      setProperty: function (element, properties) {
         return cmdHelper.updateProperties(element, properties);
       },
-      validate: function(element, values) {
+      validate: function (element, values) {
         var isValid = /^[0-9]+$/.test(values['start-limit']);
         return isValid ? {} : {'start-limit': 'Must be integer'};
       }
     }));
 
     group.entries.push(entryFactory.checkbox({
-      id : 'allow-start-if-complete',
-      description : 'Specifies whether this step is allowed to start during job restart, even if the step completed in a previous execution. ',
-      label : 'Allow start if complete',
-      modelProperty : 'allow-start-if-complete',
-      getProperty: function(element) {
+      id: 'allow-start-if-complete',
+      description: 'Specifies whether this step is allowed to start during job restart, even if the step completed in a previous execution. ',
+      label: 'Allow start if complete',
+      modelProperty: 'allow-start-if-complete',
+      getProperty: function (element) {
         return getBusinessObject(element)['allow-start-if-complete'];
       },
-      setProperty: function(element, properties) {
+      setProperty: function (element, properties) {
         return cmdHelper.updateProperties(element, properties);
       }
     }));
@@ -46,41 +46,41 @@ module.exports = function(group, element, bpmnFactory) {
 
   if (is(element, 'jsr352:Batchlet')) {
     group.entries.push(customEntryFactory.comboBox({
-      id : 'ref',
-      description : 'Specifies the name of a batch artifact.',
-      label : 'Ref',
-      modelProperty : 'ref',
-      selectOptions : selectOptionUtil.toSelectOption(componentProvider.getBatchlets())
+      id: 'ref',
+      description: 'Specifies the name of a batch artifact.',
+      label: 'Ref',
+      modelProperty: 'ref',
+      selectOptions: selectOptionUtil.toSelectOption(componentProvider.getBatchlets())
     }));
   }
 
   if (is(element, 'jsr352:Reader')) {
     group.entries.push(customEntryFactory.comboBox({
-      id : 'ref',
-      description : 'Specifies the name of a batch artifact.',
-      label : 'Ref',
-      modelProperty : 'ref',
-      selectOptions : selectOptionUtil.toSelectOption(componentProvider.getItemReaders())
+      id: 'ref',
+      description: 'Specifies the name of a batch artifact.',
+      label: 'Ref',
+      modelProperty: 'ref',
+      selectOptions: selectOptionUtil.toSelectOption(componentProvider.getItemReaders())
     }));
   }
 
   if (is(element, 'jsr352:Writer')) {
     group.entries.push(customEntryFactory.comboBox({
-      id : 'ref',
-      description : 'Specifies the name of a batch artifact.',
-      label : 'Ref',
-      modelProperty : 'ref',
-      selectOptions : selectOptionUtil.toSelectOption(componentProvider.getItemWriters())
+      id: 'ref',
+      description: 'Specifies the name of a batch artifact.',
+      label: 'Ref',
+      modelProperty: 'ref',
+      selectOptions: selectOptionUtil.toSelectOption(componentProvider.getItemWriters())
     }));
   }
 
   if (is(element, 'jsr352:Processor')) {
     group.entries.push(customEntryFactory.comboBox({
-      id : 'ref',
-      description : 'Specifies the name of a batch artifact.',
-      label : 'Ref',
-      modelProperty : 'ref',
-      selectOptions : selectOptionUtil.toSelectOption(componentProvider.getItemProcessors())
+      id: 'ref',
+      description: 'Specifies the name of a batch artifact.',
+      label: 'Ref',
+      modelProperty: 'ref',
+      selectOptions: selectOptionUtil.toSelectOption(componentProvider.getItemProcessors())
     }));
   }
 
@@ -101,14 +101,14 @@ module.exports = function(group, element, bpmnFactory) {
       description: 'Specifies the number of items to process per chunk when using the item checkpoint policy. ',
       label: 'Item count',
       modelProperty: 'item-count',
-      getProperty: function(element) {
+      getProperty: function (element) {
         return getBusinessObject(element)['item-count'];
       },
-      setProperty: function(element, properties) {
+      setProperty: function (element, properties) {
         var bo = getBusinessObject(element);
         return cmdHelper.updateBusinessObject(element, bo, properties);
       },
-      validate: function(element, values) {
+      validate: function (element, values) {
         var isValid = /^[0-9]+$/.test(values['item-count']);
         return isValid ? {} : {'item-count': 'Must be integer'};
       }

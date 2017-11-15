@@ -34,9 +34,9 @@ function splitStr(str, count){
 
 function extractClassName(str) {
   if(!str) {
-    return "";
+    return '';
   }
-  var array = str.split(".");
+  var array = str.split('.');
   return array[array.length - 1];
 }
 
@@ -77,12 +77,12 @@ function drawCylinder(parentGfx, width, height, ry, x, y, attrs) {
     fill: 'white'
   };
 
-  var pathStr = "";
-  pathStr += "M " + x + ", " + (y + ry) + " A " + width / 2 + " " + ry + " 0 0 0 " + (x + width) + " ," + (y + ry);
-  pathStr += "M " + x + ", " + (y + ry) + " A " + width / 2 + " " + ry + " 0 0 1 " + (x + width) + " ," + (y + ry);
-  pathStr += "M " + x + ", " + (y + ry) + " V " + (y + height - ry * 2);
-  pathStr += "M " + (x + width) + ", " + (y + ry) + " V " + (y + height - ry * 2);
-  pathStr += "M " + x + ", " + (y + height - ry * 2) + " A " + width / 2 + " " + ry + " 0 0 0 " + (x + width) + " ," + (y + height - ry * 2);
+  var pathStr = '';
+  pathStr += 'M ' + x + ', ' + (y + ry) + ' A ' + width / 2 + ' ' + ry + ' 0 0 0 ' + (x + width) + ' ,' + (y + ry);
+  pathStr += 'M ' + x + ', ' + (y + ry) + ' A ' + width / 2 + ' ' + ry + ' 0 0 1 ' + (x + width) + ' ,' + (y + ry);
+  pathStr += 'M ' + x + ', ' + (y + ry) + ' V ' + (y + height - ry * 2);
+  pathStr += 'M ' + (x + width) + ', ' + (y + ry) + ' V ' + (y + height - ry * 2);
+  pathStr += 'M ' + x + ', ' + (y + height - ry * 2) + ' A ' + width / 2 + ' ' + ry + ' 0 0 0 ' + (x + width) + ' ,' + (y + height - ry * 2);
 
   var path = svgCreate('path');
   svgAttr(path, {
@@ -114,7 +114,7 @@ function drawTextRect (parentGfx, width, height, r, x, y, attrs) {
   svgAppend(parentGfx, rect);
 
   var pathStr = '';
-  pathStr += "M " + (x + width * 0.7) + ', ' + (y + height) + 'L ' + (x + width) + ', ' + (y + height * 0.7);
+  pathStr += 'M ' + (x + width * 0.7) + ', ' + (y + height) + 'L ' + (x + width) + ', ' + (y + height * 0.7);
 
   var path = svgCreate('path');
   svgAttr(path, {
@@ -139,13 +139,13 @@ EtlDesignerRenderer.$inject = [ 'eventBus', 'styles', 'bpmnRenderer' ];
 EtlDesignerRenderer.prototype.drawShape = function(p, element){
   var type = element.type;
   // temporary solution: Element.di.isExpanded should be set.
-  if (/^jsr352\:/.test(type)) {
+  if (/^jsr352:/.test(type)) {
     element.collapsed = false;
   }
   if (is(element, 'jsr352:Step')) {
     var step = this.drawRect(p, element.width, element.height, 0, 0);
     this.drawRect(p, 40,20, 0, 0);
-    this.renderLabel(p, "Step",
+    this.renderLabel(p, 'Step',
         {
           box: {width: 40, height: 20, x: 0, y: 0},
           align: 'center-middle',
@@ -201,10 +201,10 @@ EtlDesignerRenderer.prototype.drawShape = function(p, element){
   }
   else if (type === 'jsr352:Batchlet') {
     var batchlet = this.drawRect(p, element.width, element.height, 0, 0);
-    var batchletLabel = this.drawRect(p, 20, element.height, 0, 0, {
+    this.drawRect(p, 20, element.height, 0, 0, {
       fill: '#000000'
     });
-    this.renderLabel(p, "B",
+    this.renderLabel(p, 'B',
         {
           box: {width: 20, height: 20, x: 0, y: 0},
           align: 'center-middle',
@@ -224,10 +224,10 @@ EtlDesignerRenderer.prototype.drawShape = function(p, element){
   else if (type === 'jsr352:Reader') {
 
     var reader = this.drawRect(p, element.width, element.height, 0, 0);
-    var readerLabel = this.drawRect(p, 20, element.height, 0, 0, {
+    this.drawRect(p, 20, element.height, 0, 0, {
       fill: '#fc9303'
     });
-    this.renderLabel(p, "R",
+    this.renderLabel(p, 'R',
         {
           box: {width: 20, height: 20, x: 0, y: 0},
           align: 'center-middle',
@@ -242,11 +242,11 @@ EtlDesignerRenderer.prototype.drawShape = function(p, element){
     return reader;
   }
   else if (type === 'jsr352:Processor') {
-    var reader = this.drawRect(p, element.width, element.height, 0, 0);
-    var readerLabel = this.drawRect(p, 20, element.height, 0, 0, {
+    var processor = this.drawRect(p, element.width, element.height, 0, 0);
+    this.drawRect(p, 20, element.height, 0, 0, {
       fill: '#b1d412'
     });
-    this.renderLabel(p, "P",
+    this.renderLabel(p, 'P',
         {
           box: {width: 20, height: 20, x: 0, y: 0},
           align: 'center-middle',
@@ -258,14 +258,14 @@ EtlDesignerRenderer.prototype.drawShape = function(p, element){
           align: 'center-middle',
           padding: {left:22},
           style: {fill: '#000000'}});
-    return reader;
+    return processor;
   }
   else if (type === 'jsr352:Writer') {
     var writer = this.drawRect(p, element.width, element.height, 0, 0);
-    var writerLabel = this.drawRect(p, 20, element.height, 0, 0, {
+    this.drawRect(p, 20, element.height, 0, 0, {
       fill: '#a1e0fc'
     });
-    this.renderLabel(p, "W",
+    this.renderLabel(p, 'W',
         {
           box: {width: 20, height: 20, x: 0, y: 0},
           align: 'center-middle',
@@ -281,10 +281,10 @@ EtlDesignerRenderer.prototype.drawShape = function(p, element){
   }
   else if (type === 'jsr352:Listener') {
     var listener = this.drawRect(p, element.width, element.height, 0, 0);
-    var listenerLabel = this.drawRect(p, 20, element.height, 0, 0, {
+    this.drawRect(p, 20, element.height, 0, 0, {
       fill: '#e8e7e0'
     });
-    this.renderLabel(p, "L",
+    this.renderLabel(p, 'L',
         {
           box: {width: 20, height: 20, x: 0, y: 0},
           align: 'center-middle',
@@ -302,7 +302,7 @@ EtlDesignerRenderer.prototype.drawShape = function(p, element){
   else if (type === 'jsr352:Flow') {
     var flow = this.drawShapeByType(p,element,'bpmn:Activity');
     this.drawRect(p, 40,20, 0, 0);
-    this.renderLabel(p, "Flow",
+    this.renderLabel(p, 'Flow',
         {
           box: {width: 40, height: 20, x: 0, y: 0},
           align: 'center-middle',
@@ -314,7 +314,7 @@ EtlDesignerRenderer.prototype.drawShape = function(p, element){
   else if (type === 'jsr352:Split') {
     var split = this.drawShapeByType(p,element,'bpmn:Lane');
     this.drawRect(p, 40,20, 0, 0);
-    this.renderLabel(p, "Split",
+    this.renderLabel(p, 'Split',
         {
           box: {width: 40, height: 20, x: 0, y: 0},
           align: 'center-middle',

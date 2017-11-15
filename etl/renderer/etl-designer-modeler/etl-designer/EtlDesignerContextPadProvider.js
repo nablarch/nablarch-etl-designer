@@ -11,14 +11,14 @@ var assign = require('lodash/object/assign'),
     bind = require('lodash/function/bind');
 
 function ETLDesignerContextPadProvider(eventBus, contextPad, modeling, elementFactory, connect,
-                                  create, popupMenu, canvas, rules, translate) {
+                                       create, popupMenu, canvas, rules, translate) {
 
   ContextPadProvider.call(this, eventBus, contextPad, modeling, elementFactory, connect, create,
-                    popupMenu, canvas, rules, translate);
+      popupMenu, canvas, rules, translate);
 
   var cached = bind(this.getContextPadEntries, this);
 
-  this.getContextPadEntries = function(element) {
+  this.getContextPadEntries = function (element) {
     var actions = cached(element);
 
     var businessObject = element.businessObject;
@@ -31,11 +31,11 @@ function ETLDesignerContextPadProvider(eventBus, contextPad, modeling, elementFa
 
       if (typeof title !== 'string') {
         options = title;
-        title = translate('Append {type}', { type: type.replace(/^jsr352\:/, '') });
+        title = translate('Append {type}', {type: type.replace(/^jsr352:/, '')});
       }
 
       function appendListener(event, element) {
-        var shape = elementFactory.createShape(assign({ type: type, isExpanded: true }, options));
+        var shape = elementFactory.createShape(assign({type: type, isExpanded: true}, options));
         create.start(event, shape, element);
       }
 
@@ -107,10 +107,10 @@ function ETLDesignerContextPadProvider(eventBus, contextPad, modeling, elementFa
     } else if (isAny(businessObject, ['jsr352:Start'])) {
       actions = pick(actions, ['connect', 'delete']);
       appendStartMenu(actions);
-    } else if( isAny(businessObject, ['jsr352:DataComponent'])){
+    } else if (isAny(businessObject, ['jsr352:DataComponent'])) {
       actions = pick(actions, ['delete']);
       appendDataComponentMenu(actions);
-    }else{
+    } else {
       actions = pick(actions, ['delete']);
     }
 

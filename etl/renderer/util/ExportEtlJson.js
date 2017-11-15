@@ -1,13 +1,11 @@
 'use strict';
 
-var fs = require('fs');
-
 function ExportEtlJson() {
 }
 
 ExportEtlJson.exportJson = function (xmlString) {
   var parser = new DOMParser();
-  var bpmnDom = parser.parseFromString(xmlString, "text/xml");
+  var bpmnDom = parser.parseFromString(xmlString, 'text/xml');
   var rootNode = getRootNode();
   var elements = bpmnDom.getElementsByTagName(rootNode.tagName);
   var jsonObj = {};
@@ -63,14 +61,14 @@ function getRootNode() {
 
 function node(parent, tagName, matchAttr, matchVal, fixedName, nameAttrs, useParentElement, attrs) {
   var node = {
-    "tagName": tagName,
-    "matchAttr": matchAttr,
-    "matchVal": matchVal,
-    "fixedName": fixedName,
-    "nameAttrs": nameAttrs,
-    "useParentElement": useParentElement,
-    "attrs": attrs,
-    "childNodes": []
+    'tagName': tagName,
+    'matchAttr': matchAttr,
+    'matchVal': matchVal,
+    'fixedName': fixedName,
+    'nameAttrs': nameAttrs,
+    'useParentElement': useParentElement,
+    'attrs': attrs,
+    'childNodes': []
   };
   if (parent !== null) {
     parent.childNodes.push(node);
@@ -80,9 +78,9 @@ function node(parent, tagName, matchAttr, matchVal, fixedName, nameAttrs, usePar
 
 function attr(attrName, jsonProp, attrType) {
   var attr = {
-    "name": attrName,
-    "jsonProp": jsonProp,
-    "type": attrType
+    'name': attrName,
+    'jsonProp': jsonProp,
+    'type': attrType
   };
   return attr;
 }

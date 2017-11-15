@@ -120,6 +120,9 @@ function translateMessage() {
 
   document.title = messageUtil.getMessage('Validation');
   for (var key in convertMessage) {
+    if (!convertMessage.hasOwnProperty(key)) {
+      continue;
+    }
     document.getElementById(key).textContent = messageUtil.getMessage(convertMessage[key]);
   }
 }
