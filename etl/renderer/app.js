@@ -50,7 +50,8 @@ var propertiesPanelModule = require('bpmn-js-properties-panel'),
     jsr352ModdleDescriptor = require('./descriptors'),
     camundaModdleDescriptor = require('camunda-bpmn-moddle/resources/camunda'),
     // minimapModule = require('./diagram-js-minimap');
-    copypasteModule = require('./etl-designer-copypate');
+    copypasteModule = require('./etl-designer-copypate'),
+    zoomScrollModule = require('./zoom-scroll');
 
 var modeler = new ETLDesignerModeler({
   container: '#canvas',
@@ -62,7 +63,8 @@ var modeler = new ETLDesignerModeler({
     propertiesPanelModule,
     propertiesProviderModule,
     // minimapModule
-    copypasteModule
+    copypasteModule,
+    zoomScrollModule
   ],
   moddleExtensions: {
     jsr352: jsr352ModdleDescriptor,
