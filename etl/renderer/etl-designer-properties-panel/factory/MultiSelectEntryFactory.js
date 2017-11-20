@@ -56,7 +56,7 @@ var multiSelect = function (options, defaultParameters) {
       selectActionName = ( typeof options.selectAction !== 'undefined' ) ? options.selectAction.name : 'select',
       selectActionMethod = ( typeof options.selectAction !== 'undefined' ) ? options.selectAction.method : defaultSelectAction;
 
-  var defaultSize = options.size || 5;
+  var defaultSize = options.size || 10;
 
   if (emptyParameter) {
     selectOptions = addEmptyParameter(selectOptions);
@@ -89,7 +89,9 @@ var multiSelect = function (options, defaultParameters) {
       '<select id="cam-extensionElements-' + resource.id + '" ' +
           'name="' + modelProperty + '" ' +
           'size="' + defaultSize + '" ' +
-          'data-list-entry-container>' +
+          'data-list-entry-container ' +
+          'dir="rtl" ' +
+          'style="overflow: auto">' +
           '</select>' +
           '<button class="clear" ' +
           'id="cam-extensionElements-remove-' + resource.id + '" ' +
@@ -140,8 +142,9 @@ var multiSelect = function (options, defaultParameters) {
     }
 
     if(element.businessObject[options.modelProperty]){
-      for(var i = 0; i < element.businessObject[options.modelProperty].length; i++){
-        if(textBox.value === element.businessObject[options.modelProperty][i]){
+      var valuesArray = element.businessObject[options.modelProperty].split(',');
+      for(var i = 0; i < valuesArray.length; i++){
+        if(textBox.value === valuesArray[i]){
           return;
         }
       }
@@ -210,7 +213,7 @@ var multiSelect = function (options, defaultParameters) {
   };
 
   var createOption = function(value) {
-    return '<option value="' + value + '" data-name="' + options.modelProperty + '">' + value + '</option>';
+    return '<option value="' + value + '" data-name="' + options.modelProperty + '" style="display: table-row">' + value + '</option>';
   };
 
   if (canBeDisabled) {
