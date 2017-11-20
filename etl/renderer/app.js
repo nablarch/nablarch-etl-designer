@@ -117,6 +117,7 @@ ipc.on('main-process-export-etl-files', function (event, args) {
 
 ipc.on('main-process-import-bpmn-file', function (event, args) {
   var bpmnString = args.bpmnString || initialDiagram;
+  var filepath = args.filepath || '';
   modeler.importXML(bpmnString, function (err) {
     if (err) {
       console.log('import error');
@@ -124,6 +125,8 @@ ipc.on('main-process-import-bpmn-file', function (event, args) {
       throw new Error(messageUtil.getMessage('Failed to load a bpmn file.\n{0}', [err.message]));
     }
     appInfo.workBpmnString = bpmnString;
+    appInfo.openFilePath = filepath;
+    document.title = messageUtil.getMessage('ETL Designer - [{0}]', [filepath]);
   });
 });
 

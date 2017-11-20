@@ -48,6 +48,7 @@ function createWindow() {
 
   messageUtil.setLocale(configFileUtil.getLocale());
 
+  win.setTitle(messageUtil.getMessage('ETL Designer - [{0}]', ['']));
   createApplicationMenu();
 
   win.loadURL(url.format({
@@ -57,7 +58,7 @@ function createWindow() {
   }));
 
   win.on('close', function (event) {
-    if (!MenuActions.canCloseWindow(win)) {
+    if (!MenuActions.canCloseWindow()) {
       event.preventDefault();
     }
   });
@@ -83,6 +84,7 @@ app.on('activate', function () {
 
 
 function createApplicationMenu() {
+  MenuActions.setBrowserWindow(win);
   var menuTemplate = [
     {
       label: messageUtil.getMessage('File'),
@@ -91,27 +93,27 @@ function createApplicationMenu() {
           label: messageUtil.getMessage('New File'),
           accelerator: 'Ctrl+N',
           click: function () {
-            MenuActions.createNewBpmn(win);
+            MenuActions.createNewBpmn();
           }
         },
         {
           label: messageUtil.getMessage('Save...'),
           accelerator: 'Ctrl+S',
           click: function () {
-            MenuActions.saveBpmn(win);
+            MenuActions.saveBpmn();
           }
         },
         {
           label: messageUtil.getMessage('Save As...'),
           click: function () {
-            MenuActions.saveAsBpmn(win);
+            MenuActions.saveAsBpmn();
           }
         },
         {
           label: messageUtil.getMessage('Open...'),
           accelerator: 'Ctrl+O',
           click: function () {
-            MenuActions.openBpmn(win);
+            MenuActions.openBpmn();
           }
         },
         {
@@ -131,21 +133,21 @@ function createApplicationMenu() {
         {
           label: messageUtil.getMessage('Export ETL files'),
           click: function () {
-            MenuActions.exportJobXml(win);
+            MenuActions.exportJobXml();
           }
         },
         {
           label: messageUtil.getMessage('Validate...'),
           accelerator: 'Ctrl+T',
           click: function () {
-            MenuActions.validation(win);
+            MenuActions.validation();
           }
         },
         {
           label: messageUtil.getMessage('Settings...'),
           accelerator: 'Ctrl+Shift+S',
           click: function () {
-            MenuActions.setting(win);
+            MenuActions.setting();
           }
         }
       ]
@@ -156,7 +158,7 @@ function createApplicationMenu() {
         {
           label: messageUtil.getMessage('About...'),
           click: function () {
-            MenuActions.checkVersion(win);
+            MenuActions.checkVersion();
           }
         }
       ]
