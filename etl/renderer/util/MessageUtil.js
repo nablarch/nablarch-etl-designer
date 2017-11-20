@@ -30,6 +30,7 @@ var messages_ja = {
   'Version {0}': 'バージョン {0}',
   'Version Information': 'バージョン情報',
   'ETL Designer': 'ETLデザイナー',
+  'ETL Designer - [{0}]': 'ETLデザイナー - [{0}]',
   'Error': 'エラー',
   'An unexpected error occurred.': '予期せぬエラーが発生しました',
   'Yes': 'はい',

@@ -14,20 +14,23 @@ var messageUtil = require('../renderer/util/MessageUtil');
 var MenuActions = function(){
 };
 
-MenuActions.createNewBpmn = function(win) {
-  var dirty = handleDirty(win,messageUtil.getMessage('The data is edited, do you want to save?'));
+MenuActions.setBrowserWindow = function(win) {
+  this.win = win;
+};
+
+MenuActions.createNewBpmn = function() {
+  var dirty = handleDirty(messageUtil.getMessage('The data is edited, do you want to save?'));
   if(!dirty) {
     return;
   }
-  appInfo.openFilePath = '';
-  importBpmn(win);
+  importBpmn();
 };
 
-MenuActions.saveBpmn = function(win) {
+MenuActions.saveBpmn = function() {
   if(appInfo.openFilePath){
-    doSaveBpmnFile(win);
+    doSaveBpmnFile();
   }else{
-    doSaveAsBpmnFile(win);
+    doSaveAsBpmnFile();
   }
 };
 
@@ -36,8 +39,8 @@ function doSaveBpmnFile() {
   return doSaveBpmn(filePath);
 }
 
-MenuActions.saveAsBpmn = function(win) {
-  doSaveAsBpmnFile(win);
+MenuActions.saveAsBpmn = function() {
+  doSaveAsBpmnFile();
 };
 
 function doSaveAsBpmnFile() {
@@ -52,6 +55,8 @@ function doSaveBpmn(filePath) {
   var bpmnString = appInfo.workBpmnString;
   try{
     writeFileAppendAppVersion(filePath, bpmnString);
+    appInfo.openFilePath = filePath;
+    MenuActions.win.setTitle(messageUtil.getMessage('ETL Designer - [{0}]', [filePath]));
     return true;
   }catch(e){
     showErrorDialog(
@@ -62,8 +67,8 @@ function doSaveBpmn(filePath) {
   }
 }
 
-MenuActions.openBpmn = function(win) {
-  var dirty = handleDirty(win, messageUtil.getMessage('The data is edited, do you want to save?'));
+MenuActions.openBpmn = function() {
+  var dirty = handleDirty(messageUtil.getMessage('The data is edited, do you want to save?'));
   if(!dirty) {
     return;
   }
@@ -71,7 +76,6 @@ MenuActions.openBpmn = function(win) {
   if(!filePaths) {
     return;
   }
-  global.appInfo.openFilePath = filePaths[0];
   try{
     var bpmnString = readFileRemoveAppVersion(filePaths[0],'utf8');
   }catch(e){
@@ -80,12 +84,15 @@ MenuActions.openBpmn = function(win) {
         messageUtil.getMessage('Path: {0}', [filePaths[0]]),
         e.message);
   }
-  importBpmn(win, bpmnString);
+  importBpmn(bpmnString, filePaths[0]);
 };
 
-function importBpmn(win, bpmnString) {
-  win.webContents.send('main-process-import-bpmn-file',
-      {bpmnString: bpmnString});
+function importBpmn(bpmnString, filepath) {
+  MenuActions.win.webContents.send('main-process-import-bpmn-file', {
+        bpmnString: bpmnString,
+        filepath: filepath
+      }
+  );
 }
 
 function showOpenBpmnFileDialog(){
@@ -113,9 +120,6 @@ function showSaveBpmnFileDialog(){
   };
 
   var filePath = dialog.showSaveDialog(focusedWindow, options);
-  if (filePath) {
-    appInfo.openFilePath = filePath;
-  }
   return filePath;
 }
 
@@ -137,12 +141,12 @@ function showSaveXmlFileDialog(){
   return dialog.showSaveDialog(focusedWindow, options);
 }
 
-MenuActions.canCloseWindow = function(win){
-  return handleDirty(win, messageUtil.getMessage('The data is edited, do you want to save and quit?'));
+MenuActions.canCloseWindow = function(){
+  return handleDirty(messageUtil.getMessage('The data is edited, do you want to save and quit?'));
 };
 
-MenuActions.exportJobXml = function(win){
-  win.webContents.send('main-process-pre-export-etl-files');
+MenuActions.exportJobXml = function(){
+  this.win.webContents.send('main-process-pre-export-etl-files');
 };
 
 ipc.on('renderer-process-checked-job-name', function(event, args){
@@ -169,7 +173,7 @@ ipc.on('renderer-process-checked-job-name', function(event, args){
 });
 
 var validationDialogWindow;
-MenuActions.validation = function(win){
+MenuActions.validation = function(){
 
   if(validationDialogWindow){
     validationDialogWindow.focus();
@@ -180,7 +184,7 @@ MenuActions.validation = function(win){
   validationDialogWindow = new BrowserWindow(
       {
         width: 800, height: 500,
-        parent: win, resizable: true,
+        parent: MenuActions.win, resizable: true,
         modal: false, frame: true
 
       });
@@ -200,11 +204,11 @@ MenuActions.validation = function(win){
   });
 };
 
-MenuActions.setting = function(win){
+MenuActions.setting = function(){
   var dialogWindow = new BrowserWindow(
       {
         width: 400, height: 500,
-        parent: win, resizable: false,
+        parent: MenuActions.win, resizable: false,
         modal: true, frame: true
       });
   dialogWindow.setMenu(null);
@@ -272,7 +276,7 @@ function isDirty() {
   return (openData !== tempData);
 }
 
-function handleDirty(win, message) {
+function handleDirty(message) {
   if (isDirty()) {
     var options = {
       buttons: [
@@ -288,9 +292,9 @@ function handleDirty(win, message) {
       case 0:
         // save
         if (appInfo.openFilePath) {
-          return doSaveBpmnFile(win);
+          return doSaveBpmnFile();
         } else {
-          return doSaveAsBpmnFile(win);
+          return doSaveAsBpmnFile();
         }
       case 1:
         // nop
