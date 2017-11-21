@@ -64,6 +64,7 @@ var exportWorkBpmnString = _.debounce(function () {
     var jobElements = bpmnDom.getElementsByTagName('job');
     appInfo.jobName = jobElements[0].getAttribute('bpmn:name');
     appInfo.workBpmnString = xml;
+    ipc.send('renderer-process-change-work-bpmn');
   });
 }, 500);
 modeler.on('commandStack.changed', exportWorkBpmnString);
@@ -73,7 +74,10 @@ modeler.importXML(initialDiagram, function (err) {
     console.error('something went wrong:', err);
   }
   modeler.get('canvas').zoom('fit-viewport');
-  appInfo.workBpmnString = initialDiagram;
+  ipc.send('renderer-process-file-import-success', {
+    bpmnString: initialDiagram,
+    filepath: ''
+  });
 });
 
 function saveDiagram(done) {
@@ -126,9 +130,10 @@ ipc.on('main-process-import-bpmn-file', function (event, args) {
       console.log(err);
       throw new Error(messageUtil.getMessage('Failed to load a bpmn file.\n{0}', [err.message]));
     }
-    appInfo.workBpmnString = bpmnString;
-    appInfo.openFilePath = filepath;
-    document.title = messageUtil.getMessage('ETL Designer - [{0}]', [filepath]);
+    ipc.send('renderer-process-file-import-success', {
+      bpmnString: bpmnString,
+      filepath: filepath
+    });
   });
 });
 
