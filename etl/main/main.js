@@ -30,6 +30,7 @@ var messageUtil = require('../renderer/util/MessageUtil');
 var appInfo = {
   openFilePath: '',
   workBpmnString: '',
+  originalBpmnString: '',
   jobName: ''
 };
 appInfo.argDev = process.argv.indexOf('--dev') >= 0;
@@ -48,7 +49,6 @@ function createWindow() {
 
   messageUtil.setLocale(configFileUtil.getLocale());
 
-  win.setTitle(messageUtil.getMessage('ETL Designer - [{0}]', ['']));
   createApplicationMenu();
 
   win.loadURL(url.format({

@@ -8,6 +8,9 @@
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Job_1">\n\
       <bpmndi:BPMNShape id="_BPMNShape_Start_2" bpmnElement="Start_1">\n\
         <dc:Bounds x="173" y="102" width="36" height="36" />\n\
+        <bpmndi:BPMNLabel>\n\
+          <dc:Bounds x="191" y="138" width="0" height="0" />\n\
+        </bpmndi:BPMNLabel>\n\
       </bpmndi:BPMNShape>\n\
     </bpmndi:BPMNPlane>\n\
   </bpmndi:BPMNDiagram>\n\

@@ -55,8 +55,7 @@ function doSaveBpmn(filePath) {
   var bpmnString = appInfo.workBpmnString;
   try{
     writeFileAppendAppVersion(filePath, bpmnString);
-    appInfo.openFilePath = filePath;
-    MenuActions.win.setTitle(messageUtil.getMessage('ETL Designer - [{0}]', [filePath]));
+    refreshFileInfo(filePath, bpmnString);
     return true;
   }catch(e){
     showErrorDialog(
@@ -95,6 +94,29 @@ function importBpmn(bpmnString, filepath) {
   );
 }
 
+function refreshFileInfo(filepath, bpmnString) {
+  appInfo.workBpmnString = bpmnString;
+  appInfo.originalBpmnString = bpmnString;
+  appInfo.openFilePath = filepath;
+  MenuActions.win.setTitle(messageUtil.getMessage('ETL Designer - [{0}]', [filepath ? filepath : 'new file']));
+}
+
+ipc.on('renderer-process-file-import-success', function(event, args) {
+  refreshFileInfo(args.filepath, args.bpmnString);
+});
+
+ipc.on('renderer-process-change-work-bpmn', function() {
+  var title = MenuActions.win.getTitle();
+  var isDirty = appInfo.workBpmnString !== appInfo.originalBpmnString;
+  var markStr = '● ';
+
+  if(isDirty && !title.startsWith(markStr)) {
+    MenuActions.win.setTitle(markStr + title);
+  }else if(!isDirty && title.startsWith(markStr)) {
+    MenuActions.win.setTitle(title.substr(markStr.length));
+  }
+});
+
 function showOpenBpmnFileDialog(){
   var focusedWindow = BrowserWindow.getFocusedWindow();
   var options = {
@@ -119,8 +141,7 @@ function showSaveBpmnFileDialog(){
     }]
   };
 
-  var filePath = dialog.showSaveDialog(focusedWindow, options);
-  return filePath;
+  return dialog.showSaveDialog(focusedWindow, options);
 }
 
 function showSaveXmlFileDialog(){
@@ -245,26 +266,8 @@ function showErrorDialog(title, message, option){
   dialog.showErrorBox(title, content);
 }
 
-function isDirty() {
-  var openData = require('../resources/initDiagram.js');
-
-  if (global.appInfo.openFilePath !== '' && fs.existsSync(global.appInfo.openFilePath)) {
-    try{
-      openData = readFileRemoveAppVersion(global.appInfo.openFilePath);
-    }catch(e){
-      showErrorDialog(
-          messageUtil.getMessage('Failed to load a bpmn file.'),
-          messageUtil.getMessage('Path: {0}', [global.appInfo.openFilePath]),
-          e.message);
-    }
-  }
-
-  var tempData = appInfo.workBpmnString;
-  return (openData !== tempData);
-}
-
 function handleDirty(message) {
-  if (isDirty()) {
+  if (appInfo.workBpmnString !== appInfo.originalBpmnString) {
     var options = {
       buttons: [
         messageUtil.getMessage('Yes'),
