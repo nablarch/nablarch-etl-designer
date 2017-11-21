@@ -17,7 +17,7 @@ configFileUtil.init(registryFilePath, app.getPath('userData'));
 messageUtil.setLocale(configFileUtil.getLocale());
 
 var checkButton = document.querySelector('#check');
-var cancelButton = document.querySelector('#cancel');
+var cancelButton = document.querySelector('#close');
 checkButton.addEventListener('click', onCheckClick);
 cancelButton.addEventListener('click', onCancelClick);
 
