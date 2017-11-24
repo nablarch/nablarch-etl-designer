@@ -62,7 +62,7 @@ CustomZoomScroll.prototype._handleWheel = function handleWheel(event) {
     if (isShiftKeyPressed) {
       delta.dx = (factor * (event.deltaX || event.deltaY));
     } else {
-      delta.dy = (factor * event.deltaY);
+      delta.dy = (-1) * (factor * event.deltaY);
     }
     this.scroll(delta);
   }
