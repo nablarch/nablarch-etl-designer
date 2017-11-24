@@ -51,7 +51,7 @@ ETLデザイナーでの開発の流れです。
 
 ## ETLデザイナーの起動
 
-- etl-designer.exeをダブルクリックします。以下の画面が表示されます。
+- ETLデザイナーを起動すると以下の画面が表示されます。
 
 ![screenshot](./image/screenshot.png)
 
@@ -75,6 +75,7 @@ ETLデザイナーでの開発の流れです。
     - テンプレートファイルの上書き保存を避けるため、別ファイルとして保存します。
     - ファイル＞名前を付けて保存を選択します。
     - ファイル名を「getting-started」にして、任意の場所に保存します。
+    - タイトルに表示されるファイルのパスが保存した「getting-started.bpmn」の物に変わります。
 
 ## 2.JOB定義の編集
 
@@ -85,6 +86,8 @@ ETLデザイナーでの開発の流れです。
     - Processorをクリックし、図形の右に表示されるゴミ箱ボタンを押すか、deleteボタンを押すことで削除ができます。
 
   ![delete-processor](./image/delete-processor.png)
+
+- 保存されていない編集内容がある場合、タイトルの「ETLデザイナー」の右側に「●」が表示されます。保存すると「●」が消えます。
 
 ## 3.Bean、SQLの作成とプロパティパネルでの設定
 
@@ -97,18 +100,18 @@ ETLデザイナーでの開発の流れです。
     - このGetting Startedでは[NablarchのExampleプロジェクト](https://github.com/nablarch/nablarch-example-batch-ee)を使用するため省略します。
     - 実装する際には、Nablarchのドキュメントの[4.3. ETLを使用するバッチの設計ポイント](https://nablarch.github.io/docs/LATEST/doc/extension_components/etl/index.html#id5)を参照ください。
 
-実際にBean、SQLを作成する場合、ファイル→DBのETLでは以下の物を作成します。
-  - ワークテーブルのBean
-  - エラーテーブルのBean
-  - 本テーブルのBean
-  - ワークテーブから本テーブルへデータを取り込むSQL
+ファイル→DBのETLでは以下の物を作成します。また、今回使用する[NablarchのExampleプロジェクト](https://github.com/nablarch/nablarch-example-batch-ee)ではそれぞれ以下に対応します。
+- ワークテーブルのBean: <nablarch-example-batch-eeをcloneしたディレクトリ>\src\main\java\com\nablarch\example\app\batch\ee\dto\csv\ZipCodeDto.java
+- エラーテーブルのBean: <nablarch-example-batch-eeをcloneしたディレクトリ>\src\main\java\com\nablarch\example\app\batch\ee\dto\csv\ZipCodeErrorEntity.java
+- 本テーブルのEntity: gspプラグインによって自動生成されます
+- ワークテーブから本テーブルへデータを取り込むSQL: <nablarch-example-batch-eeをcloneしたディレクトリ>\src\main\resources\com\nablarch\example\app\entity\ZipCodeData.sql
 
 Bean、SQLを設定するイメージです。
 
   ![イメージ](image/bean-image.png)
 
 ここからステップの設定をしていきます。編集したいステップをクリックすることでプロパティパネルで設定が可能になります。
-ETLの設定はプロパティパネルのETL Propertiesタブで行います。
+ETLの設定はプロパティパネルのETL Propertiesタブで行います。入力した値はすぐに反映されます。
 
 - truncateステップの設定
     - truncateステップでは、削除するワークテーブルの設定を行います。

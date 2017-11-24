@@ -61,5 +61,7 @@ ETLデザイナーはAWS上のAPIサーバを利用します。
 Apache License 2.0
 
 ## [Getting Started](doc/getting-started.md)
+テンプレートを使用した簡単なETLバッチ作成の解説です。
 
 ## [利用方法](doc/operation-guide.md)
+ETLデザイナーの詳細な操作マニュアルです。

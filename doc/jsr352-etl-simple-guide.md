@@ -21,19 +21,12 @@
 NablarchのETLでは、JSR352に準拠したバッチアプリケーションに、ChunkやBatchletの実装を追加する形でETLを実現しています。  
 ETLで提供しているChunkやBatchletの詳細は[解説書](https://nablarch.github.io/docs/LATEST/doc/extension_components/etl/index.html)を参照ください。
   
-- ファイル→DBのデータ取り込みのバッチをETL
+- ETLでは、ファイルのデータをDBに取り込む、DBのテーブルのデータをSQLを利用して別テーブルに取り込む、取り込んだデータのバリデーションをするなどの処理を行うChunk、Batchletを提供しています。
 
-  ![](image/etl-flow.png)
-  
-- 各ステップで使用されるItemReader、ItemProcessor、ItemWriter、Batchletは以下のようになります。
+  ![](image/etl-artifact1.png)
 
-  ![](image/etl-flow-batch-artifact.png)
-  
-- ETLではファイル、DBの入出力やデータのバリデーションなど、定型的な処理を行うItemReader、ItemWriter、Batchletを提供してあります。(ItemProcessorは行いたい処理内容を実装する必要あります)
-- これらのItemReader、ItemProcessor、ItemWriter、Batchletが処理するファイルとDBの構造をJava Beanとして作成し、設定します。
-- ワークテーブルから本テーブルへの取り込みの際、取り込むデータの抽出と変換仕様をSQLで作成し、設定します。
+- これらのChunk、Batchletが実際に処理するファイルやテーブル、SQLなどを設定ファイルに記述します。
 
-  ![](image/etl-flow-bean-sql.png)
+  ![](image/etl-artifact2.png)
   
-- Stepの処理の流れ、Stepの処理の内容(ItemReader、ItemProcessor、ItemWriter、Batchlet)、Bean、SQLを設定ファイルに記述します。
-- ETLデザイナーはGUIで上記の設定を行い、設定ファイルが出力できます。
+- ETLデザイナーはGUIで上記の設定を行い、設定ファイルを出力します。
