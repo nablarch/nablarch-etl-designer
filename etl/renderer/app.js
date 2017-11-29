@@ -88,22 +88,6 @@ function saveDiagram(done) {
 
 var exportEtlJson = require('./util/ExportEtlJson');
 var exportJobXml = require('./util/ExportJobXml');
-var jobNameCheck = require('./util/check/JobNameCheck');
-
-ipc.on('main-process-pre-export-etl-files', function () {
-  var bpmnXmlString = appInfo.workBpmnString;
-  var parser = new DOMParser();
-  var bpmnDom = parser.parseFromString(bpmnXmlString, "text/xml");
-  var validationResult = jobNameCheck(bpmnDom);
-  var message;
-  if (validationResult.length > 0) {
-    message = messageUtil.getMessage('Job name attribute must be set.');
-  }
-
-  ipc.send('renderer-process-checked-job-name', {
-    message: message
-  });
-});
 
 ipc.on('main-process-export-etl-files', function (event, args) {
   try {
@@ -118,7 +102,9 @@ ipc.on('main-process-export-etl-files', function (event, args) {
   } catch (e) {
     throw new Error(messageUtil.getMessage('Failed to convert the json file.\n{0}', [e.message]));
   }
-  alert(messageUtil.getMessage('Export is finished successfully.'));
+  ipc.send('renderer-process-success-export-etl-files', {
+    saveDirPath: args.xmlPath
+  });
 });
 
 ipc.on('main-process-import-bpmn-file', function (event, args) {
