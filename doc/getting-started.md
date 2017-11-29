@@ -87,7 +87,7 @@ ETLデザイナーでの開発の流れです。
 
   ![delete-processor](./image/delete-processor.png)
 
-- 保存されていない編集内容がある場合、タイトルの「ETLデザイナー」の右側に「●」が表示されます。保存すると「●」が消えます。
+- 保存されていない編集内容がある場合、タイトルの「ETLデザイナー」の左側に「●」が表示されます。保存すると「●」が消えます。
 
 ## 3.Bean、SQLの作成とプロパティパネルでの設定
 
@@ -104,7 +104,7 @@ ETLデザイナーでの開発の流れです。
 - ワークテーブルのBean: <nablarch-example-batch-eeをcloneしたディレクトリ>\src\main\java\com\nablarch\example\app\batch\ee\dto\csv\ZipCodeDto.java
 - エラーテーブルのBean: <nablarch-example-batch-eeをcloneしたディレクトリ>\src\main\java\com\nablarch\example\app\batch\ee\dto\csv\ZipCodeErrorEntity.java
 - 本テーブルのEntity: gspプラグインによって自動生成されます
-- ワークテーブから本テーブルへデータを取り込むSQL: <nablarch-example-batch-eeをcloneしたディレクトリ>\src\main\resources\com\nablarch\example\app\entity\ZipCodeData.sql
+- ワークテーブルから本テーブルへデータを取り込むSQL: <nablarch-example-batch-eeをcloneしたディレクトリ>\src\main\resources\com\nablarch\example\app\entity\ZipCodeData.sql
 
 Bean、SQLを設定するイメージです。
 
