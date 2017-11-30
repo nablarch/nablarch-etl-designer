@@ -15,6 +15,7 @@
 - 解凍したフォルダ内のetl-designer.exeを実行するとETLデザイナーが起動します。
 
 ## テンプレート
+ETLの定型的な処理フローを、テンプレートとして提供しています。テンプレートをベースにすることで、バッチを効率的に作成できます。
 - [etl-template.zip](https://github.com/nablarch/nablarch-etl-designer/raw/document/doc/download/etl-template.zip)をダウンロードして、解凍してください。
 - 開発をする際に、作成するバッチのデータ形式と取り込み方法(Extractフェーズ/Loadフェーズ)が一番近いテンプレートを選択してください。
 
