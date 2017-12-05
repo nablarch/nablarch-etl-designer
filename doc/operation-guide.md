@@ -4,6 +4,7 @@
 - [アンインストール](#アンインストール)
 - [図形の説明](#図形の説明)
 - [図形の操作](#図形の操作)
+- [プロパティの設定](#プロパティの設定)
 - [バリデーション機能](#バリデーション機能)
 - [入力候補値の設定](#入力候補値の設定)
 - [JOB定義ファイルとETL用JOB設定ファイルへの変換](#job定義ファイルとetl用job設定ファイルへの変換)
@@ -15,8 +16,9 @@
 - 解凍したフォルダ内のetl-designer.exeを実行するとETLデザイナーが起動します。
 
 ## テンプレート
+ETLの定型的な処理フローを、テンプレートとして提供しています。テンプレートをベースにすることで、バッチを効率的に作成できます。
 - [etl-template.zip](https://github.com/nablarch/nablarch-etl-designer/raw/document/doc/download/etl-template.zip)をダウンロードして、解凍してください。
-- 開発をする際に、作成するバッチのデータ形式と取り込み方法(Extractフェーズ/Loadフェーズ)が一番近いテンプレートを選択してください。
+- 開発をする際に、ETLデザイナーで読み込んで使用します。作成するバッチのデータ形式と取り込み方法(Extractフェーズ/Loadフェーズ)が一番近いテンプレートを選択してください。
 
 |データ形式|Extractフェーズ|Loadフェーズ|ファイル名|
 |---|---|---|---|
@@ -37,35 +39,35 @@
 ETLデザイナーで用いる図形の説明です。
 テンプレートで使用している主な図形です。
 
-- Start:Jobの開始を表す図形です。  
+- Start: Jobの開始を表す図形です。  
 ![start](image/start.png) 
 
-- Listener:Job、Stepに設定するListenerです。
+- Listener: Job、Stepに設定するListenerです。
     - プロパティパネルのref属性に使用するクラス名を設定します。
       
   ![listener](image/listener-shape.png)
   
-- Step:Jobの１処理を表す図形です。  
+- Step: Jobの１処理を表す図形です。  
 ![step](image/step-shape.png)
 
-- Batchlet:Stepに設定するBatchletです。
+- Batchlet: Stepに設定するBatchletです。
     - プロパティパネルのref属性に使用するクラス名を設定します。
     
   ![batchlet](image/batchlet-shape.png)
   
-- Chunk:Stepに設定するChunkです。
+- Chunk: Stepに設定するChunkです。
     - ItemReader、ItemWriter、ItemProcessorが同時に作成されます。
     - それぞれのプロパティパネルのref属性に使用するクラス名を設定します。
     
   ![chunk](image/chunk-shape.png)
   
-- End:ジョブの終了を表す図形です。  
+- End: ジョブの終了を表す図形です。  
 ![end](image/end.png)
 
-- Text:注釈をつけることができます。JOB定義には影響しません。  
+- Text: 注釈をつけることができます。JOB定義には影響しません。  
 ![text](image/text-shape.png)
 
-- Transition:Stepの実行順序を表します。  
+- Transition: Stepの実行順序を表します。  
 ![transition](image/transition.png)
 
 ## 図形の操作

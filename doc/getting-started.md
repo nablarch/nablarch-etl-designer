@@ -7,10 +7,8 @@
 - [開発の進め方](#開発の進め方)
 - [ETLデザイナーの起動](#etlデザイナーの起動)
 - [1.テンプレート読み込み](#1テンプレート読み込み)
-- [2.JOB定義の編集](#2job定義の編集)
-- [3.プロパティパネルでの設定](#3beansqlの作成とプロパティパネルでの設定)
-- [4.設定ファイルの出力](#4設定ファイルの出力)
-- [5.バッチの実行](#5バッチの実行)
+- [2.JOB定義の設定・編集](#2job定義の設定編集)
+- [3.設定ファイルの出力・実行](#3設定ファイルの出力実行)
 
 ## 事前準備
 
@@ -75,9 +73,8 @@ ETLデザイナーでの開発の流れです。
     - テンプレートファイルの上書き保存を避けるため、別ファイルとして保存します。
     - ファイル＞名前を付けて保存を選択します。
     - ファイル名を「getting-started」にして、任意の場所に保存します。
-    - タイトルに表示されるファイルのパスが保存した「getting-started.bpmn」の物に変わります。
 
-## 2.JOB定義の編集
+## 2.JOB定義の設定・編集
 
 ![](image/step2.png)
 
@@ -86,12 +83,6 @@ ETLデザイナーでの開発の流れです。
     - Processorをクリックし、図形の右に表示されるゴミ箱ボタンを押すか、deleteボタンを押すことで削除ができます。
 
   ![delete-processor](./image/delete-processor.png)
-
-- 保存されていない編集内容がある場合、タイトルの「ETLデザイナー」の右側に「●」が表示されます。保存すると「●」が消えます。
-
-## 3.Bean、SQLの作成とプロパティパネルでの設定
-
-![](image/step3.png)
 
 バッチで使用するBean、SQLの作成と、プロパティパネルでのETLの設定を行います。
 
@@ -104,7 +95,7 @@ ETLデザイナーでの開発の流れです。
 - ワークテーブルのBean: <nablarch-example-batch-eeをcloneしたディレクトリ>\src\main\java\com\nablarch\example\app\batch\ee\dto\csv\ZipCodeDto.java
 - エラーテーブルのBean: <nablarch-example-batch-eeをcloneしたディレクトリ>\src\main\java\com\nablarch\example\app\batch\ee\dto\csv\ZipCodeErrorEntity.java
 - 本テーブルのEntity: gspプラグインによって自動生成されます
-- ワークテーブから本テーブルへデータを取り込むSQL: <nablarch-example-batch-eeをcloneしたディレクトリ>\src\main\resources\com\nablarch\example\app\entity\ZipCodeData.sql
+- ワークテーブルから本テーブルへデータを取り込むSQL: <nablarch-example-batch-eeをcloneしたディレクトリ>\src\main\resources\com\nablarch\example\app\entity\ZipCodeData.sql
 
 Bean、SQLを設定するイメージです。
 
@@ -156,9 +147,9 @@ ETLの設定はプロパティパネルのETL Propertiesタブで行います。
     
 以上でプロパティパネルでの設定は終わりです。
     
-## 4.設定ファイルの出力
+## 3.設定ファイルの出力・実行
 
-![](image/step4.png)
+![](image/step3.png)
 
 定義したジョブを、バッチで使用するJOB定義ファイルとETL用JOB設定ファイルに変換します。
 
@@ -174,10 +165,6 @@ ETLの設定はプロパティパネルのETL Propertiesタブで行います。
 - JOB定義ファイルとETL用JOB設定ファイルをgit cloneしたExampleプロジェクトの下記の場所に配置します。
     - JOB定義ファイル:<nablarch-example-batch-eeのディレクトリ>/src/main/resources/META-INF/batch-jobs/
     - ETL用JOB設定ファイル:<nablarch-example-batch-eeのディレクトリ>/src/main/resources/META-INF/etl-config/
-
-## 5.バッチの実行
-
-![](image/step5.png)
 
 作成したJOB定義ファイルとETL用JOB設定ファイルを、NablarchのExampleプロジェクトで実行します。
 - [ExampleプロジェクトのREADME](https://github.com/nablarch/nablarch-example-batch-ee)を参照して実行してください。
