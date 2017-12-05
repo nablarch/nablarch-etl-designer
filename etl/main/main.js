@@ -39,7 +39,7 @@ global.appInfo = appInfo;
 var win;
 
 function createWindow() {
-  win = new BrowserWindow({width: 800, height: 600});
+  win = new BrowserWindow({width: 800, height: 600, icon: path.join(__dirname, '../resources/jobedit.ico')});
 
   var registryFilePath = appInfo.argDev ? app.getAppPath() : path.join(app.getPath('exe'), '../');
   configFileUtil.init(registryFilePath, app.getPath('userData'));

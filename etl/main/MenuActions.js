@@ -206,8 +206,8 @@ MenuActions.validation = function(){
       {
         width: 800, height: 500,
         parent: MenuActions.win, resizable: true,
-        modal: false, frame: true
-
+        modal: false, frame: true,
+        icon: path.join(__dirname, '../resources/jobedit.ico')
       });
   validationDialogWindow.setMenu(null);
   if(configFileUtil.isDevelop()){
@@ -230,7 +230,8 @@ MenuActions.setting = function(){
       {
         width: 400, height: 500,
         parent: MenuActions.win, resizable: false,
-        modal: true, frame: true
+        modal: true, frame: true,
+        icon: path.join(__dirname, '../resources/jobedit.ico')
       });
   dialogWindow.setMenu(null);
   if(configFileUtil.isDevelop()){
