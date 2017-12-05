@@ -53,7 +53,7 @@ var messages_ja = {
   'Job name attribute must be set.': 'jobのname属性を設定してください',
   'Failed to convert the xml file.\n{0}': 'xmlファイルの出力に失敗しました\n {0}',
   'Failed to convert the json file.\n{0}': 'jsonファイルの出力に失敗しました\n {0}',
-  'Export is finished successfully.': '出力しました',
+  'Export is finished successfully, do you want to open folder?': '出力しました。フォルダを開きますか？',
   'Failed to load a bpmn file.\n{0}': 'bpmnファイルのロードに失敗しました\n{0}',
   'Validation': 'バリデーション',
   'Warning': '警告',

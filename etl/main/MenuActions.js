@@ -3,6 +3,7 @@ var dialog = electron.dialog;
 var BrowserWindow = electron.BrowserWindow;
 var ipc = electron.ipcMain;
 var app = electron.app;
+var shell = electron.shell;
 
 var url = require('url');
 var path = require('path');
@@ -166,31 +167,47 @@ MenuActions.canCloseWindow = function(){
   return handleDirty(messageUtil.getMessage('The data is edited, do you want to save and quit?'));
 };
 
-MenuActions.exportJobXml = function(){
-  this.win.webContents.send('main-process-pre-export-etl-files');
-};
-
-ipc.on('renderer-process-checked-job-name', function(event, args){
-  if(args.message){
+MenuActions.exportJobXml = function () {
+  if (!appInfo.jobName) {
     dialog.showMessageBox({
-      message: args.message
+      message: messageUtil.getMessage('Job name attribute must be set.')
     });
     return;
   }
 
-  var filePath = showSaveXmlFileDialog();
-  if(!filePath){
+  var filepath = showSaveXmlFileDialog();
+  if (!filepath) {
     return;
   }
 
-  var baseName = path.basename(filePath,'.xml');
-  var dirName = path.dirname(filePath);
+  var baseName = path.basename(filepath, '.xml');
+  var dirName = path.dirname(filepath);
   var basePath = path.join(dirName, baseName);
 
-  event.sender.send('main-process-export-etl-files', {
+  MenuActions.win.webContents.send('main-process-export-etl-files', {
     xmlPath: basePath + '.xml',
     jsonPath: basePath + '.json'
   });
+};
+
+ipc.on('renderer-process-success-export-etl-files', function (event, args) {
+  var options = {
+    type: 'question',
+    buttons: [
+      messageUtil.getMessage('Yes'),
+      messageUtil.getMessage('No')
+    ],
+    message: messageUtil.getMessage('Export is finished successfully, do you want to open folder?'),
+    cancelId: 1
+  };
+  var result = dialog.showMessageBox(options);
+  switch (result) {
+    case 0:
+      shell.showItemInFolder(args.saveDirPath);
+      break;
+    case 1:
+      break;
+  }
 });
 
 var validationDialogWindow;
