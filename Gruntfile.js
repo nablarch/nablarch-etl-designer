@@ -24,7 +24,8 @@ module.exports = function (grunt) {
 
     config: {
       sources: 'etl/renderer',
-      dist: 'dist'
+      dist: 'dist',
+      parser: 'bpmn-parser/target'
     },
 
     jshint: {
@@ -98,6 +99,16 @@ module.exports = function (grunt) {
             cwd: '<%= config.sources %>/',
             src: ['**/*.*', '!**/*.js'],
             dest: '<%= config.dist %>'
+          }
+        ]
+      },
+      jar: {
+        files: [
+          {
+            expand: true,
+            cwd: '<%= config.parser %>',
+            src: ['*jar-with-dependencies.jar'],
+            dest: './'
           }
         ]
       }
@@ -186,6 +197,7 @@ module.exports = function (grunt) {
     'copy:diagram_js',
     'copy:bpmn_js',
     'copy:app',
+    'copy:jar',
     'less',
     'browserify:app'
   ]);
@@ -194,6 +206,7 @@ module.exports = function (grunt) {
     'copy:diagram_js',
     'copy:bpmn_js',
     'copy:app',
+    'copy:jar',
     'less',
     'browserify:watch',
     'connect:livereload',

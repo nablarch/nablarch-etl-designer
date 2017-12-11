@@ -20,7 +20,7 @@ packager({
     ProductName: packageInfo['name'],
     InternalName: packageInfo['name']
   },
-  ignore: ['doc', 'test']
+  ignore: ['doc', 'test', 'bpmn-parser', '.idea']
 
 }, function (err, appPaths) {
   if (err) {

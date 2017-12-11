@@ -117,6 +117,12 @@ function createApplicationMenu() {
           }
         },
         {
+          label: messageUtil.getMessage('Export ETL files with Save...'),
+          click: function () {
+            MenuActions.exportJobXml();
+          }
+        },
+        {
           label: messageUtil.getMessage('Exit'),
           click: function () {
             win = null;
@@ -130,12 +136,6 @@ function createApplicationMenu() {
     {
       label: messageUtil.getMessage('Tool'),
       submenu: [
-        {
-          label: messageUtil.getMessage('Export ETL files'),
-          click: function () {
-            MenuActions.exportJobXml();
-          }
-        },
         {
           label: messageUtil.getMessage('Validate...'),
           accelerator: 'Ctrl+T',
