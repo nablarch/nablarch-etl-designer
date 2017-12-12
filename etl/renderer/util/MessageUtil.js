@@ -12,7 +12,7 @@ var messages_ja = {
   'Open...': '開く',
   'Exit': '終了',
   'Tool': 'ツール',
-  'Export ETL files with Save...': '保存して変換',
+  'Export ETL files...': '変換',
   'Validate...': 'バリデーション',
   'Settings...': '設定',
   'Settings': '入力候補値の設定',

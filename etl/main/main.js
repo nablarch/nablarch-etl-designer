@@ -118,7 +118,7 @@ function createApplicationMenu() {
           }
         },
         {
-          label: messageUtil.getMessage('Export ETL files with Save...'),
+          label: messageUtil.getMessage('Export ETL files...'),
           accelerator: 'Ctrl+E',
           click: function () {
             MenuActions.exportJobXml();
