@@ -5,10 +5,10 @@
 - [事前準備](#事前準備)
 - [バッチの仕様](#バッチの仕様)
 - [開発の進め方](#開発の進め方)
-- [ETLデザイナーの起動](#etlデザイナーの起動)
-- [1.テンプレート読み込み](#1テンプレート読み込み)
-- [2.JOB定義の設定・編集](#2job定義の設定編集)
-- [3.設定ファイルの出力・実行](#3設定ファイルの出力実行)
+- [ETLデザイナーの画面](#etlデザイナーの画面)
+- [テンプレート読み込み](#テンプレート読み込み)
+- [JOB定義の設定・編集](#job定義の設定編集)
+- [設定ファイルの出力・バッチの実行](#設定ファイルの出力バッチの実行)
 
 ## 事前準備
 
@@ -47,13 +47,13 @@ ETLデザイナーでの開発の流れです。
 
 ![開発の進め方](image/develop-flow.png)
 
-## ETLデザイナーの起動
+## ETLデザイナーの画面
 
 - ETLデザイナーを起動すると以下の画面が表示されます。
 
 ![screenshot](./image/screenshot.png)
 
-## 1.テンプレート読み込み
+## テンプレート読み込み
 
 ![](image/step1.png)
 
@@ -74,13 +74,13 @@ ETLデザイナーでの開発の流れです。
     - ファイル＞名前を付けて保存を選択します。
     - ファイル名を「getting-started」にして、任意の場所に保存します。
 
-## 2.JOB定義の設定・編集
+## JOB定義の設定・編集
 
 ![](image/step2.png)
 
 [バッチ仕様](#バッチの仕様)を元に、テンプレートのJOB定義を編集します。
 - 今回のバッチではファイル取り込みのChunkでProcessorを利用しないため、Processorの図形を削除します。
-    - Processorをクリックし、図形の右に表示されるゴミ箱ボタンを押すか、deleteボタンを押すことで削除ができます。
+    - Processorをクリックし、図形の右に表示される削除ボタンを押すか、キーボードのdeleteキーを押すことで削除ができます。
 
   ![delete-processor](./image/delete-processor.png)
 
@@ -94,8 +94,10 @@ ETLデザイナーでの開発の流れです。
 ファイル→DBのETLでは以下の物を作成します。また、今回使用する[NablarchのExampleプロジェクト](https://github.com/nablarch/nablarch-example-batch-ee)ではそれぞれ以下に対応します。
 - ワークテーブルのBean: <nablarch-example-batch-eeをcloneしたディレクトリ>\src\main\java\com\nablarch\example\app\batch\ee\dto\csv\ZipCodeDto.java
 - エラーテーブルのBean: <nablarch-example-batch-eeをcloneしたディレクトリ>\src\main\java\com\nablarch\example\app\batch\ee\dto\csv\ZipCodeErrorEntity.java
-- 本テーブルのEntity: gspプラグインによって自動生成されます
 - ワークテーブルから本テーブルへデータを取り込むSQL: <nablarch-example-batch-eeをcloneしたディレクトリ>\src\main\resources\com\nablarch\example\app\entity\ZipCodeData.sql
+- 本テーブルのBean: <nablarch-example-batch-eeをcloneしたディレクトリ>\gsp-target\generated-sources\entity\com\nablarch\example\app\entity\ZipCodeData.java
+
+※今回使用するexampleでは、本テーブルのBeanは[gspプラグイン](https://github.com/coastland/gsp-dba-maven-plugin)によって自動生成されます。
 
 Bean、SQLを設定するイメージです。
 
@@ -145,9 +147,11 @@ ETLの設定はプロパティパネルのETL Propertiesタブで行います。
     
     ![load-step](./image/load-step.png)
     
-以上でプロパティパネルでの設定は終わりです。
+以上でプロパティパネルでの設定は終わりです。ここまでの編集内容を保存します。
+- ファイル＞上書き保存で上書き保存します。
+- 「ctrl＋ s」　のショートカットキーでも上書き保存できます。
     
-## 3.設定ファイルの出力・実行
+## 設定ファイルの出力・バッチの実行
 
 ![](image/step3.png)
 
@@ -157,8 +161,9 @@ ETLの設定はプロパティパネルのETL Propertiesタブで行います。
 
 - 変換する前に、JOB定義のバリデーションを行います。
 - ツール＞バリデーションを選択するとバリデーションウィンドウが表示されます。
-    - エラー、警告、ジョブのテスト実行の各タブにバリデーション結果が表示されます。今回の手順ではバリデーションエラーは発生しません。
-- ツール＞変換を選択します。
+    - エラー、警告の各タブにバリデーション結果が表示されます。今回の手順ではバリデーションエラーは発生しません。
+    - 確認したらバリデーションダイアログを閉じます。
+- ファイル＞変換を選択します。
 - ファイル保存のダイアログが現れるので、保存場所とファイル名を指定してファイルを保存します。
     - 保存する際のファイル名はJobのname属性に設定した値が初期値となっているため、そのファイル名のまま保存します。(今回はgetting-started)
     - JOB定義ファイル(xmlファイル)とETL用JOB設定ファイル(jsonファイル)が同じ場所に同時に出力されます。

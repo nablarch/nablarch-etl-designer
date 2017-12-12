@@ -5,7 +5,7 @@
 - [ETL](#etl)
 
 ## JSR352
-- Jobは1個のバッチ処理を表します。なので、Jobが実行単位になります。
+- Jobは1個のバッチ処理を表します。Jobが実行単位になります。
 - Jobは一つ以上のStepが含まれます。StepによりJobの処理フローを表します。
 - Stepの処理方法にはChunkとBatchletの2種類があります。
 - Chunkは1件ずつ読み込み(ItemReader)と処理(ItemProcessor)を行い、一定件数毎に書き込み(ItemWriter)をまとめて行います。
