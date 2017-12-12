@@ -39,7 +39,7 @@
     - Extractフェーズ：Chunk
     - Loadフェーズ：Batchlet(洗い替え)
 
-※データ項目と変換仕様は、業務仕様に依存するため、GettingStartedでは省略します。Exampleにあるデータ項目(Bean)と変換仕様(SQL)を使用します。
+※Exampleにあるデータ項目(Bean)と変換仕様(SQL)を使用します。
 
 ## 開発の進め方
 
