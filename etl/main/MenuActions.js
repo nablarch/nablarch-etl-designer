@@ -181,9 +181,7 @@ MenuActions.exportJobXml = function () {
       message: messageUtil.getMessage('The data is edited, save data before export files')
     };
     dialog.showMessageBox(options);
-    if(!MenuActions.saveBpmn()) {
-      return;
-    }
+    return;
   }
 
   var filepath = showSaveXmlFileDialog();

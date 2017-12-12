@@ -27,7 +27,7 @@ var messages_ja = {
   'Open': '開く',
   'xml file.': 'xmlファイル',
   'The data is edited, do you want to save and quit?': '編集されています。保存して終了しますか？',
-  'The data is edited, save data before export files': '編集されています。保存してから変換します。',
+  'The data is edited, save data before export files': '編集されています。保存してから変換してください',
   'Version {0}': 'バージョン {0}',
   'Version Information': 'バージョン情報',
   'ETL Designer': 'ETLデザイナー',

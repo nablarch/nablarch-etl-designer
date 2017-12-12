@@ -105,6 +105,7 @@ function createApplicationMenu() {
         },
         {
           label: messageUtil.getMessage('Save As...'),
+          accelerator: 'Ctrl+Shift+S',
           click: function () {
             MenuActions.saveAsBpmn();
           }
@@ -118,6 +119,7 @@ function createApplicationMenu() {
         },
         {
           label: messageUtil.getMessage('Export ETL files with Save...'),
+          accelerator: 'Ctrl+E',
           click: function () {
             MenuActions.exportJobXml();
           }
@@ -145,7 +147,6 @@ function createApplicationMenu() {
         },
         {
           label: messageUtil.getMessage('Settings...'),
-          accelerator: 'Ctrl+Shift+S',
           click: function () {
             MenuActions.setting();
           }
