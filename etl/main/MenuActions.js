@@ -29,9 +29,9 @@ MenuActions.createNewBpmn = function() {
 
 MenuActions.saveBpmn = function() {
   if(appInfo.openFilePath){
-    doSaveBpmnFile();
+    return doSaveBpmnFile();
   }else{
-    doSaveAsBpmnFile();
+    return doSaveAsBpmnFile();
   }
 };
 
@@ -172,6 +172,15 @@ MenuActions.exportJobXml = function () {
     dialog.showMessageBox({
       message: messageUtil.getMessage('Job name attribute must be set.')
     });
+    return;
+  }
+
+  if (appInfo.workBpmnString !== appInfo.originalBpmnString) {
+    var options = {
+      type: 'warning',
+      message: messageUtil.getMessage('The data is edited, save data before export files')
+    };
+    dialog.showMessageBox(options);
     return;
   }
 

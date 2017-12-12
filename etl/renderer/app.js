@@ -87,14 +87,13 @@ function saveDiagram(done) {
 }
 
 var exportEtlJson = require('./util/ExportEtlJson');
-var exportJobXml = require('./util/ExportJobXml');
+var execSync = require('child_process').execSync;
 
 ipc.on('main-process-export-etl-files', function (event, args) {
   try {
-    var xmlString = exportJobXml.exportXml(appInfo.workBpmnString);
-    fs.writeFileSync(args.xmlPath, xmlString, 'utf8');
+    execSync('java -jar ' + path.join(app.getAppPath(), 'etl-designer-parser-1.0.0-jar-with-dependencies.jar') + ' ' + appInfo.openFilePath + ' ' + args.xmlPath).toString();
   } catch (e) {
-    throw new Error(messageUtil.getMessage('Failed to convert the xml file.\n{0}', [e.message]));
+    throw new Error(messageUtil.getMessage('Failed to convert the xml file.'));
   }
   try {
     var jsonObj = exportEtlJson.exportJson(appInfo.workBpmnString);

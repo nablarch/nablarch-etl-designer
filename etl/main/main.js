@@ -105,6 +105,7 @@ function createApplicationMenu() {
         },
         {
           label: messageUtil.getMessage('Save As...'),
+          accelerator: 'Ctrl+Shift+S',
           click: function () {
             MenuActions.saveAsBpmn();
           }
@@ -114,6 +115,13 @@ function createApplicationMenu() {
           accelerator: 'Ctrl+O',
           click: function () {
             MenuActions.openBpmn();
+          }
+        },
+        {
+          label: messageUtil.getMessage('Export ETL files...'),
+          accelerator: 'Ctrl+E',
+          click: function () {
+            MenuActions.exportJobXml();
           }
         },
         {
@@ -131,12 +139,6 @@ function createApplicationMenu() {
       label: messageUtil.getMessage('Tool'),
       submenu: [
         {
-          label: messageUtil.getMessage('Export ETL files'),
-          click: function () {
-            MenuActions.exportJobXml();
-          }
-        },
-        {
           label: messageUtil.getMessage('Validate...'),
           accelerator: 'Ctrl+T',
           click: function () {
@@ -145,7 +147,6 @@ function createApplicationMenu() {
         },
         {
           label: messageUtil.getMessage('Settings...'),
-          accelerator: 'Ctrl+Shift+S',
           click: function () {
             MenuActions.setting();
           }
