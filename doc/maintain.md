@@ -1,13 +1,15 @@
 # ビルド方法
+JavaアプリケーションのビルドにMavenが必要になります
 
 ## ETLデザイナーを起動する
 
 ```
 git submodule update -i
 npm install
-node_modules/.bin/grunt auto-build
-
-別コンソールで実行
+cd bpmn-parser
+mvn clean package
+cd ..
+node_modules/.bin/grunt build
 node_modules/.bin/electron . --dev
 ```
 ## exeファイルにパッケージングする
@@ -15,6 +17,9 @@ node_modules/.bin/electron . --dev
 ```
 git submodule update -i
 npm install
+cd bpmn-parser
+mvn clean package
+cd ..
 node_modules/.bin/grunt build
-npm run package
+node build.js
 ```

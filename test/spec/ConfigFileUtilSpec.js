@@ -17,21 +17,15 @@ var registry = {
 
 var initConfig = {
   appConfig: {
-    jobStreamer: {
-      url:"http://localhost:45102",
-      timeoutCount: 20
-    },
-    locale: "ja",
-    xmlAttr: {
-      xmlns: "http://xmlns.jcp.org/xml/ns/javaee",
-      version: "1.0"
-    }
+    locale: "ja"
   },
   propertiesConfig: {
     batchlet: [
       "tableCleaningBatchlet",
       "sqlLoaderBatchlet",
-      "validationBatchlet"
+      "validationBatchlet",
+      "deleteInsertBatchlet",
+      "mergeBatchlet"
     ],
     itemReader: [
       "databaseItemReader",
@@ -56,6 +50,10 @@ var initConfig = {
       "CONTINUE"
     ],
     columns: [],
+    insertMode: [
+      "NORMAL",
+      "ORACLE_DIRECT_PATH"
+    ],
     stepType: {
       truncate: [
         "entities"
@@ -75,6 +73,7 @@ var initConfig = {
         "bean",
         "sqlId",
         "mergeOnColumns",
+        "insertMode",
         "updateSize"
       ],
       db2file: [
@@ -137,13 +136,6 @@ describe('config file util', function () {
   });
 
   describe('read app config file', function () {
-    it('get JobStreamer info', function () {
-      var expected = initConfig.appConfig.jobStreamer;
-      var actual = configFileUtil.getJobStreamerInfo();
-
-      expect(expected).to.deep.equal(actual);
-    });
-
     it('get locale', function () {
       var expected = initConfig.appConfig.locale;
       var actual = configFileUtil.getLocale();

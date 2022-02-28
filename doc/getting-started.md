@@ -5,10 +5,10 @@
 - [事前準備](#事前準備)
 - [バッチの仕様](#バッチの仕様)
 - [開発の進め方](#開発の進め方)
-- [ETLデザイナーの起動](#etlデザイナーの起動)
-- [1.テンプレート読み込み](#1テンプレート読み込み)
-- [2.JOB定義の設定・編集](#2job定義の設定編集)
-- [3.設定ファイルの出力・実行](#3設定ファイルの出力実行)
+- [ETLデザイナーの画面](#etlデザイナーの画面)
+- [テンプレート読み込み](#テンプレート読み込み)
+- [JOB定義の設定・編集](#job定義の設定・編集)
+- [設定ファイルの出力・バッチの実行](#設定ファイルの出力・バッチの実行)
 
 ## 事前準備
 
@@ -16,9 +16,7 @@
 そのため、実行環境にJava、Maven、Gitが必要になります。
 
 - ETLデザイナーをインストールしてください。
-    - [インストール](operation-guide.md#インストール)
-- テンプレートをダウンロードしてください。
-    - [テンプレート](operation-guide.md#テンプレート)
+    - [インストール](./operation-guide.md#%e3%82%a4%e3%83%b3%e3%82%b9%e3%83%88%e3%83%bc%e3%83%ab)
 - NablarchのExampleをgit cloneしてください。(git cloneするだけで大丈夫です)
     - [nablarch-example-batch-ee](https://github.com/nablarch/nablarch-example-batch-ee)
 
@@ -39,7 +37,7 @@
     - Extractフェーズ：Chunk
     - Loadフェーズ：Batchlet(洗い替え)
 
-※データ項目と変換仕様は、業務仕様に依存するため、GettingStartedでは省略します。Exampleにあるデータ項目(Bean)と変換仕様(SQL)を使用します。
+※Exampleにあるデータ項目(Bean)と変換仕様(SQL)を使用します。
 
 ## 開発の進め方
 
@@ -47,26 +45,25 @@ ETLデザイナーでの開発の流れです。
 
 ![開発の進め方](image/develop-flow.png)
 
-## ETLデザイナーの起動
+## ETLデザイナーの画面
 
 - ETLデザイナーを起動すると以下の画面が表示されます。
 
 ![screenshot](./image/screenshot.png)
 
-## 1.テンプレート読み込み
+## テンプレート読み込み
 
 ![](image/step1.png)
 
-- [バッチ仕様](#バッチの仕様)を元に、使用する[テンプレート](operation-guide.md#テンプレート)を決定します。
+- [バッチ仕様](#バッチの仕様)を元に、使用する[テンプレート](operation-guide.md#%e3%83%86%e3%83%b3%e3%83%95%e3%82%9a%e3%83%ac%e3%83%bc%e3%83%88)を決定します。
 - ファイル＞開くを選択し、file2db_chunk_replace.bpmnを選択します。
 
-- テンプレートを開くとJOB定義が表示されます。図形の説明は[利用方法の図形の説明](operation-guide.md#図形の説明)を参照ください。
+- テンプレートを開くとJOB定義が表示されます。図形の説明は[利用方法の図形の説明](operation-guide.md#%e5%9b%b3%e5%bd%a2%e3%81%ae%e8%aa%ac%e6%98%8e)を参照ください。
 
 - JOBの名前の設定
     - キャンバス上で図形がない場所をクリックすると、プロパティパネルでJobの属性が編集できるようになります。  
     - Jobのname属性に「getting-started」を設定します。
-    - Jobのname属性はJOB定義ファイルのJobのid属性に反映されます。
-    
+    - Jobのname属性はJOB定義ファイルのJobのid属性に反映されます。      
     ![job-name](image/job-name.png)
 
 - JOB定義の保存
@@ -74,13 +71,13 @@ ETLデザイナーでの開発の流れです。
     - ファイル＞名前を付けて保存を選択します。
     - ファイル名を「getting-started」にして、任意の場所に保存します。
 
-## 2.JOB定義の設定・編集
+## JOB定義の設定・編集
 
 ![](image/step2.png)
 
 [バッチ仕様](#バッチの仕様)を元に、テンプレートのJOB定義を編集します。
 - 今回のバッチではファイル取り込みのChunkでProcessorを利用しないため、Processorの図形を削除します。
-    - Processorをクリックし、図形の右に表示されるゴミ箱ボタンを押すか、deleteボタンを押すことで削除ができます。
+    - Processorをクリックし、図形の右に表示される削除ボタンを押すか、キーボードのdeleteキーを押すことで削除ができます。
 
   ![delete-processor](./image/delete-processor.png)
 
@@ -89,13 +86,15 @@ ETLデザイナーでの開発の流れです。
 - Bean、SQLの作成
     - ETLで使用するBeanとSQLを作成します。
     - このGetting Startedでは[NablarchのExampleプロジェクト](https://github.com/nablarch/nablarch-example-batch-ee)を使用するため省略します。
-    - 実装する際には、Nablarchのドキュメントの[4.3. ETLを使用するバッチの設計ポイント](https://nablarch.github.io/docs/LATEST/doc/extension_components/etl/index.html#id5)を参照ください。
+    - 実装する際には、[NablarchドキュメントのETL](https://nablarch.github.io/docs/LATEST/doc/extension_components/etl/index.html)を参照ください。
 
 ファイル→DBのETLでは以下の物を作成します。また、今回使用する[NablarchのExampleプロジェクト](https://github.com/nablarch/nablarch-example-batch-ee)ではそれぞれ以下に対応します。
 - ワークテーブルのBean: <nablarch-example-batch-eeをcloneしたディレクトリ>\src\main\java\com\nablarch\example\app\batch\ee\dto\csv\ZipCodeDto.java
 - エラーテーブルのBean: <nablarch-example-batch-eeをcloneしたディレクトリ>\src\main\java\com\nablarch\example\app\batch\ee\dto\csv\ZipCodeErrorEntity.java
-- 本テーブルのEntity: gspプラグインによって自動生成されます
 - ワークテーブルから本テーブルへデータを取り込むSQL: <nablarch-example-batch-eeをcloneしたディレクトリ>\src\main\resources\com\nablarch\example\app\entity\ZipCodeData.sql
+- 本テーブルのBean: <nablarch-example-batch-eeをcloneしたディレクトリ>\gsp-target\generated-sources\entity\com\nablarch\example\app\entity\ZipCodeData.java
+
+※今回使用するexampleでは、本テーブルのBeanは[gspプラグイン](https://github.com/coastland/gsp-dba-maven-plugin)によって自動生成されます。
 
 Bean、SQLを設定するイメージです。
 
@@ -108,8 +107,7 @@ ETLの設定はプロパティパネルのETL Propertiesタブで行います。
     - truncateステップでは、削除するワークテーブルの設定を行います。
     - truncate entity属性: com.nablarch.example.app.batch.ee.dto.csv.ZipCodeDto
         - データを削除したいワークテーブルに対応するEntityの完全修飾名
-    - テキストエリアに値を入力し、「＋」ボタンを押してリストに追加します。
-    
+    - テキストエリアに値を入力し、「＋」ボタンを押してリストに追加します。  
     ![truncate-step](./image/truncate-step.png)
     
 - extractステップの設定
@@ -118,7 +116,7 @@ ETLの設定はプロパティパネルのETL Propertiesタブで行います。
         - 入力元ファイル名
     - bean属性: com.nablarch.example.app.batch.ee.dto.csv.ZipCodeDto
         - 入力ファイルとワークテーブルのデータ項目に対応したBeanの完全修飾名
-    
+  
     ![extract-step](./image/extract-step.png)
     
 - validationステップの設定
@@ -131,7 +129,7 @@ ETLの設定はプロパティパネルのETL Propertiesタブで行います。
         - バリデーションエラー発生時のJOBの継続モード
     - errorLimit属性: 1000
         - 許容するエラー数
-    
+  
     ![validation-step](./image/validation-step.png)
     
 - loadステップの設定
@@ -142,23 +140,25 @@ ETLの設定はプロパティパネルのETL Propertiesタブで行います。
         - データベースのテーブルに登録するデータを取得する際に使用するSQLのID
     - insertMode属性: NORMAL
         - データの登録(INSERT)時に使用するモード
-    
+  
     ![load-step](./image/load-step.png)
     
-以上でプロパティパネルでの設定は終わりです。
+以上でプロパティパネルでの設定は終わりです。ここまでの編集内容を保存します。
+- ファイル＞上書き保存で上書き保存します。
+- 「ctrl＋ s」　のショートカットキーでも上書き保存できます。
     
-## 3.設定ファイルの出力・実行
+## 設定ファイルの出力・バッチの実行
 
 ![](image/step3.png)
 
-定義したジョブを、バッチで使用するJOB定義ファイルとETL用JOB設定ファイルに変換します。
-
+定義したジョブを、バッチで使用するJOB定義ファイルとETL用JOB設定ファイルに変換します。  
 ![export](image/export-config-files.png)
 
 - 変換する前に、JOB定義のバリデーションを行います。
 - ツール＞バリデーションを選択するとバリデーションウィンドウが表示されます。
-    - エラー、警告、ジョブのテスト実行の各タブにバリデーション結果が表示されます。今回の手順ではバリデーションエラーは発生しません。
-- ツール＞変換を選択します。
+    - エラー、警告の各タブにバリデーション結果が表示されます。今回の手順ではバリデーションエラーは発生しません。
+    - 確認したらバリデーションダイアログを閉じます。
+- ファイル＞変換を選択します。
 - ファイル保存のダイアログが現れるので、保存場所とファイル名を指定してファイルを保存します。
     - 保存する際のファイル名はJobのname属性に設定した値が初期値となっているため、そのファイル名のまま保存します。(今回はgetting-started)
     - JOB定義ファイル(xmlファイル)とETL用JOB設定ファイル(jsonファイル)が同じ場所に同時に出力されます。
@@ -180,6 +180,5 @@ ETLの設定はプロパティパネルのETL Propertiesタブで行います。
 2017-11-08 17:57:45,679 INFO  progress finish job. job name: [getting-started]
 ```
 
-## 
-- 以上でGetting Startedは終了です。
-- 詳細な利用方法に関しては、[利用方法](operation-guide.md)を参照ください。
+以上でGetting Startedは終了です。
+詳細な利用方法に関しては、[利用方法](operation-guide.md)を参照ください。
