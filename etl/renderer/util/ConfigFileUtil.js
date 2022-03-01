@@ -11,15 +11,7 @@ var propertiesConfigFileName = 'propertiesConfig';
 var registry = {};
 var initConfig = {};
 initConfig[appConfigFileName] = {
-  jobStreamer: {
-    url: "https://alfort.adc-tis.com/job-streamer-control-bus",
-    timeoutCount: 20
-  },
-  locale: "ja",
-  xmlAttr: {
-    xmlns: "http://xmlns.jcp.org/xml/ns/javaee",
-    version: "1.0"
-  }
+  locale: "ja"
 };
 initConfig[propertiesConfigFileName] = {
   batchlet: [
@@ -137,16 +129,8 @@ ConfigFileUtil.isDevelop = function () {
   return loadConfigFile(registry.appConfig).isDevelop;
 };
 
-ConfigFileUtil.getJobStreamerInfo = function () {
-  return loadConfigFile(registry.appConfig).jobStreamer;
-};
-
 ConfigFileUtil.getLocale = function () {
   return loadConfigFile(registry.appConfig).locale;
-};
-
-ConfigFileUtil.getXmlAttr = function () {
-  return loadConfigFile(registry.appConfig).xmlAttr;
 };
 
 ConfigFileUtil.getProperties = function () {

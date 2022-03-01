@@ -170,7 +170,8 @@ MenuActions.canCloseWindow = function(){
 MenuActions.exportJobXml = function () {
   if (!appInfo.jobName) {
     dialog.showMessageBox({
-      message: messageUtil.getMessage('Job name attribute must be set.')
+      message: messageUtil.getMessage('Job name attribute must be set at property panel.'),
+      detail: messageUtil.getMessage('Edit Job attribute at property panel when click on canvas without element.')
     });
     return;
   }
